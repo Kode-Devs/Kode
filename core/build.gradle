@@ -5,3 +5,8 @@ plugins {
 application {
     mainClass = 'org.kodedevs.core.Main'
 }
+
+dependencies {
+    implementation project(':common')
+    implementation project(':utils')
+}

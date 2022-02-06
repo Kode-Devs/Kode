@@ -1,6 +1,11 @@
 allprojects {
     group = 'org.kodedevs'
     version = '0.1.0'
+
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
 }
 
 subprojects {

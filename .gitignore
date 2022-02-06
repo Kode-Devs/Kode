@@ -1,0 +1,8 @@
+# Intellij Idea and its derivatives
+.idea/
+
+# Gradle Files
+.gradle
+**/build/
+!src/**/build/
+!gradle-wrapper.jar

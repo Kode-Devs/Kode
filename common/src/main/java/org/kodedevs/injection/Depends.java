@@ -1,4 +1,4 @@
-package org.kodedevs.cdi;
+package org.kodedevs.injection;
 
 import java.lang.reflect.InvocationTargetException;
 

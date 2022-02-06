@@ -1,6 +1,6 @@
 package org.kodedevs.core;
 
-import org.kodedevs.cdi.Depends;
+import org.kodedevs.injection.Depends;
 import org.kodedevs.utils.IOUtils;
 
 public class Main {

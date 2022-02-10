@@ -1,6 +1,6 @@
 package org.kodedevs.core.nodes.stmt;
 
-import org.kodedevs.core.internal.ASTNode;
+import org.kodedevs.core.nodes.ASTNode;
 import org.kodedevs.core.internal.token.Token;
 
 public abstract class StmtNode extends ASTNode {

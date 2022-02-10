@@ -1,7 +1,9 @@
-package org.kodedevs.core.internal;
+package org.kodedevs.core.nodes;
 
 import hu.webarticum.treeprinter.SimpleTreeNode;
 import hu.webarticum.treeprinter.printer.traditional.TraditionalTreePrinter;
+import org.kodedevs.core.internal.Interpreter;
+import org.kodedevs.core.internal.Resolver;
 import org.kodedevs.core.internal.token.Token;
 import org.kodedevs.injection.Depends;
 import org.kodedevs.utils.IOUtils;

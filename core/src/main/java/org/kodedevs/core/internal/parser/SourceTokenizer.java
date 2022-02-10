@@ -5,10 +5,9 @@ import org.kodedevs.core.internal.token.TokenType;
 import org.kodedevs.injection.Depends;
 import org.kodedevs.utils.IOUtils;
 
-import java.util.Enumeration;
+public class SourceTokenizer {
 
-public class SourceTokenizer implements Enumeration<Token> {
-
+    // Private Fields
     private final String source;
     private int currentPosition;
     private int startPosition;
@@ -21,16 +20,6 @@ public class SourceTokenizer implements Enumeration<Token> {
         this.source = source;
         maxPosition = source.length();
         currentLineNo = 1;
-    }
-
-    @Override
-    public boolean hasMoreElements() {
-        return true;
-    }
-
-    @Override
-    public Token nextElement() {
-        return scanTokenOnDemand();
     }
 
     // ------------------------------------------------------------------------------------------------- lexer fns

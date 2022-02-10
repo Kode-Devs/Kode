@@ -1,5 +1,32 @@
 package org.kodedevs.core.internal.token;
 
+/**
+ * Description of all the tokens.
+ */
 public enum TokenType {
-    TOKEN_IDENTIFIER, TOKEN_TRUE, TOKEN_FALSE, TOKEN_NUMBER, TOKEN_ERROR, TOKEN_STRING, TOKEN_EOF
+
+    // Bracket.
+
+    // Unary.
+
+    // Binary.
+    TOKEN_PLUS,
+    TOKEN_MINUS,
+    TOKEN_STAR,
+    TOKEN_SLASH,
+
+    // Literals.
+    TOKEN_IDENTIFIER,
+    TOKEN_STRING,
+    TOKEN_NUMBER,
+    TOKEN_TRUE,
+    TOKEN_FALSE,
+
+    // Keyword.
+
+    // Specials.
+    TOKEN_ERROR,
+    TOKEN_EOF,
+
+    // Future.
 }

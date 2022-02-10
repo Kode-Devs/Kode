@@ -9,4 +9,7 @@ application {
 dependencies {
     implementation project(':common')
     implementation project(':utils')
+
+    // https://mvnrepository.com/artifact/hu.webarticum/tree-printer
+    implementation 'hu.webarticum:tree-printer:2.0.0'
 }

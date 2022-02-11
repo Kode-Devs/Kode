@@ -4,6 +4,7 @@ plugins {
 
 application {
     mainClass = 'org.kodedevs.core.Main'
+    applicationName = 'kode'
 }
 
 dependencies {

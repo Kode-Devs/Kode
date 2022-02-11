@@ -1,6 +1,7 @@
 package org.kodedevs.core.nodes;
 
 import hu.webarticum.treeprinter.SimpleTreeNode;
+import hu.webarticum.treeprinter.UnicodeMode;
 import hu.webarticum.treeprinter.printer.traditional.TraditionalTreePrinter;
 import org.kodedevs.core.internal.Interpreter;
 import org.kodedevs.core.internal.Resolver;
@@ -18,7 +19,7 @@ public abstract class ASTNode {
 
         // Print Tree
         treeNode = new SimpleTreeNode(this.toString());
-        for(ASTNode child : childNodes) {
+        for (ASTNode child : childNodes) {
             treeNode.addChild(child.treeNode);
         }
     }
@@ -32,6 +33,7 @@ public abstract class ASTNode {
     // ----------------------------------------------------------------------------------------------- utility fns
 
     public final void printTree() {
+        UnicodeMode.setUnicodeAsDefault(false); // Temporary Fix
         new TraditionalTreePrinter().print(treeNode, Depends.on(IOUtils.class).out);
     }
 

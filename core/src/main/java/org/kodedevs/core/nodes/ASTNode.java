@@ -1,44 +1,27 @@
 package org.kodedevs.core.nodes;
 
-import hu.webarticum.treeprinter.SimpleTreeNode;
-import hu.webarticum.treeprinter.UnicodeMode;
-import hu.webarticum.treeprinter.printer.traditional.TraditionalTreePrinter;
-import org.kodedevs.core.internal.Interpreter;
+import hu.webarticum.treeprinter.TreeNode;
 import org.kodedevs.core.internal.Resolver;
-import org.kodedevs.core.internal.token.Token;
-import org.kodedevs.injection.Depends;
-import org.kodedevs.utils.IOUtils;
+import org.kodedevs.core.internal.RuntimeState;
 
-public abstract class ASTNode {
+import java.util.Collections;
+import java.util.List;
 
-    private final SimpleTreeNode treeNode;
-    private final Token identifierToken;
+public interface ASTNode extends TreeNode {
 
-    public ASTNode(Token identifierToken, ASTNode... childNodes) {
-        this.identifierToken = identifierToken;
-
-        // Print Tree
-        treeNode = new SimpleTreeNode(this.toString());
-        for (ASTNode child : childNodes) {
-            treeNode.addChild(child.treeNode);
-        }
-    }
-
-    public void resolve(Resolver resolver) {
+    default void resolve(Resolver resolver) {
         // Do Nothing
     }
 
-    public abstract Object evaluate(Interpreter interpreter);
+    Object evaluate(RuntimeState runtimeState);
 
-    // ----------------------------------------------------------------------------------------------- utility fns
-
-    public final void printTree() {
-        UnicodeMode.setUnicodeAsDefault(false); // Temporary Fix
-        new TraditionalTreePrinter().print(treeNode, Depends.on(IOUtils.class).out);
+    @Override
+    default String content() {
+        return getClass().getSimpleName();
     }
 
     @Override
-    public String toString() {
-        return getClass().getSimpleName();
+    default List<TreeNode> children() {
+        return Collections.emptyList();
     }
 }

@@ -1,4 +1,4 @@
 package org.kodedevs.core.internal;
 
-public class Interpreter {
+public class RuntimeState {
 }

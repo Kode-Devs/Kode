@@ -1,17 +1,15 @@
 package org.kodedevs.core;
 
+import org.kodedevs.core.internal.parser.ASTGenerator;
 import org.kodedevs.injection.Depends;
-import org.kodedevs.utils.IOUtils;
 
 public class Main {
-
-    private final IOUtils ioUtils = Depends.on(IOUtils.class);
 
     public static void main(String[] args) {
         Depends.on(Main.class).runREPL();
     }
 
     public void runREPL() {
-        ioUtils.out.println("\u001b[34mHello \u001b[32mWorld!!!");
+        ASTGenerator astGenerator = new ASTGenerator("5+6*7+22/7;1*3*4;");
     }
 }

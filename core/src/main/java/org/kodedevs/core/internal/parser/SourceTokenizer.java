@@ -8,18 +8,23 @@ import org.kodedevs.utils.IOUtils;
 public class SourceTokenizer {
 
     // Private Fields
-    private final String source;
+    private final String sourceCode;
     private int currentPosition;
     private int startPosition;
     private int currentLineNo;
     private final int maxPosition;
 
-    public SourceTokenizer(String source) {
+    // Constructor
+    public SourceTokenizer(String sourceCode) {
         currentPosition = 0;
         startPosition = 0;
-        this.source = source;
-        maxPosition = source.length();
+        this.sourceCode = sourceCode;
+        maxPosition = sourceCode.length();
         currentLineNo = 1;
+    }
+
+    public String sourceCode() {
+        return sourceCode;
     }
 
     // ------------------------------------------------------------------------------------------------- lexer fns
@@ -30,13 +35,29 @@ public class SourceTokenizer {
         startPosition = currentPosition;
         if (currentPosition >= maxPosition) return buildToken(TokenType.TOKEN_EOF);
 
-        char c = source.charAt(currentPosition++);
+        char c = sourceCode.charAt(currentPosition++);
         if (isAlpha(c)) return identifier();
         if (isDigit(c)) return number();
 
         return switch (c) {
+            case '(' -> buildToken(TokenType.TOKEN_LEFT_PAREN);
+            case ')' -> buildToken(TokenType.TOKEN_RIGHT_PAREN);
+            case '{' -> buildToken(TokenType.TOKEN_LEFT_BRACE);
+            case '}' -> buildToken(TokenType.TOKEN_RIGHT_BRACE);
+            case '[' -> buildToken(TokenType.TOKEN_LEFT_SQUARE);
+            case ']' -> buildToken(TokenType.TOKEN_RIGHT_SQUARE);
+            case ';' -> buildToken(TokenType.TOKEN_SEMICOLON);
+            case ',' -> buildToken(TokenType.TOKEN_COMMA);
+            case '.' -> buildToken(TokenType.TOKEN_DOT);
+            case '+' -> buildToken(TokenType.TOKEN_PLUS);
+            case '-' -> buildToken(TokenType.TOKEN_MINUS);
+            case '*' -> buildToken(TokenType.TOKEN_STAR);
+            case '/' -> buildToken(TokenType.TOKEN_SLASH);
+            case '\\' -> buildToken(TokenType.TOKEN_BACKSLASH);
+            case '%' -> buildToken(TokenType.TOKEN_MOD);
+            case '^' -> buildToken(TokenType.TOKEN_POWER);
             case '"' -> string();
-            default -> error("Unexpected character.");
+            default -> error(String.format("Unexpected character %c.", c));
         };
     }
 
@@ -91,7 +112,7 @@ public class SourceTokenizer {
     private Token identifier() {
         while (isAlphaNumeric(peek(0))) currentPosition++;
 
-        String identifierName = source.substring(startPosition, currentPosition);
+        String identifierName = sourceCode.substring(startPosition, currentPosition);
 
         return buildToken(switch (identifierName) {
             case "true" -> TokenType.TOKEN_TRUE;
@@ -102,11 +123,11 @@ public class SourceTokenizer {
 
     private char peek(int offset) {
         if (currentPosition + offset >= maxPosition) return '\0';
-        return source.charAt(currentPosition + offset);
+        return sourceCode.charAt(currentPosition + offset);
     }
 
     private Token error(String errMsg) {
-        Depends.on(IOUtils.class).err.printf("Error at line %d: %s", currentLineNo, errMsg);
+        Depends.on(IOUtils.class).err.printf("Error at line %d: %s%n", currentLineNo, errMsg);
         return buildToken(TokenType.TOKEN_ERROR);
     }
 

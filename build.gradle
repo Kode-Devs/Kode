@@ -1,13 +1,25 @@
-allprojects {
-    group = 'org.kodedevs'
-    version = '0.1.0'
-
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-    }
+plugins {
+    id 'java-library'
+    id 'application'
 }
 
-subprojects {
-    apply plugin: 'java-library'
+application {
+    mainClass = 'org.kodedevs.core.Main'
+    applicationName = 'kode'
+}
+
+group = 'org.kodedevs'
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.fusesource.jansi/jansi
+    implementation 'org.fusesource.jansi:jansi:2.4.0'
+
+    // https://mvnrepository.com/artifact/hu.webarticum/tree-printer
+    implementation 'hu.webarticum:tree-printer:2.0.0'
 }

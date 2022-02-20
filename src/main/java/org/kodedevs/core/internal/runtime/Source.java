@@ -1,6 +1,7 @@
 package org.kodedevs.core.internal.runtime;
 
 import java.io.Reader;
+import java.nio.file.Paths;
 
 public class Source {
 
@@ -20,37 +21,37 @@ public class Source {
         return dataLength;
     }
 
-    public int getLineNo(final int offset) {
+    public int getLineNo(int offset) {
         return -1;
     }
 
-    public int getColumnNo(final int offset) {
+    public int getColumnNo(int offset) {
         return -1;
     }
 
-    public char getCharAt(final int offset) {
+    public char getCharAt(int offset) {
         if (offset >= dataLength) return '\0';
         return data.charAt(offset);
     }
 
-    public String getLiteral(final int offset, final int length) {
+    public String getLiteral(int offset, int length) {
         return data.substring(offset, offset + length);
     }
 
     // ------------------------------------------------------------------------------------------------- named cons
 
-    public static Source sourceFor(final String name, final Reader reader) {
-        throw new UnsupportedOperationException("Not Implemented");
+    public static Source sourceFor(String name, String content) {
+        return new Source(baseName(name), fileName(name), content);
     }
 
     // ------------------------------------------------------------------------------------------------- utility fns
 
     private static String baseName(final String name) {
-        return name;
+        return Paths.get(name).normalize().toAbsolutePath().getParent().toString();
     }
 
     private static String fileName(final String name) {
-        return name;
+        return Paths.get(name).normalize().toAbsolutePath().getFileName().toString();
     }
 
 }

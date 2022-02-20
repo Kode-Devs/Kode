@@ -20,6 +20,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.fusesource.jansi/jansi
     implementation 'org.fusesource.jansi:jansi:2.4.0'
 
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    implementation 'commons-io:commons-io:2.11.0'
+
     // https://mvnrepository.com/artifact/hu.webarticum/tree-printer
     implementation 'hu.webarticum:tree-printer:2.0.0'
 }

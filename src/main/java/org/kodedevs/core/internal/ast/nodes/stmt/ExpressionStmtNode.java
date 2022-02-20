@@ -1,8 +1,8 @@
-package org.kodedevs.core.nodes.stmt;
+package org.kodedevs.core.internal.ast.nodes.stmt;
 
 import org.kodedevs.core.internal.RuntimeState;
-import org.kodedevs.core.nodes.ExprNode;
-import org.kodedevs.core.nodes.StmtNode;
+import org.kodedevs.core.internal.ast.nodes.ExprNode;
+import org.kodedevs.core.internal.ast.nodes.StmtNode;
 
 public class ExpressionStmtNode implements StmtNode {
 

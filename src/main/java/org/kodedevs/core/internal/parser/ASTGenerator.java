@@ -1,12 +1,12 @@
 package org.kodedevs.core.internal.parser;
 
 import org.kodedevs.core.internal.runtime.Source;
-import org.kodedevs.core.nodes.ExprNode;
-import org.kodedevs.core.nodes.StmtNode;
-import org.kodedevs.core.nodes.expr.BinaryExprNode;
-import org.kodedevs.core.nodes.expr.LiteralExprNode;
-import org.kodedevs.core.nodes.expr.UnaryExprNode;
-import org.kodedevs.core.nodes.stmt.ExpressionStmtNode;
+import org.kodedevs.core.internal.ast.nodes.ExprNode;
+import org.kodedevs.core.internal.ast.nodes.StmtNode;
+import org.kodedevs.core.internal.ast.nodes.expr.BinaryExprNode;
+import org.kodedevs.core.internal.ast.nodes.expr.LiteralExprNode;
+import org.kodedevs.core.internal.ast.nodes.expr.UnaryExprNode;
+import org.kodedevs.core.internal.ast.nodes.stmt.ExpressionStmtNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +18,9 @@ public class ASTGenerator {
     private Token currentToken;
 
     // Constructor
-    protected ASTGenerator(Source sourceCode) {
+    public ASTGenerator(Source sourceCode) {
         sourceTokenizer = new SourceTokenizer(sourceCode);
+        scanNextToken();
     }
 
     public Source sourceCode() {

@@ -1,8 +1,8 @@
-package org.kodedevs.core.nodes.expr;
+package org.kodedevs.core.internal.ast.nodes.expr;
 
 import org.kodedevs.core.internal.RuntimeState;
 import org.kodedevs.core.internal.parser.Token;
-import org.kodedevs.core.nodes.ExprNode;
+import org.kodedevs.core.internal.ast.nodes.ExprNode;
 
 public class LiteralExprNode implements ExprNode {
 

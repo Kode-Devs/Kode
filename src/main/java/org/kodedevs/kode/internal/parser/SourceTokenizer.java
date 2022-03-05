@@ -1,25 +1,26 @@
-package org.kodedevs.core.internal.parser;
+package org.kodedevs.kode.internal.parser;
 
-import org.kodedevs.core.internal.runtime.Source;
+import org.kodedevs.kode.internal.source.Source;
+import org.kodedevs.kode.internal.errors.ParseException;
 
 public class SourceTokenizer {
 
     // Private Fields
-    private final Source sourceCode;
+    private final Source source;
     private int currentPosition;
     private int startPosition;
     private final int maxPosition;
 
     // Constructor
-    protected SourceTokenizer(Source sourceCode) {
+    protected SourceTokenizer(Source source) {
         currentPosition = 0;
         startPosition = 0;
-        this.sourceCode = sourceCode;
-        maxPosition = sourceCode.getDataLength();
+        this.source = source;
+        maxPosition = source.length();
     }
 
     public Source sourceCode() {
-        return sourceCode;
+        return source;
     }
 
     // ------------------------------------------------------------------------------------------------- lexer fns
@@ -30,7 +31,7 @@ public class SourceTokenizer {
         startPosition = currentPosition;
         if (currentPosition >= maxPosition) return buildToken(TokenType.TOKEN_EOF);
 
-        char c = sourceCode.getCharAt(currentPosition++);
+        char c = source.charAt(currentPosition++);
         if (isAlpha(c)) return identifier();
         if (isDigit(c)) return number();
 
@@ -105,7 +106,7 @@ public class SourceTokenizer {
     private Token identifier() {
         while (isAlphaNumeric(peek(0))) currentPosition++;
 
-        String identifierName = sourceCode.getLiteral(startPosition, currentPosition - startPosition);
+        String identifierName = source.literalAt(startPosition, currentPosition - startPosition);
 
         return buildToken(switch (identifierName) {
             case "true" -> TokenType.TOKEN_TRUE;
@@ -115,7 +116,7 @@ public class SourceTokenizer {
     }
 
     private char peek(int offset) {
-        return sourceCode.getCharAt(currentPosition + offset);
+        return source.charAt(currentPosition + offset);
     }
 
     private Token error(String errMsg) {

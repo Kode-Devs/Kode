@@ -1,10 +1,10 @@
-package org.kodedevs.core.internal.ast;
+package org.kodedevs.kode.internal.ast;
 
 import hu.webarticum.treeprinter.SimpleTreeNode;
 import hu.webarticum.treeprinter.TreeNode;
 import hu.webarticum.treeprinter.UnicodeMode;
 import hu.webarticum.treeprinter.printer.traditional.TraditionalTreePrinter;
-import org.kodedevs.core.internal.ast.nodes.ASTNode;
+import org.kodedevs.kode.internal.ast.nodes.ASTNode;
 
 public class ASTPrinter {
 

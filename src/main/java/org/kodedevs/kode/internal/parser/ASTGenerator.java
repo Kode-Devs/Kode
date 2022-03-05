@@ -1,12 +1,13 @@
-package org.kodedevs.core.internal.parser;
+package org.kodedevs.kode.internal.parser;
 
-import org.kodedevs.core.internal.runtime.Source;
-import org.kodedevs.core.internal.ast.nodes.ExprNode;
-import org.kodedevs.core.internal.ast.nodes.StmtNode;
-import org.kodedevs.core.internal.ast.nodes.expr.BinaryExprNode;
-import org.kodedevs.core.internal.ast.nodes.expr.LiteralExprNode;
-import org.kodedevs.core.internal.ast.nodes.expr.UnaryExprNode;
-import org.kodedevs.core.internal.ast.nodes.stmt.ExpressionStmtNode;
+import org.kodedevs.kode.internal.ast.nodes.ExprNode;
+import org.kodedevs.kode.internal.ast.nodes.StmtNode;
+import org.kodedevs.kode.internal.ast.nodes.expr.BinaryExprNode;
+import org.kodedevs.kode.internal.ast.nodes.expr.LiteralExprNode;
+import org.kodedevs.kode.internal.ast.nodes.expr.UnaryExprNode;
+import org.kodedevs.kode.internal.ast.nodes.stmt.ExpressionStmt;
+import org.kodedevs.kode.internal.errors.ParseException;
+import org.kodedevs.kode.internal.source.Source;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,27 +19,28 @@ public class ASTGenerator {
     private Token currentToken;
 
     // Constructor
-    public ASTGenerator(Source sourceCode) {
-        sourceTokenizer = new SourceTokenizer(sourceCode);
-        scanNextToken();
-    }
-
-    public Source sourceCode() {
-        return sourceTokenizer.sourceCode();
+    private ASTGenerator(Source source) {
+        sourceTokenizer = new SourceTokenizer(source);
     }
 
     // ------------------------------------------------------------------------------------------------- parser fns
 
-    public List<StmtNode> generate() throws ParseException {
+    public static void compileScript(Source source) throws ParseException {
+
+    }
+
+    // ------------------------------------------------------------------------------------------------- statement
+
+    private List<StmtNode> statements() throws ParseException {
         List<StmtNode> statements = new ArrayList<>();
+
+        if (currentToken == null) scanNextToken();
 
         while (currentToken.tokenType() != TokenType.TOKEN_EOF) {
             statements.add(statement());
         }
         return statements;
     }
-
-    // ------------------------------------------------------------------------------------------------- statement
 
     private StmtNode statement() {
         return expressionStatement();
@@ -47,7 +49,7 @@ public class ASTGenerator {
     private StmtNode expressionStatement() {
         ExprNode expr = expression();
         consume(TokenType.TOKEN_SEMICOLON, "Expect ';' after expression.");
-        return new ExpressionStmtNode(expr);
+        return new ExpressionStmt(expr);
     }
 
     // ------------------------------------------------------------------------------------------------- expression

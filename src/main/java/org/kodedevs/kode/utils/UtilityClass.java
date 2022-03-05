@@ -1,4 +1,4 @@
-package org.kodedevs.utils;
+package org.kodedevs.kode.utils;
 
 public class UtilityClass {
     public UtilityClass() {

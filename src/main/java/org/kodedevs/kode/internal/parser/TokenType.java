@@ -1,4 +1,4 @@
-package org.kodedevs.core.internal.parser;
+package org.kodedevs.kode.internal.parser;
 
 /**
  * Description of all the tokens.

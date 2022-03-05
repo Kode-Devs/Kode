@@ -1,8 +1,8 @@
-package org.kodedevs.core.internal.ast.nodes.expr;
+package org.kodedevs.kode.internal.ast.nodes.expr;
 
-import org.kodedevs.core.internal.RuntimeState;
-import org.kodedevs.core.internal.parser.Token;
-import org.kodedevs.core.internal.ast.nodes.ExprNode;
+import org.kodedevs.kode.internal.runtime.RuntimeState;
+import org.kodedevs.kode.internal.parser.Token;
+import org.kodedevs.kode.internal.ast.nodes.ExprNode;
 
 public class BinaryExprNode implements ExprNode {
 

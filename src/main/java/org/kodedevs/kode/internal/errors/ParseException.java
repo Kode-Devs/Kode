@@ -1,6 +1,6 @@
-package org.kodedevs.core.internal.parser;
+package org.kodedevs.kode.internal.errors;
 
-import org.kodedevs.core.api.KodeException;
+import org.kodedevs.kode.api.KodeException;
 
 public class ParseException extends KodeException {
 

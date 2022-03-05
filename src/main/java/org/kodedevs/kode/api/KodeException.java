@@ -1,4 +1,4 @@
-package org.kodedevs.core.api;
+package org.kodedevs.kode.api;
 
 import java.io.Serial;
 

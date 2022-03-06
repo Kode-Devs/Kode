@@ -10,10 +10,10 @@ public abstract sealed class AbstractCompiler permits Compiler {
 
     protected AbstractCompiler(Source source) {
         this.lexer = new Lexer(source);
+        this.lexer.lexify();
     }
 
     protected Token advance() {
-        currentToken = lexer.lexify();
         return currentToken;
     }
 

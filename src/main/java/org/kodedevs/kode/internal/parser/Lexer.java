@@ -1,39 +1,43 @@
 package org.kodedevs.kode.internal.parser;
 
-import org.kodedevs.kode.internal.source.Source;
 import org.kodedevs.kode.internal.errors.ParseException;
+import org.kodedevs.kode.internal.source.Source;
 
-public class SourceTokenizer {
+public final class Lexer {
 
-    // Private Fields
     private final Source source;
     private int currentPosition;
     private int startPosition;
     private final int maxPosition;
 
-    // Constructor
-    protected SourceTokenizer(Source source) {
-        currentPosition = 0;
-        startPosition = 0;
+    public Lexer(Source source) {
+        this(source, source.length());
+    }
+
+    public Lexer(Source source, int maxLength) {
+        this(source, 0, 0, maxLength);
+    }
+
+    public Lexer(Source source, int start, int current, int maxLength) {
         this.source = source;
-        maxPosition = source.length();
+        this.startPosition = start;
+        this.currentPosition = current;
+        this.maxPosition = maxLength;
     }
 
-    public Source sourceCode() {
-        return source;
+    public Token lexify() {
+        return scanTokenOnDemand();
     }
 
-    // ------------------------------------------------------------------------------------------------- lexer fns
-
-    public Token scanTokenOnDemand() {
+    private Token scanTokenOnDemand() {
         skipWhitespace();
 
         startPosition = currentPosition;
         if (currentPosition >= maxPosition) return buildToken(TokenType.TOKEN_EOF);
 
         char c = source.charAt(currentPosition++);
-        if (isAlpha(c)) return identifier();
-        if (isDigit(c)) return number();
+        if (isAlphabet(c)) return identifier();
+        if (isNumber(c)) return number();
 
         return switch (c) {
             case '(' -> buildToken(TokenType.TOKEN_LEFT_PAREN);
@@ -53,7 +57,7 @@ public class SourceTokenizer {
             case '%' -> buildToken(TokenType.TOKEN_MOD);
             case '^' -> buildToken(TokenType.TOKEN_POWER);
             case '"' -> string();
-            default -> error(String.format("Unexpected character %c.", c));
+            default -> throw error(String.format("Unexpected character %c.", c));
         };
     }
 
@@ -81,7 +85,7 @@ public class SourceTokenizer {
             currentPosition++;
         }
 
-        if (currentPosition >= maxPosition) return error("Unterminated string.");
+        if (currentPosition >= maxPosition) throw error("Unterminated string.");
 
         // The closing quote
         currentPosition++;
@@ -90,14 +94,14 @@ public class SourceTokenizer {
     }
 
     private Token number() {
-        while (isDigit(peek(0))) currentPosition++;
+        while (isNumber(peek(0))) currentPosition++;
 
         // Look for a fractional part.
-        if (peek(0) == '.' && isDigit(peek(1))) {
+        if (peek(0) == '.' && isNumber(peek(1))) {
             // Consume the ".".
             currentPosition++;
 
-            while (isDigit(peek(0))) currentPosition++;
+            while (isNumber(peek(0))) currentPosition++;
         }
 
         return buildToken(TokenType.TOKEN_NUMBER);
@@ -115,38 +119,27 @@ public class SourceTokenizer {
         });
     }
 
-    private char peek(int offset) {
-        return source.charAt(currentPosition + offset);
-    }
-
-    private Token error(String errMsg) {
-        throw new ParseException(errMsg, startPosition);
-    }
-
     private Token buildToken(TokenType type) {
         return new Token(type, startPosition, currentPosition - startPosition);
     }
 
-    // ------------------------------------------------------------------------------------------------- utility fns
+    private char peek(int offset) {
+        return source.charAt(currentPosition + offset);
+    }
 
-    /**
-     * Checks weather the character resembles a single digit or not.
-     */
-    private boolean isDigit(char c) {
+    private ParseException error(String errMsg) {
+        return new ParseException(errMsg, startPosition);
+    }
+
+    public static boolean isNumber(final char c) {
         return c >= '0' && c <= '9';
     }
 
-    /**
-     * Checks weather the character resembles either an alphabet or an underscore, or not.
-     */
-    private boolean isAlpha(char c) {
+    public static boolean isAlphabet(final char c) {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
     }
 
-    /**
-     * Checks weather the character resembles either an alphabet or a single digit or an underscore, or not.
-     */
-    private boolean isAlphaNumeric(char c) {
-        return isAlpha(c) || isDigit(c);
+    public static boolean isAlphaNumeric(final char c) {
+        return isAlphabet(c) || isNumber(c);
     }
 }

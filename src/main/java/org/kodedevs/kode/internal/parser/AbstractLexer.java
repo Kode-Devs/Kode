@@ -24,8 +24,11 @@ public abstract sealed class AbstractLexer permits Lexer {
     }
 
     public final Token getToken(int i) {
+        if (!isAtEnd()) lexify();
         return tokens.get(i);
     }
+
+    protected abstract void lexify();
 
     protected final void rebase() {
         base = current;

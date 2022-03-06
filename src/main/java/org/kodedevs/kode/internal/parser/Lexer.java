@@ -14,7 +14,8 @@ public final class Lexer extends AbstractLexer {
         super(source, start, current, maxLength);
     }
 
-    public void lexify() {
+    @Override
+    protected void lexify() {
         while (!isAtEnd()) {
             skipWhiteSpace();
             // We are at the beginning of the next lexeme.
@@ -24,7 +25,7 @@ public final class Lexer extends AbstractLexer {
 
         addToken(TOKEN_EOF);
     }
-
+    
     private void skipWhiteSpace() {
         while (!isAtEnd()) {
             char c = advance();

@@ -14,18 +14,22 @@ import java.util.List;
 
 import static org.kodedevs.kode.internal.parser.TokenType.*;
 
-public final class Compiler extends AbstractCompiler {
+public final class Parser {
 
-    private Compiler(Source source) {
-        super(source);
-    }
+    private int k = 0;
+    private final Lexer lexer;
 
-    public static Compiler with(Source source) {
-        return new Compiler(source);
+    private List<StmtNode> statements;
+
+    public Parser(Source source) {
+        lexer = new Lexer(source);
     }
 
     public List<StmtNode> compile() {
-        return statements();
+        if (statements == null) {
+            statements = statements();
+        }
+        return statements;
     }
 
     private List<StmtNode> statements() throws ParseException {
@@ -173,5 +177,57 @@ public final class Compiler extends AbstractCompiler {
         if (match(TOKEN_FALSE, TOKEN_TRUE, TOKEN_NUMBER, TOKEN_STRING)) return new LiteralExprNode(previous());
 
         throw errorAtCurrent("Expect expression.");
+    }
+
+    private boolean match(TokenType... types) {
+        for (TokenType type : types) {
+            if (check(type)) {
+                advance();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private Token consume(TokenType type, String errMsg) {
+        if (check(type)) return advance();
+
+        throw errorAtCurrent(errMsg);
+    }
+
+    private boolean check(TokenType type) {
+        if (!isAtEnd()) return false;
+
+        return peek().tokenType() == type;
+    }
+
+    private Token peek() {
+        return lexer.getToken(k);
+    }
+
+    private Token previous() {
+        return lexer.getToken(k - 1);
+    }
+
+    private Token advance() {
+        if (!isAtEnd()) k++;
+        return previous();
+    }
+
+    private boolean isAtEnd() {
+        return peek().tokenType() == TokenType.TOKEN_EOF;
+    }
+
+    private ParseException errorAtCurrent(String errMsg) {
+        return errorAt(errMsg, peek());
+    }
+
+    private ParseException errorAt(String errMsg, Token identifierToken) {
+        return errorAt(errMsg, identifierToken.offset());
+    }
+
+    private ParseException errorAt(String errMsg, int offset) {
+        return new ParseException(errMsg, offset);
     }
 }

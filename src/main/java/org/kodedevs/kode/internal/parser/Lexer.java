@@ -1,31 +1,51 @@
 package org.kodedevs.kode.internal.parser;
 
+import org.kodedevs.kode.internal.errors.ParseException;
 import org.kodedevs.kode.internal.source.Source;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.kodedevs.kode.internal.parser.TokenType.*;
 
-public final class Lexer extends AbstractLexer {
+public final class Lexer {
+
+    private final List<Token> tokens = new ArrayList<>();
+
+    private final Source source;
+    private final int length;
+    private int current;
+    private int start;
 
     public Lexer(Source source) {
         this(source, 0, 0, source.length());
     }
 
     public Lexer(Source source, int start, int current, int maxLength) {
-        super(source, start, current, maxLength);
+        this.source = source;
+        this.start = start;
+        this.current = current;
+        this.length = maxLength;
     }
 
-    @Override
-    protected void lexify() {
+    public Token getToken(int i) {
+        if (tokens.isEmpty()) {
+            lexify();
+        }
+        return tokens.get(i);
+    }
+
+    public void lexify() {
         while (!isAtEnd()) {
             skipWhiteSpace();
             // We are at the beginning of the next lexeme.
-            rebase();
+            start = current;
             addToken(scan());
         }
 
         addToken(TOKEN_EOF);
     }
-    
+
     private void skipWhiteSpace() {
         while (!isAtEnd()) {
             char c = advance();
@@ -112,15 +132,52 @@ public final class Lexer extends AbstractLexer {
         };
     }
 
-    public static boolean isNumber(final char c) {
+    private boolean match(char expected) {
+        if (isAtEnd()) return false;
+        if (source.charAt(current) != expected) return false;
+
+        advance();
+        return true;
+    }
+
+    private char peek() {
+        return peek(0);
+    }
+
+    private char peek(int offset) {
+        if (current + offset >= length) return '\0';
+        return source.charAt(current + offset);
+    }
+
+    private boolean isAtEnd() {
+        return current >= length;
+    }
+
+    private char advance() {
+        return source.charAt(current++);
+    }
+
+    private String getLiteral() {
+        return source.literalAt(start, current - start);
+    }
+
+    private void addToken(TokenType type) {
+        tokens.add(new Token(type, start, current - start));
+    }
+
+    private ParseException error(String errMsg) {
+        return new ParseException(errMsg, start);
+    }
+
+    private static boolean isNumber(final char c) {
         return c >= '0' && c <= '9';
     }
 
-    public static boolean isAlphabet(final char c) {
+    private static boolean isAlphabet(final char c) {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
     }
 
-    public static boolean isAlphaNumeric(final char c) {
+    private static boolean isAlphaNumeric(final char c) {
         return isAlphabet(c) || isNumber(c);
     }
 }

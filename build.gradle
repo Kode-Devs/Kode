@@ -1,15 +1,8 @@
 plugins {
     id 'java-library'
     id 'application'
+    id "com.install4j.gradle" version "9.0.6"
 }
-
-application {
-    mainClass = 'org.kodedevs.Main'
-    applicationName = 'kode'
-}
-
-group = 'org.kodedevs'
-version = '0.1.0'
 
 repositories {
     mavenCentral()
@@ -17,12 +10,75 @@ repositories {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.fusesource.jansi/jansi
     implementation 'org.fusesource.jansi:jansi:2.4.0'
-
-    // https://mvnrepository.com/artifact/commons-io/commons-io
     implementation 'commons-io:commons-io:2.11.0'
-
-    // https://mvnrepository.com/artifact/hu.webarticum/tree-printer
     implementation 'hu.webarticum:tree-printer:2.0.0'
+    implementation 'info.picocli:picocli:4.6.3'
+    annotationProcessor 'info.picocli:picocli-codegen:4.6.3'
 }
+
+test {
+    useJUnitPlatform()
+}
+
+
+// configuration ===========================================================================================
+println "Configuring Build"
+
+group = 'org.kodedevs'
+version = '0.1.0-dev'
+
+println "Project: $project.name $project.version"
+// configure application plugin
+
+application {
+    mainClass = 'org.kodedevs.kode.cli.App'
+    applicationName = 'kode'
+}
+
+// configure java plugin
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+compileJava {
+    options.compilerArgs += ["-Aproject=${project.group}/${project.name}"]
+    options.encoding = 'UTF-8'
+}
+
+// configure jar plugin
+
+jar {
+    manifest.attributes('Manifest-Version': 1.0, 'Implementation-Title': project.name, 'Implementation-Version': project.version,
+            'Main-Class': application.applicationName,
+            "Class-Path": configurations.runtimeClasspath.collect { it.getName() }.join(' '))
+    exclude "/*.jar", "/*.ico", "/*.png", "/*.md", "/*.html"
+}
+
+// configure install4j plugin
+
+install4j {
+    disableSigning = true
+}
+
+task media(type: com.install4j.gradle.Install4jTask) {
+    dependsOn 'CreateDistribution'
+    projectFile = file("${projectDir}/buildResources/installer.install4j")
+    variables = [project_name: project.name, project_version: project.version, project_dir: projectDir]
+
+    doFirst {
+        install4j.installDir = file(System.getenv('INSTALL4J_HOME'))
+        if (System.getenv('INSTALL4J_LICENSE') != null) install4j.license = System.getenv('INSTALL4J_LICENSE')
+    }
+}
+
+task CreateDistribution(dependsOn: installDist) {
+    def distributionDir = installDist.destinationDir
+    doLast {
+        delete "${distributionDir}/bin"
+    }
+}
+
+compileJava.dependsOn processResources

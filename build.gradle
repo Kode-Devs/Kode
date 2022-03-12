@@ -1,4 +1,5 @@
 plugins {
+    id 'idea'
     id 'java-library'
     id 'application'
     id "com.install4j.gradle" version "9.0.6"
@@ -10,11 +11,21 @@ repositories {
 }
 
 dependencies {
+    // Jansi
     implementation 'org.fusesource.jansi:jansi:2.4.0'
+
+    // Apache Commons
     implementation 'commons-io:commons-io:2.11.0'
+
+    // Tree Printer
     implementation 'hu.webarticum:tree-printer:2.0.0'
+
+    // Picocli
     implementation 'info.picocli:picocli:4.6.3'
     annotationProcessor 'info.picocli:picocli-codegen:4.6.3'
+
+    // ANTLR
+    implementation 'org.antlr:antlr4:4.9.3'
 }
 
 test {
@@ -23,12 +34,9 @@ test {
 
 
 // configuration ===========================================================================================
-println "Configuring Build"
-
 group = 'org.kodedevs'
 version = '0.1.0-dev'
 
-println "Project: $project.name $project.version"
 // configure application plugin
 
 application {
@@ -65,7 +73,7 @@ install4j {
 
 task media(type: com.install4j.gradle.Install4jTask) {
     dependsOn 'CreateDistribution'
-    projectFile = file("${projectDir}/buildResources/installer.install4j")
+    projectFile = file("${projectDir}/utils/buildResources/installer.install4j")
     variables = [project_name: project.name, project_version: project.version, project_dir: projectDir]
 
     doFirst {

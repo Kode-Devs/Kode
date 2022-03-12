@@ -1,4 +1,4 @@
-package org.kodedevs.kode.internal.parser;
+package org.kodedevs.kode.common;
 
 import java.util.Objects;
 

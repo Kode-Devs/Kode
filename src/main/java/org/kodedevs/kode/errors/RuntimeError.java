@@ -1,4 +1,4 @@
-package org.kodedevs.kode.internal.errors;
+package org.kodedevs.kode.errors;
 
 import org.kodedevs.kode.api.KodeException;
 

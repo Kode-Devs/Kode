@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="9.0.6" transformSequenceNumber="9">
-  <directoryPresets config="D:/PROJECT/Kode-Remake/build/install" />
-  <application name="Kode" applicationId="6974-5024-0514-2412" mediaDir="${compiler:project_dir}/build/artifacts" shortName="${compiler:project_name}" publisher="Kode Devs" publisherWeb="https://github.com/Kode-Devs" version="${compiler:project_version}" autoSave="true" macVolumeId="dd27b656fbabb96c" javaMinVersion="17" javaMaxVersion="17">
+  <directoryPresets config="../../build/install" />
+  <application name="Kode" applicationId="6974-5024-0514-2412" mediaDir="${compiler:project_dir}/build/artifacts" compression="9" lzmaCompression="true" pack200Compression="true" shortName="${compiler:project_name}" publisher="Kode Devs" publisherWeb="https://github.com/Kode-Devs" version="${compiler:project_version}" allPathsRelative="true" autoSave="true" macVolumeId="dd27b656fbabb96c" javaMinVersion="17" javaMaxVersion="17">
     <variables>
       <variable name="project_name" />
       <variable name="project_dir" />
@@ -12,18 +12,24 @@
   <files>
     <mountPoints>
       <mountPoint id="24" />
+      <mountPoint id="37" location="bin" />
     </mountPoints>
     <entries>
-      <dirEntry mountPoint="24" file="D:/PROJECT/Kode-Remake/build/install/kode" subDirectory="kode" />
+      <dirEntry mountPoint="24" file="../../build/install/kode" subDirectory="kode" />
     </entries>
   </files>
   <launchers>
     <launcher name="${compiler:sys.shortName}" id="26">
-      <executable name="${compiler:sys.shortName}" redirectStderr="false" executableMode="console" changeWorkingDirectory="false" />
+      <executable name="${compiler:sys.shortName}" executableDir="bin" redirectStderr="false" executableMode="console" changeWorkingDirectory="false" executionLevel="highestAvailable">
+        <versionInfo include="true" fileDescription="n/a" legalCopyright="Kode Devs, 2022" internalName="kode${compiler:sys.shortName}" />
+      </executable>
       <java mainClass="org.kodedevs.kode.cli.App">
         <classPath>
           <scanDirectory location="lib" failOnError="false" />
         </classPath>
+        <modulePath>
+          <directory location="lib" failOnError="false" />
+        </modulePath>
       </java>
     </launcher>
   </launchers>
@@ -137,6 +143,7 @@ return console.askOkCancel(message, true);
           </screen>
           <screen id="15" beanClass="com.install4j.runtime.beans.screens.InstallationScreen" rollbackBarrier="true" rollbackBarrierExitCode="0">
             <actions>
+              <action id="43" beanClass="com.install4j.runtime.beans.actions.UninstallPreviousAction" actionElevationType="none" rollbackBarrierExitCode="0" />
               <action id="17" beanClass="com.install4j.runtime.beans.actions.InstallFilesAction" actionElevationType="elevated" rollbackBarrierExitCode="0" failureStrategy="quit" errorMessage="${i18n:FileCorrupted}" />
               <action id="18" beanClass="com.install4j.runtime.beans.actions.desktop.CreateProgramGroupAction" actionElevationType="elevated" rollbackBarrierExitCode="0">
                 <serializedBean>
@@ -147,6 +154,15 @@ return console.askOkCancel(message, true);
               <action id="19" beanClass="com.install4j.runtime.beans.actions.desktop.RegisterAddRemoveAction" actionElevationType="elevated" rollbackBarrierExitCode="0">
                 <serializedBean>
                   <property name="itemName" type="string">${compiler:sys.fullName} ${compiler:sys.version}</property>
+                </serializedBean>
+              </action>
+              <action id="40" beanClass="com.install4j.runtime.beans.actions.misc.ModifyEnvironmentVariableAction" actionElevationType="elevated" rollbackBarrierExitCode="0">
+                <serializedBean>
+                  <property name="revertOnlyIfNotModified" type="boolean" value="true" />
+                  <property name="type" type="enum" class="com.install4j.runtime.beans.actions.misc.ModifyStringType" value="APPEND" />
+                  <property name="userSpecific" type="boolean" value="false" />
+                  <property name="value" type="string">${installer:sys.installationDir}/bin</property>
+                  <property name="variableName" type="string">Path</property>
                 </serializedBean>
               </action>
             </actions>
@@ -466,5 +482,7 @@ return console.askYesNo(message, true);
   </installerGui>
   <mediaSets>
     <windows name="Windows" id="30" />
+    <linuxRPM name="Linux RPM" id="45" />
+    <linuxDeb name="Linux Deb Archive" id="47" />
   </mediaSets>
 </install4j>

@@ -1,4 +1,4 @@
-package org.kodedevs.kode.internal.source;
+package org.kodedevs.kode.source;
 
 import org.apache.commons.io.IOUtils;
 
@@ -12,9 +12,9 @@ import java.util.Objects;
 
 public class Source implements CharSequence {
 
-    private char[] array;
-    private String name;
-    private String base;
+    private final char[] array;
+    private final String name;
+    private final String base;
 
     private Source(String name, String base, char[] array) {
         this.name = Objects.requireNonNull(name);

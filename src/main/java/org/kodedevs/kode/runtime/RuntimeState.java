@@ -1,4 +1,4 @@
-package org.kodedevs.kode.internal.runtime;
+package org.kodedevs.kode.runtime;
 
 import javax.script.Bindings;
 import javax.script.SimpleBindings;

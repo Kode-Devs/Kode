@@ -1,3 +1,6 @@
+# This workflow action performs analysis over the repo to ensure safety from build failures
+# as well as performs code security analysis
+
 name: Code Analysis
 
 on:

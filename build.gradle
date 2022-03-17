@@ -37,7 +37,7 @@ version = '0.1.0-dev'
 // configure application plugin
 
 application {
-    mainClass = 'org.kodedevs.kode.cli.App'
+    mainClass = 'org.kodedevs.kode.api.cli.Root'
     applicationName = 'kode'
 }
 

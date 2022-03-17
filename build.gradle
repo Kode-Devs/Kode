@@ -86,4 +86,18 @@ task CreateDistribution(dependsOn: installDist) {
     }
 }
 
+// configure processResources
 compileJava.dependsOn processResources
+
+task projectProps(type: WriteProperties) {
+    encoding = "UTF-8"
+
+    outputFile = file("${getTemporaryDir()}/application.properties")
+
+    property('project.name', project.name)
+    property('project.version', project.version)
+}
+
+processResources {
+    from(projectProps)
+}

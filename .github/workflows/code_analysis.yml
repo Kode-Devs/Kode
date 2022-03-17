@@ -14,7 +14,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-2019          # https://github.com/github/codeql-action/issues/850
 
     name: Code Analysis
     runs-on: ${{ matrix.os }}

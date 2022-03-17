@@ -1,5 +1,5 @@
-# This workflow action performs analysis over the repo to ensure safety from build failures
-# as well as performs code security analysis
+# This workflow action performs code analysis over the repo to ensure safety from build failures
+# as well as security faults
 
 name: Code Analysis
 
@@ -10,11 +10,21 @@ on:
     branches: [ develop ]
 
 jobs:
-  setup:
-    name: Setup Build Environment
-    runs-on: ubuntu-latest
+  analyze:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    name: Code Analysis
+    runs-on: ${{ matrix.os }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
 
     steps:
+      # Setup Build Environment
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -23,28 +33,18 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
+          cache: gradle
 
-  build:
-    name: Build Java Project
-    runs-on: ubuntu-latest
-    needs: setup
+      - name: Gradle Wrapper Validation
+        uses: gradle/wrapper-validation-action@v1.0.4
 
-    steps:
+      # Build Java Project
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2.1.3
         with:
           arguments: build
 
-  analyze:
-    name: Analyze Source Code
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      actions: read
-      contents: read
-      security-events: write
-
-    steps:
+      # Analyze Source Code
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
         with:

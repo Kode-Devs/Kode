@@ -33,7 +33,6 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-          cache: gradle
 
       - name: Gradle Wrapper Validation
         uses: gradle/wrapper-validation-action@v1.0.4

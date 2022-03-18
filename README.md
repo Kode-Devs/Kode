@@ -1,4 +1,4 @@
-![Kode Banner](assets/banner.png)
+![Kode Banner](docs/assets/banner.png)
 
 # The Kode Programming Language
 

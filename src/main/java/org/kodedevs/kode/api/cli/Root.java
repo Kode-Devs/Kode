@@ -9,12 +9,13 @@ import picocli.CommandLine.Model.CommandSpec;
         synopsisSubcommandLabel = "COMMAND",
         mixinStandardHelpOptions = true,
         usageHelpAutoWidth = true,
-        versionProvider = VersionProvider.class,
+        versionProvider = Root.VersionProvider.class,
         sortOptions = false,
         subcommands = {
                 HelpCommand.class,
         })
 public class Root implements Runnable {
+
     @Spec
     CommandSpec spec;
 
@@ -22,6 +23,14 @@ public class Root implements Runnable {
     public void run() {
         // Required [sub]command to be present
         throw new ParameterException(spec.commandLine(), "Missing required [sub]command");
+    }
+
+    // IVersionProvider implementation that returns version information
+    static class VersionProvider implements IVersionProvider {
+        @Override
+        public String[] getVersion() {
+            return new String[]{Globals.APPLICATION_VERSION};
+        }
     }
 
     // Entrypoint for the CLI interface
@@ -34,12 +43,5 @@ public class Root implements Runnable {
         // Perform Execution
         int exitCode = cmd.execute(args);
         System.exit(exitCode);
-    }
-}
-
-class VersionProvider implements IVersionProvider {
-    @Override
-    public String[] getVersion() {
-        return new String[] {Globals.APPLICATION_VERSION};
     }
 }

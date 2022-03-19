@@ -21,7 +21,9 @@
   </files>
   <launchers>
     <launcher name="${compiler:sys.fullName}" id="38">
-      <executable name="${compiler:project_name}" iconSet="true" executableDir="bin" redirectStderr="false" executableMode="console" changeWorkingDirectory="false" />
+      <executable name="${compiler:project_name}" iconSet="true" iconFile="./icons/logo.ico" executableDir="bin" redirectStderr="false" executableMode="console" changeWorkingDirectory="false">
+        <versionInfo include="true" fileDescription="Kode is a open source programming language which aims for better readability and functionality." legalCopyright="Kode Devs" internalName="${compiler:sys.shortName}" />
+      </executable>
       <java mainClass="${compiler:application_main_class}">
         <classPath>
           <scanDirectory location="lib" failOnError="false" />
@@ -29,48 +31,18 @@
       </java>
       <vmOptionsFile mode="none" />
       <iconImageFiles>
-        <file path="./icons/logo@16x16.png" />
-        <file path="./icons/logo@32x32.png" />
-        <file path="./icons/logo@48x48.png" />
-        <file path="./icons/logo@128x128.png" />
-        <file path="./icons/logo@256x256.png" />
-        <file path="./icons/logo@500x500.png" />
+        <file path="./icons/logo.png" />
       </iconImageFiles>
     </launcher>
   </launchers>
   <installerGui>
     <applications>
-      <application id="installer" beanClass="com.install4j.runtime.beans.applications.InstallerApplication">
+      <application id="installer" beanClass="com.install4j.runtime.beans.applications.InstallerApplication" customIcoFile="./icons/logo.ico">
         <serializedBean>
           <property name="customIconImageFiles">
             <add>
               <object class="com.install4j.api.beans.ExternalFile">
-                <string>./icons/logo@16x16.png</string>
-              </object>
-            </add>
-            <add>
-              <object class="com.install4j.api.beans.ExternalFile">
-                <string>./icons/logo@32x32.png</string>
-              </object>
-            </add>
-            <add>
-              <object class="com.install4j.api.beans.ExternalFile">
-                <string>./icons/logo@48x48.png</string>
-              </object>
-            </add>
-            <add>
-              <object class="com.install4j.api.beans.ExternalFile">
-                <string>./icons/logo@128x128.png</string>
-              </object>
-            </add>
-            <add>
-              <object class="com.install4j.api.beans.ExternalFile">
-                <string>./icons/logo@256x256.png</string>
-              </object>
-            </add>
-            <add>
-              <object class="com.install4j.api.beans.ExternalFile">
-                <string>./icons/logo@500x500.png</string>
+                <string>./icons/logo.png</string>
               </object>
             </add>
           </property>

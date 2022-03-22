@@ -3,14 +3,10 @@ package org.kodedevs.kode.compiler;
 public abstract class BaseScanner {
 
     private final char[] source;
-    private int current = 0;
+    protected int current = 0;
 
     public BaseScanner(char[] source) {
         this.source = source;
-    }
-
-    protected final int current() {
-        return current;
     }
 
     protected final boolean match(char expected) {

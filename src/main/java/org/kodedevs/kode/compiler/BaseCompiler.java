@@ -8,10 +8,10 @@ import static org.kodedevs.kode.common.TokenType.EOF;
 
 public abstract class BaseCompiler {
 
-    private final TokenScanner scanner;
+    private final BufferedTokenStream tokenStream;
 
     public BaseCompiler(ISource source) {
-        scanner = new TokenScanner(source);
+        tokenStream = new BufferedTokenStream(source);
     }
 
     protected final boolean match(TokenType... types) {
@@ -32,24 +32,30 @@ public abstract class BaseCompiler {
     }
 
     protected final boolean check(TokenType tokenType) {
-        if (isAtEnd()) return false;
         return peek().getType() == tokenType;
     }
 
     protected final IToken advance() {
-        throw new UnsupportedOperationException();
+        if (!isAtEnd()) {
+            tokenStream.consume();
+        }
+        return previous();
     }
 
     protected final boolean isAtEnd() {
         return peek().getType() == EOF;
     }
 
+    protected final IToken peek(int offset) {
+        return tokenStream.get(offset);
+    }
+
     protected final IToken peek() {
-        throw new UnsupportedOperationException();
+        return peek(0);
     }
 
     protected final IToken previous() {
-        throw new UnsupportedOperationException();
+        return peek(-1);
     }
 
 }

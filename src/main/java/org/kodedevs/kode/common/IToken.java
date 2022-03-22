@@ -12,7 +12,7 @@ public interface IToken {
     /**
      * Get the token type of the token
      */
-    TokenTypeEnum getType();
+    TokenType getType();
 
     /**
      * The starting character index of the token

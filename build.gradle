@@ -23,6 +23,9 @@ dependencies {
     // Picocli
     implementation 'info.picocli:picocli:4.6.3'
     annotationProcessor 'info.picocli:picocli-codegen:4.6.3'
+
+    // JUnit5
+    implementation 'org.junit.jupiter:junit-jupiter:5.8.2'
 }
 
 test {

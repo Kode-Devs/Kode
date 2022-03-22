@@ -4,6 +4,7 @@ import org.kodedevs.kode.common.Globals;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
 import picocli.CommandLine.Model.CommandSpec;
+import org.fusesource.jansi.AnsiConsole;
 
 @Command(
         synopsisSubcommandLabel = "COMMAND",
@@ -40,8 +41,14 @@ public class Root implements Runnable {
         // Dynamically set the executable name for the root command
         cmd.setCommandName(Globals.EXECUTABLE_NAME);
 
+        // Initialize ANSI
+        AnsiConsole.systemInstall();
+
         // Perform Execution
         int exitCode = cmd.execute(args);
+
+        // Close and Exit
+        AnsiConsole.systemUninstall();
         System.exit(exitCode);
     }
 }

@@ -17,9 +17,6 @@ dependencies {
     // Apache Commons
     implementation 'commons-io:commons-io:2.11.0'
 
-    // Tree Printer
-    implementation 'hu.webarticum:tree-printer:2.0.0'
-
     // Picocli
     implementation 'info.picocli:picocli:4.6.3'
     annotationProcessor 'info.picocli:picocli-codegen:4.6.3'

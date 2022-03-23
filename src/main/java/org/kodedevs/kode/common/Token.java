@@ -1,6 +1,6 @@
 package org.kodedevs.kode.common;
 
-public interface IToken {
+public interface Token {
 
     /**
      * Get the text of the token.
@@ -48,5 +48,5 @@ public interface IToken {
     /**
      * Gets the source which created this token.
      */
-    ISource getTokenSource();
+    Source getTokenSource();
 }

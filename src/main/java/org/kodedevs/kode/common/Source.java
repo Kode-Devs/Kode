@@ -1,6 +1,8 @@
 package org.kodedevs.kode.common;
 
-public interface ISource {
+import java.util.Optional;
+
+public interface Source {
 
     /**
      * Get the content of this source as a char array.
@@ -30,7 +32,7 @@ public interface ISource {
      *
      * @return base of file or URL.
      */
-    String getBase();
+    Optional<String> getBase();
 
     /**
      * Fetch source content.

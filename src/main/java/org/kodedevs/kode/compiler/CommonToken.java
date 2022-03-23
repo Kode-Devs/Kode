@@ -1,16 +1,16 @@
 package org.kodedevs.kode.compiler;
 
-import org.kodedevs.kode.common.ISource;
-import org.kodedevs.kode.common.IToken;
+import org.kodedevs.kode.common.Source;
+import org.kodedevs.kode.common.Token;
 import org.kodedevs.kode.common.TokenType;
 
-public final class CommonToken implements IToken {
+public final class CommonToken implements Token {
 
     private final TokenType type;
     private final int startIdx, stopIdx;
-    private final ISource tokenSource;
+    private final Source tokenSource;
 
-    public CommonToken(TokenType type, int startIdx, int stopIdx, ISource tokenSource) {
+    public CommonToken(TokenType type, int startIdx, int stopIdx, Source tokenSource) {
         this.type = type;
         this.startIdx = startIdx;
         this.stopIdx = stopIdx;
@@ -33,7 +33,7 @@ public final class CommonToken implements IToken {
     }
 
     @Override
-    public ISource getTokenSource() {
+    public Source getTokenSource() {
         return tokenSource;
     }
 }

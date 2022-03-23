@@ -1,6 +1,6 @@
 package org.kodedevs.kode.statements;
 
-import org.kodedevs.kode.common.IRuleContext;
+import org.kodedevs.kode.common.RuleContext;
 
-public class Statement implements IRuleContext {
+public class Statement implements RuleContext {
 }

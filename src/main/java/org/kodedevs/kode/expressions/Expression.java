@@ -1,6 +1,6 @@
 package org.kodedevs.kode.expressions;
 
-import org.kodedevs.kode.common.IRuleContext;
+import org.kodedevs.kode.common.RuleContext;
 
-public class Expression implements IRuleContext {
+public class Expression implements RuleContext {
 }

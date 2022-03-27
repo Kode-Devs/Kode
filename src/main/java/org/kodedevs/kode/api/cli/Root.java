@@ -1,6 +1,6 @@
 package org.kodedevs.kode.api.cli;
 
-import org.kodedevs.kode.common.Globals;
+import org.kodedevs.kode.common.Metadata;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
 import picocli.CommandLine.Model.CommandSpec;
@@ -30,7 +30,9 @@ public class Root implements Runnable {
     static class VersionProvider implements IVersionProvider {
         @Override
         public String[] getVersion() {
-            return new String[]{Globals.APPLICATION_VERSION};
+            return new String[]{
+                    Metadata.getApplicationVersion(),
+            };
         }
     }
 
@@ -39,7 +41,7 @@ public class Root implements Runnable {
         CommandLine cmd = new CommandLine(new Root());
 
         // Dynamically set the executable name for the root command
-        cmd.setCommandName(Globals.EXECUTABLE_NAME);
+        cmd.setCommandName(Metadata.getExecutableName());
 
         // Initialize ANSI
         AnsiConsole.systemInstall();

@@ -11,6 +11,9 @@ repositories {
 }
 
 dependencies {
+    // 3rd-party libs
+    implementation fileTree(dir: 'misc/libs', includes: ['*.jar'])
+
     // Jansi
     implementation 'org.fusesource.jansi:jansi:2.4.0'
 
@@ -37,7 +40,7 @@ version = '0.1.0-dev'
 // configure application plugin
 
 application {
-    mainClass = 'org.kodedevs.kode.api.cli.Root'
+    mainModule = 'org.kodedevs.kode'
     applicationName = 'kode'
 }
 
@@ -46,6 +49,9 @@ application {
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+
+    withJavadocJar()
+    withSourcesJar()
 }
 
 compileJava {
@@ -56,10 +62,17 @@ compileJava {
 // configure jar plugin
 
 jar {
-    manifest.attributes('Manifest-Version': 1.0, 'Implementation-Title': project.name, 'Implementation-Version': project.version,
-            'Main-Class': application.applicationName,
-            "Class-Path": configurations.runtimeClasspath.collect { it.getName() }.join(' '))
-    exclude "/*.jar", "/*.ico", "/*.png", "/*.md", "/*.html"
+    // Build a custom manifest
+    manifest.attributes([
+            'Gradle-Version'        : "Gradle API ${gradle.gradleVersion}",
+            'Created-By'            : "${System.getProperty('java.version')} (${System.getProperty('java.vendor')} ${System.getProperty('java.vm.version')})",
+            'Main-Class'            : application.mainClass,
+            'Built-By'              : System.getProperty('user.name'),
+            'Implementation-Vendor' : project.group,
+            'Implementation-Title'  : project.name,
+            'Implementation-Version': project.version,
+    ])
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
 }
 
 // configure install4j plugin
@@ -71,10 +84,10 @@ install4j {
 task media(type: com.install4j.gradle.Install4jTask) {
     dependsOn 'CreateDistribution'
     projectFile = file("${projectDir}/misc/installer/build.install4j")
-    variables = [project_name          : project.name,
-                 project_version       : project.version,
-                 project_dir           : projectDir,
-                 application_main_class: application.mainClass.get()]
+    variables = [
+            project_name   : project.name,
+            project_version: project.version,
+    ]
 
     doFirst {
         install4j.installDir = file(System.getenv('INSTALL4J_HOME'))
@@ -100,12 +113,18 @@ compileJava.dependsOn processResources
 
 task projectProps(type: WriteProperties) {
     encoding = "UTF-8"
-    outputFile = file("${getTemporaryDir()}/application.properties")
+    outputFile = file("${getTemporaryDir()}/metadata.properties")
 
     property('project.name', project.name)
     property('project.version', project.version)
 }
 
 processResources {
-    from(projectProps)
+    from(file('.')) {
+        include 'LICENSE*', 'NOTICE*'
+        into 'META-INF'
+    }
+    from(projectProps) {
+        into '/org/kodedevs/kode'
+    }
 }

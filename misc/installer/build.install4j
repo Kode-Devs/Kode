@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="9.0.6" transformSequenceNumber="9">
-  <directoryPresets config="./icons" />
-  <application name="Kode" applicationId="9960-9396-6316-3428" mediaDir="${compiler:project_dir}/build/distributions" compression="9" shortName="${compiler:project_name}" publisher="Kode Devs" publisherWeb="https://github.com/Kode-Devs" version="${compiler:project_version}" allPathsRelative="true" macVolumeId="4bc05f30a18db751">
+  <directoryPresets config="../../build/distributions" />
+  <application name="Kode" applicationId="9960-9396-6316-3428" mediaDir="../../build/distributions" compression="9" shortName="${compiler:project_name}" publisher="Kode Devs" publisherWeb="https://github.com/Kode-Devs" version="${compiler:project_version}" allPathsRelative="true" macVolumeId="4bc05f30a18db751">
     <variables>
       <variable name="project_name" description="Name of the project -&gt; project.name" category="build" />
       <variable name="project_version" description="Version number of the project -&gt;  project.version" category="build" />
-      <variable name="project_dir" description="Location of root directory -&gt; projectDir" category="build" />
-      <variable name="application_main_class" description="Name of the main entrypoint in the project -&gt; application.mainClass" category="build" />
     </variables>
     <jreBundles jdkProviderId="Zulu" release="17/17.0.2">
       <modules>
@@ -28,7 +26,7 @@
       <executable name="${compiler:project_name}" iconSet="true" iconFile="./icons/logo.ico" executableDir="bin" redirectStderr="false" executableMode="console" changeWorkingDirectory="false">
         <versionInfo include="true" fileDescription="Kode is a open source programming language which aims for better readability and functionality." legalCopyright="Kode Devs" internalName="${compiler:sys.shortName}" />
       </executable>
-      <java mainClass="${compiler:application_main_class}">
+      <java mainClass="org.kodedevs.kode.api.cli.Root">
         <classPath>
           <scanDirectory location="lib" failOnError="false" />
         </classPath>

@@ -2,7 +2,7 @@
 
 # The Kode Programming Language
 
-Kode is a open source programming language which aims for better readability and functionality.
+Kode is an open source programming language which aims for better readability and functionality.
 
 [![](https://img.shields.io/github/license/Kode-Devs/Kode-Remake)](https://github.com/Kode-Devs/Kode-Remake/blob/develop/LICENSE)
 [![](https://img.shields.io/github/contributors/Kode-Devs/Kode-Remake)](https://github.com/Kode-Devs/Kode-Remake/graphs/contributors)

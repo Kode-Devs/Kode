@@ -64,7 +64,7 @@ DIGIT          → "0" ... "9" ;
 
 ## WhiteSpace and Comments
 
-These are ignored charecter-sets
+These are ignored character-sets
 
 ```
 WS             → [ \n\t\r]+ ;       // skip

@@ -1,0 +1,62 @@
+// Common Gradle properties shared by all Subprojects
+
+apply plugin: 'idea'
+apply plugin: 'java-library'
+
+repositories {
+    // https://mvnrepository.com/repos/central
+    mavenCentral()
+
+    // https://plugins.gradle.org/
+    gradlePluginPortal()
+
+    // 3rd-party libs
+    flatDir { dirs 'misc/libs' }
+}
+
+dependencies {
+    // JUnit5
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+        vendor = JvmVendorSpec.AZUL
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ["-Aproject=${rootProject.group}/${rootProject.name}"]
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    // Build a custom manifest
+    manifest.attributes(['Manifest-Version'      : '1.0',
+                         'Created-By'            : "Gradle API ${gradle.gradleVersion}",
+                         'Built-By'              : System.getProperty('user.name'),
+                         'Build-Jdk'             : "${System.getProperty('java.version')} (${System.getProperty('java.vendor')} ${System.getProperty('java.vm.version')})",
+                         'Specification-Title'   : "Kode Module: ${project.name}",
+                         'Specification-Version' : project.version,
+                         'Specification-Vendor'  : project.group,
+                         'Implementation-Title'  : "Kode Module: ${project.name}",
+                         'Implementation-Version': project.version,
+                         'Implementation-Vendor' : project.group,
+                         'Build-Time'            : new Date().toString()])
+    exclude 'META-INF/*.SF', 'META-INF/*.RSA', 'META-INF/*.DSA', 'META-INF/*.MF'
+}
+
+processResources {
+    from(rootDir) {
+        include 'LICENSE*', 'NOTICE*'
+        into 'META-INF'
+    }
+}

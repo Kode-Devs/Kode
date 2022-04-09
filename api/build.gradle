@@ -1,0 +1,10 @@
+// API Implementations
+
+dependencies {
+    // Picocli
+    implementation 'info.picocli:picocli:4.6.3'
+    annotationProcessor 'info.picocli:picocli-codegen:4.6.3'
+
+    // Jansi
+    implementation 'org.fusesource.jansi:jansi:2.4.0'
+}

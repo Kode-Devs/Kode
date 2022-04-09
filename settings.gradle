@@ -1,1 +1,6 @@
 rootProject.name = 'kode'
+
+include 'api'
+include 'common'
+include 'core'
+include 'runtime'

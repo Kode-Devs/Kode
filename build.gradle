@@ -1,123 +1,24 @@
 plugins {
-    id 'idea'
-    id 'java-library'
-    id 'application'
-    id "com.install4j.gradle" version "9.0.6"
+    id 'base'
 }
 
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
-}
+description = 'Kode'
 
-dependencies {
-    // 3rd-party libs
-    implementation fileTree(dir: 'misc/libs', includes: ['*.jar'])
-
-    // Jansi
-    implementation 'org.fusesource.jansi:jansi:2.4.0'
-
-    // Apache Commons
-    implementation 'commons-io:commons-io:2.11.0'
-
-    // Picocli
-    implementation 'info.picocli:picocli:4.6.3'
-    annotationProcessor 'info.picocli:picocli-codegen:4.6.3'
-
-    // JUnit5
-    implementation 'org.junit.jupiter:junit-jupiter:5.8.2'
-}
-
-test {
-    useJUnitPlatform()
-}
-
-
-// configuration ===========================================================================================
-def buildProperties = new Properties()
-file("$projectDir/kode.properties").withInputStream {
+ext.buildProperties = new Properties()
+rootProject.file('build.properties').withInputStream {
     stream -> buildProperties.load(stream)
 }
 
-group = 'org.kodedevs'
-version = buildProperties.getProperty('kode.version')
-
-// configure application plugin
-
-application {
-    mainModule = 'org.kodedevs.kode'
+allprojects {
+    group 'org.kodedevs'
+    version buildProperties.getProperty('version')
 }
 
-// configure java plugin
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-
-    withJavadocJar()
-    withSourcesJar()
+subprojects {
+    apply from: rootProject.file('common.gradle')
 }
 
-compileJava {
-    options.compilerArgs += ["-Aproject=${project.group}/${project.name}"]
-    options.encoding = 'UTF-8'
-}
-
-// configure jar plugin
-
-jar {
-    // Build a custom manifest
-    manifest.attributes([
-            'Gradle-Version'        : "Gradle API ${gradle.gradleVersion}",
-            'Created-By'            : "${System.getProperty('java.version')} (${System.getProperty('java.vendor')} ${System.getProperty('java.vm.version')})",
-            'Main-Class'            : application.mainClass,
-            'Built-By'              : System.getProperty('user.name'),
-            'Implementation-Vendor' : project.group,
-            'Implementation-Title'  : project.name,
-            'Implementation-Version': project.version,
-    ])
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
-}
-
-// configure install4j plugin
-
-install4j {
-    disableSigning = true
-}
-
-task media(type: com.install4j.gradle.Install4jTask) {
-    dependsOn 'CreateDistribution'
-    projectFile = file("${projectDir}/misc/installer/build.install4j")
-    variableFiles = ["$projectDir/kode.properties"]
-    variables = [
-            'kode.shortName': 'kode'
-    ]
-
-    doFirst {
-        install4j.installDir = file(System.getenv('INSTALL4J_HOME'))
-        if (System.getenv('INSTALL4J_LICENSE') != null) install4j.license = System.getenv('INSTALL4J_LICENSE')
-    }
-}
-
-task CreateDistribution(dependsOn: installDist) {
-    def distributionDir = installDist.destinationDir
-    doLast {
-        delete "${distributionDir}/bin"
-    }
-}
-
-installDist {
-    doFirst {
-        delete destinationDir
-    }
-}
-
-// configure processResources
-compileJava.dependsOn processResources
-
-processResources {
-    from(projectDir) {
-        include 'LICENSE*', 'NOTICE*', 'kode.properties'
-        into 'META-INF'
-    }
+wrapper {
+    gradleVersion = '7.4.2'
+    distributionType = Wrapper.DistributionType.BIN
 }

@@ -34,14 +34,18 @@ test {
 
 
 // configuration ===========================================================================================
+def buildProperties = new Properties()
+file("$projectDir/kode.properties").withInputStream {
+    stream -> buildProperties.load(stream)
+}
+
 group = 'org.kodedevs'
-version = '0.1.0-dev'
+version = buildProperties.getProperty('kode.version')
 
 // configure application plugin
 
 application {
     mainModule = 'org.kodedevs.kode'
-    applicationName = 'kode'
 }
 
 // configure java plugin
@@ -84,9 +88,9 @@ install4j {
 task media(type: com.install4j.gradle.Install4jTask) {
     dependsOn 'CreateDistribution'
     projectFile = file("${projectDir}/misc/installer/build.install4j")
+    variableFiles = ["$projectDir/kode.properties"]
     variables = [
-            project_name   : project.name,
-            project_version: project.version,
+            'kode.shortName': 'kode'
     ]
 
     doFirst {
@@ -111,20 +115,9 @@ installDist {
 // configure processResources
 compileJava.dependsOn processResources
 
-task projectProps(type: WriteProperties) {
-    encoding = "UTF-8"
-    outputFile = file("${getTemporaryDir()}/metadata.properties")
-
-    property('project.name', project.name)
-    property('project.version', project.version)
-}
-
 processResources {
-    from(file('.')) {
-        include 'LICENSE*', 'NOTICE*'
+    from(projectDir) {
+        include 'LICENSE*', 'NOTICE*', 'kode.properties'
         into 'META-INF'
-    }
-    from(projectProps) {
-        into '/org/kodedevs/kode'
     }
 }

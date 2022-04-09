@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="9.0.6" transformSequenceNumber="9">
   <directoryPresets config="../../build/distributions" />
-  <application name="Kode" applicationId="9960-9396-6316-3428" mediaDir="../../build/distributions" compression="9" shortName="${compiler:project_name}" publisher="Kode Devs" publisherWeb="https://github.com/Kode-Devs" version="${compiler:project_version}" allPathsRelative="true" macVolumeId="4bc05f30a18db751">
+  <application name="${compiler:kode.name}" applicationId="9960-9396-6316-3428" mediaDir="../../build/distributions" compression="9" shortName="kode" publisher="Kode Devs" publisherWeb="https://github.com/Kode-Devs" version="${compiler:kode.version}" allPathsRelative="true" macVolumeId="4bc05f30a18db751">
     <variables>
-      <variable name="project_name" description="Name of the project -&gt; project.name" category="build" />
-      <variable name="project_version" description="Version number of the project -&gt;  project.version" category="build" />
+      <variable name="kode.name" />
+      <variable name="kode.version" />
+      <variable name="kode.launch.exec" />
     </variables>
     <jreBundles jdkProviderId="Zulu" release="17/17.0.2">
       <modules>
@@ -23,7 +24,7 @@
   </files>
   <launchers>
     <launcher name="${compiler:sys.fullName}" id="38">
-      <executable name="${compiler:project_name}" iconSet="true" iconFile="./icons/logo.ico" executableDir="bin" redirectStderr="false" executableMode="console" changeWorkingDirectory="false">
+      <executable name="${compiler:kode.launch.exec}" iconSet="true" iconFile="./icons/logo.ico" executableDir="bin" redirectStderr="false" executableMode="console" changeWorkingDirectory="false">
         <versionInfo include="true" fileDescription="Kode is a open source programming language which aims for better readability and functionality." legalCopyright="Kode Devs" internalName="${compiler:sys.shortName}" />
       </executable>
       <java mainClass="org.kodedevs.kode.api.cli.Root">

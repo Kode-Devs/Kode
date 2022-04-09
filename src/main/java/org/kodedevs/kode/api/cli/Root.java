@@ -1,6 +1,6 @@
 package org.kodedevs.kode.api.cli;
 
-import org.kodedevs.kode.common.Metadata;
+import org.kodedevs.kode.meta.Metadata;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
 import picocli.CommandLine.Model.CommandSpec;

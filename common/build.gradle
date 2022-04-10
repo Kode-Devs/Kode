@@ -1,5 +1,13 @@
 // Common Implementations
 
 dependencies {
+    // Apache Commons Configuration
+    implementation 'org.apache.commons:commons-configuration2:2.7'
+}
 
+processResources {
+    from(rootDir) {
+        include 'build.properties'
+        into 'META-INF'
+    }
 }

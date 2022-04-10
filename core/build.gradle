@@ -1,5 +1,6 @@
 // Core Implementations
 
 dependencies {
-
+    implementation project(':common')
+    implementation project(':runtime')
 }

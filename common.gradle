@@ -15,6 +15,9 @@ repositories {
 }
 
 dependencies {
+    // SLF4J API Module
+    implementation 'org.slf4j:slf4j-simple:1.7.36'
+
     // JUnit5
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
 }

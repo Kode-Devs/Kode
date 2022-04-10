@@ -5,8 +5,8 @@ plugins {
 description = 'Kode'
 
 ext.buildProperties = new Properties()
-rootProject.file('build.properties').withInputStream {
-    stream -> buildProperties.load(stream)
+rootProject.file('build.properties').withInputStream { stream ->
+    buildProperties.load(stream)
 }
 
 allprojects {

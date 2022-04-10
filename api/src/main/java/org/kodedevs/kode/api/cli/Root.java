@@ -20,6 +20,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.*;
 import picocli.CommandLine.Model.CommandSpec;
 import org.fusesource.jansi.AnsiConsole;
+import org.kodedevs.kode.common.globals.Application;
 
 @Command(
         synopsisSubcommandLabel = "COMMAND",
@@ -45,7 +46,9 @@ public class Root implements Runnable {
     static class VersionProvider implements IVersionProvider {
         @Override
         public String[] getVersion() {
-            return new String[]{"<version number>"};
+            return new String[]{
+                    Application.NAME + " " + Application.VERSION,
+            };
         }
     }
 
@@ -54,7 +57,7 @@ public class Root implements Runnable {
         CommandLine cmd = new CommandLine(new Root());
 
         // Dynamically set the executable name for the root command
-        cmd.setCommandName("<exec>");
+        cmd.setCommandName(Application.EXEC_NAME);
 
         // Initialize ANSI
         AnsiConsole.systemInstall();

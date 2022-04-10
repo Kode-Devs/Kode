@@ -106,7 +106,7 @@ public interface Source {
      * Gets the line number denoted by the character position.
      *
      * @param offset position of the character in the source
-     * @return an integer representing the line number
+     * @return an integer representing the line number, where line=1..n
      * @see Source#getSourceAt(int)
      */
     default int getLineAt(int offset) {
@@ -125,7 +125,7 @@ public interface Source {
      * Gets the column number denoted by the character position.
      *
      * @param offset position of the character in the source
-     * @return an integer representing the column number
+     * @return an integer representing the column number, where column=0..n-1
      */
     default int getColumnAt(int offset) {
         return offset - findBOLN(offset);
@@ -145,7 +145,7 @@ public interface Source {
         return getString(first, last - first + 1);
     }
 
-    //<editor-fold desc="Private Methods">
+    //<editor-fold defaultstate="collapsed" desc="Private Methods">
 
     // Find the beginning of the line containing position. Index of first character of line.
     private int findBOLN(int offset) {

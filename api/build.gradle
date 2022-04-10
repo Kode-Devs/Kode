@@ -1,6 +1,9 @@
 // API Implementations
 
 dependencies {
+    implementation project(':common')
+    implementation project(':core')
+
     // Picocli
     implementation 'info.picocli:picocli:4.6.3'
     annotationProcessor 'info.picocli:picocli-codegen:4.6.3'

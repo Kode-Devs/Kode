@@ -1,21 +1,96 @@
 plugins {
-    id 'base'
+    id 'idea'
+    id 'java'
+    id 'distribution'
 }
 
-description = 'Kode'
+ext {
+    buildProperties = new Properties()
+}
 
-ext.buildProperties = new Properties()
-rootProject.file('build.properties').withInputStream { stream ->
+rootProject.file('kode.properties').withInputStream { stream ->
     buildProperties.load(stream)
 }
 
-allprojects {
-    group 'org.kodedevs'
-    version buildProperties.getProperty('version')
+group = 'org.kodedevs'
+version = buildProperties.getProperty('version')
+description = 'Kode'
+
+repositories {
+    // https://mvnrepository.com/repos/central
+    mavenCentral()
+
+    // https://plugins.gradle.org/
+    gradlePluginPortal()
+
+    // 3rd-party libs
+    flatDir { dirs 'misc/libs' }
 }
 
-subprojects {
-    apply from: rootProject.file('common.gradle')
+dependencies {
+    // Apache Commons Configuration
+    implementation 'org.apache.commons:commons-configuration2:2.7'
+
+    // Picocli
+    implementation 'info.picocli:picocli:4.6.3'
+    annotationProcessor 'info.picocli:picocli-codegen:4.6.3'
+
+    // Jansi
+    implementation 'org.fusesource.jansi:jansi:2.4.0'
+
+    // JUnit5
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+        vendor = JvmVendorSpec.AZUL
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ["-Aproject=${rootProject.group}/${rootProject.name}"]
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    // Build a custom manifest
+    manifest.attributes(['Manifest-Version'      : '1.0',
+                         'Created-By'            : "Gradle API ${gradle.gradleVersion}",
+                         'Built-By'              : System.getProperty('user.name'),
+                         'Build-Jdk'             : "${System.getProperty('java.version')} (${System.getProperty('java.vendor')} ${System.getProperty('java.vm.version')})",
+                         'Specification-Title'   : "Kode Module: ${project.name}",
+                         'Specification-Version' : project.version,
+                         'Specification-Vendor'  : project.group,
+                         'Implementation-Title'  : "Kode Module: ${project.name}",
+                         'Implementation-Version': project.version,
+                         'Implementation-Vendor' : project.group,
+                         'Build-Time'            : new Date().toString()])
+    exclude 'META-INF/*.SF', 'META-INF/*.RSA', 'META-INF/*.DSA', 'META-INF/*.MF'
+}
+
+processResources {
+    from(rootDir) {
+        include 'LICENSE*', 'NOTICE*', 'kode.properties'
+        into 'META-INF'
+    }
+}
+
+distributions {
+    main {
+        contents {
+            from jar
+            from configurations.runtimeClasspath
+        }
+    }
 }
 
 wrapper {

@@ -87,7 +87,7 @@ class BuildProps {
         }
     }
 
-    static final String BUILD_PROPS = "META-INF/build.properties";
+    static final String BUILD_PROPS = "META-INF/kode.properties";
     private static final DataConfiguration CONFIGS = new DataConfiguration(new BaseConfiguration());
 
     static {

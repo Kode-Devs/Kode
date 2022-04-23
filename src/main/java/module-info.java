@@ -3,10 +3,10 @@
  *
  * @author arpan
  */
-module org.kodedevs.kode.api {
+module org.kodedevs.kode {
     requires info.picocli;
     requires org.fusesource.jansi;
-    requires org.kodedevs.kode.common;
+    requires org.apache.commons.configuration2;
 
     requires transitive java.scripting;
 

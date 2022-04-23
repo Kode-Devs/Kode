@@ -14,28 +14,10 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core.compiler;
+package org.kodedevs.kode.common.context;
 
-import org.kodedevs.kode.common.runtime.Token;
-import org.kodedevs.kode.core.streams.TokenStream;
+public class Context {
 
-import static org.kodedevs.kode.common.runtime.TokenType.EOF;
-
-public class Parser extends Recognizer<Token> {
-
-    private final TokenStream tokenStream;
-
-    public Parser(TokenStream tokenStream) {
-        this.tokenStream = tokenStream;
-    }
-
-    @Override
-    protected boolean isAtEnd() {
-        return peek().getType() == EOF;
-    }
-
-    @Override
-    public TokenStream getStream() {
-        return tokenStream;
-    }
+    /** Is debug mode enabled ? */
+    public static final boolean DEBUG = BuildProps.getBooleanProperty("debug");
 }

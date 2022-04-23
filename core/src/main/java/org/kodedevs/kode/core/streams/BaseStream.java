@@ -22,7 +22,6 @@ package org.kodedevs.kode.core.streams;
  *
  * @param <T> data-type of the symbol it works on.
  * @author arpan
- * @since 2022-04-09
  */
 public interface BaseStream<T> {
 

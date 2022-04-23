@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.common;
+package org.kodedevs.kode.common.runtime;
 
 /**
  * Represents all Source Tokens. They are the smallest elements of a program which are identified by
@@ -22,7 +22,6 @@ package org.kodedevs.kode.common;
  * separators.
  *
  * @author arpan
- * @since 2022-04-09
  */
 public interface Token {
 

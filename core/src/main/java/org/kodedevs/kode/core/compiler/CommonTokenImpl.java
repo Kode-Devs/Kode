@@ -16,9 +16,9 @@
 
 package org.kodedevs.kode.core.compiler;
 
-import org.kodedevs.kode.common.Source;
-import org.kodedevs.kode.common.Token;
-import org.kodedevs.kode.common.TokenType;
+import org.kodedevs.kode.common.runtime.Source;
+import org.kodedevs.kode.common.runtime.Token;
+import org.kodedevs.kode.common.runtime.TokenType;
 
 public class CommonTokenImpl implements Token {
 

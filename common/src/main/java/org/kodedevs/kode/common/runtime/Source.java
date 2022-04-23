@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.common;
+package org.kodedevs.kode.common.runtime;
 
 /**
  * Represents all Source Objects. Generally all the source object implementations must implement at
  * least one of this interface or its derivatives to be recognized by the underlying environment.
  *
  * @author arpan
- * @since 2022-04-09
  */
 public interface Source {
 
@@ -78,8 +77,8 @@ public interface Source {
      * copy of a specific portion from the actual text as contained by the file from which the
      * source is obtained.
      * <p>
-     * This is effectively same as that of calling {@code String.valueOf(getContent(), offset,
-     * count)}.
+     * This is effectively same as that of calling
+     * {@code String.valueOf(getContent(), offset, count)}.
      *
      * @param offset initial offset of the specified portion
      * @param count  length of the specified portion

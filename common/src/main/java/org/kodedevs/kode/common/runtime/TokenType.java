@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.common.globals;
+package org.kodedevs.kode.common.runtime;
 
-public final class Application {
+/**
+ * Available token types.
+ *
+ * @author arpan
+ */
+public enum TokenType {
 
-    public static final String NAME = "Kode";
-    public static final String VERSION = BuildConfigLoader.CONFIGS.getString("version", "<unknown>");
-    public static final String EXEC_NAME = "kode";
-
-    private Application() {
-        // should not be instantiated
-    }
+    /**
+     * End of file
+     */
+    EOF,
 }

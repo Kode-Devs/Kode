@@ -16,11 +16,11 @@
 
 package org.kodedevs.kode.api.cli;
 
+import org.fusesource.jansi.AnsiConsole;
+import org.kodedevs.kode.common.context.Version;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
 import picocli.CommandLine.Model.CommandSpec;
-import org.fusesource.jansi.AnsiConsole;
-import org.kodedevs.kode.common.globals.Application;
 
 @Command(
         synopsisSubcommandLabel = "COMMAND",
@@ -43,12 +43,10 @@ public class Root implements Runnable {
     }
 
     // IVersionProvider implementation that returns version information
-    static class VersionProvider implements IVersionProvider {
+    protected static class VersionProvider implements IVersionProvider {
         @Override
         public String[] getVersion() {
-            return new String[]{
-                    Application.NAME + " " + Application.VERSION,
-            };
+            return String.format("Kode v%s", Version.fullVersion()).split("\n");
         }
     }
 
@@ -57,7 +55,7 @@ public class Root implements Runnable {
         CommandLine cmd = new CommandLine(new Root());
 
         // Dynamically set the executable name for the root command
-        cmd.setCommandName(Application.EXEC_NAME);
+        cmd.setCommandName("kode");
 
         // Initialize ANSI
         AnsiConsole.systemInstall();

@@ -17,4 +17,5 @@
 package org.kodedevs.kode.runtime;
 
 public interface Visitor<R> {
+    R visit(RuleNode ruleNode);
 }

@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.common;
+package org.kodedevs.kode.runtime;
 
-/**
- * Available token types.
- *
- * @author arpan
- * @since 2022-04-09
- */
-public enum TokenType {
+public interface RuleNode {
 
-    /**
-     * End of file
-     */
-    EOF,
+    default  <R> R accept(Visitor<R> visitor) {
+        return visitor.visit(this);
+    }
+
+    abstract class Expression implements RuleNode {
+    }
 }

@@ -14,28 +14,32 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core.compiler;
+package org.kodedevs.kode.runtime.expression;
 
 import org.kodedevs.kode.common.runtime.Token;
-import org.kodedevs.kode.core.streams.TokenStream;
+import org.kodedevs.kode.runtime.RuleNode;
 
-import static org.kodedevs.kode.common.runtime.TokenType.EOF;
+public class BinaryExpression extends RuleNode.Expression {
 
-public class Parser extends Recognizer<Token> {
+    private final Expression left;
+    private final Expression right;
+    private final Token operator;
 
-    private final TokenStream tokenStream;
-
-    public Parser(TokenStream tokenStream) {
-        this.tokenStream = tokenStream;
+    public BinaryExpression(Expression left, Token operator, Expression right) {
+        this.left = left;
+        this.right = right;
+        this.operator = operator;
     }
 
-    @Override
-    protected boolean isAtEnd() {
-        return peek().getType() == EOF;
+    public Expression getLeft() {
+        return left;
     }
 
-    @Override
-    public TokenStream getStream() {
-        return tokenStream;
+    public Expression getRight() {
+        return right;
+    }
+
+    public Token getOperator() {
+        return operator;
     }
 }

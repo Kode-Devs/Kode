@@ -1,0 +1,20 @@
+// Packaging
+apply plugin: 'distribution'
+
+dependencies {
+    implementation project(':api'), project(':common'), project(':core'), project(':runtime')
+}
+
+jar {
+    enabled = false
+}
+
+distributions {
+    main {
+        contents {
+            into('libs') {
+                from configurations.runtimeClasspath
+            }
+        }
+    }
+}

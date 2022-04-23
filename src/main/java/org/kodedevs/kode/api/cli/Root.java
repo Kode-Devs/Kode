@@ -46,7 +46,7 @@ public class Root implements Runnable {
     protected static class VersionProvider implements IVersionProvider {
         @Override
         public String[] getVersion() {
-            return String.format("Kode v%s", Version.fullVersion()).split("\n");
+            return String.format("Kode %s", Version.fullVersion()).split("\n");
         }
     }
 

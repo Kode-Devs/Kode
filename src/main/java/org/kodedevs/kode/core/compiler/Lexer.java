@@ -16,7 +16,7 @@
 
 package org.kodedevs.kode.core.compiler;
 
-import org.kodedevs.kode.common.runtime.Token;
+import org.kodedevs.kode.Token;
 import org.kodedevs.kode.core.streams.CharStream;
 
 public class Lexer extends Recognizer<Character> {

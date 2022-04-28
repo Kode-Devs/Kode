@@ -14,32 +14,22 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.runtime.expression;
+package org.kodedevs.kode.ast.expr;
 
-import org.kodedevs.kode.common.runtime.Token;
-import org.kodedevs.kode.runtime.RuleNode;
+import org.kodedevs.kode.Token;
 
-public class BinaryExpression extends RuleNode.Expression {
+public class Unary extends Expr {
 
-    private final Expression left;
-    private final Expression right;
-    private final Token operator;
+    public final Token operator;
+    public final Expr right;
 
-    public BinaryExpression(Expression left, Token operator, Expression right) {
-        this.left = left;
-        this.right = right;
+    public Unary(Token operator, Expr right) {
         this.operator = operator;
+        this.right = right;
     }
 
-    public Expression getLeft() {
-        return left;
-    }
-
-    public Expression getRight() {
-        return right;
-    }
-
-    public Token getOperator() {
-        return operator;
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+        return visitor.visitUnaryExpr(this);
     }
 }

@@ -16,8 +16,8 @@
 
 package org.kodedevs.kode.api.cli;
 
-import org.fusesource.jansi.AnsiConsole;
-import org.kodedevs.kode.common.context.Version;
+import org.kodedevs.kode.Context;
+import org.kodedevs.kode.Version;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
 import picocli.CommandLine.Model.CommandSpec;
@@ -57,14 +57,14 @@ public class Root implements Runnable {
         // Dynamically set the executable name for the root command
         cmd.setCommandName("kode");
 
-        // Initialize ANSI
-        AnsiConsole.systemInstall();
+        // Initialize Console
+        Context.getConsole().systemInstall();
 
         // Perform Execution
         int exitCode = cmd.execute(args);
 
         // Close and Exit
-        AnsiConsole.systemUninstall();
+        Context.getConsole().systemUninstall();
         System.exit(exitCode);
     }
 }

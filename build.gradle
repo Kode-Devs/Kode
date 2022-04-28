@@ -28,15 +28,9 @@ repositories {
 }
 
 dependencies {
-    // Apache Commons Configuration
-    implementation 'org.apache.commons:commons-configuration2:2.7'
-
     // Picocli
     implementation 'info.picocli:picocli:4.6.3'
     annotationProcessor 'info.picocli:picocli-codegen:4.6.3'
-
-    // Jansi
-    implementation 'org.fusesource.jansi:jansi:2.4.0'
 
     // JUnit5
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'

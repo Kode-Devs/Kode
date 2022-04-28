@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.runtime;
+package org.kodedevs.kode.ast.expr;
 
-public interface RuleNode {
+public abstract class Expr {
 
-    default  <R> R accept(Visitor<R> visitor) {
-        return visitor.visit(this);
+    public interface Visitor<R> {
+        R visitBinaryExpr(Binary expr);
+        R visitUnaryExpr(Unary unary);
     }
 
-    abstract class Expression implements RuleNode {
-    }
+    abstract <R> R accept(Visitor<R> visitor);
 }

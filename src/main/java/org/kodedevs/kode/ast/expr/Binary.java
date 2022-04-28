@@ -14,8 +14,24 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.runtime;
+package org.kodedevs.kode.ast.expr;
 
-public interface Visitor<R> {
-    R visit(RuleNode ruleNode);
+import org.kodedevs.kode.Token;
+
+public class Binary extends Expr {
+
+    public final Expr left;
+    public final Token operator;
+    public final Expr right;
+
+    public Binary(Expr left, Token operator, Expr right) {
+        this.left = left;
+        this.operator = operator;
+        this.right = right;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+        return visitor.visitBinaryExpr(this);
+    }
 }

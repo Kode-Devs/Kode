@@ -16,7 +16,7 @@
 
 package org.kodedevs.kode.core.streams;
 
-import org.kodedevs.kode.common.runtime.Source;
+import org.kodedevs.kode.Source;
 
 public class CharStream implements BaseStream<Character> {
     private int p = 0;

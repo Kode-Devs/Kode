@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.common.context;
-
-import org.apache.commons.configuration2.BaseConfiguration;
-import org.apache.commons.configuration2.DataConfiguration;
-import org.apache.commons.configuration2.PropertiesConfiguration;
-import org.apache.commons.configuration2.ex.ConfigurationException;
-import org.apache.commons.configuration2.ex.ConversionException;
+package org.kodedevs.kode;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.Properties;
 
-class BuildProps {
+class Options {
     // don't create me
-    private BuildProps() {
+    private Options() {
     }
 
     /**
@@ -40,11 +34,8 @@ class BuildProps {
      * @return the value of this property converted to a {@code Boolean}
      */
     public static boolean getBooleanProperty(final String name, final boolean defValue) {
-        try {
-            return CONFIGS.getBoolean(name, defValue);
-        } catch (ConversionException ex) {
-            return defValue;
-        }
+        final String result = CONFIGS.getProperty(name);
+        return result != null ? Boolean.parseBoolean(result) : defValue;
     }
 
     /**
@@ -65,11 +56,8 @@ class BuildProps {
      * @return the value of this property converted to a {@code String}
      */
     public static String getStringProperty(final String name, final String defValue) {
-        try {
-            return CONFIGS.getString(name, defValue);
-        } catch (ConversionException ex) {
-            return defValue;
-        }
+        final String result = CONFIGS.getProperty(name);
+        return result != null ? result : defValue;
     }
 
     /**
@@ -81,14 +69,14 @@ class BuildProps {
      */
     public static int getIntProperty(final String name, final int defValue) {
         try {
-            return CONFIGS.getInt(name, defValue);
-        } catch (ConversionException ex) {
+            return Integer.parseInt(CONFIGS.getProperty(name));
+        } catch (NumberFormatException ex) {
             return defValue;
         }
     }
 
     static final String BUILD_PROPS = "META-INF/kode.properties";
-    private static final DataConfiguration CONFIGS = new DataConfiguration(new BaseConfiguration());
+    private static final Properties CONFIGS = new Properties();
 
     static {
         loadConfiguration(BUILD_PROPS);
@@ -100,14 +88,12 @@ class BuildProps {
      * @param path Path to the resource
      */
     private static void loadConfiguration(String path) {
-        try (InputStream stream = BuildProps.class.getClassLoader().getResourceAsStream(path)) {
+        try (InputStream stream = Options.class.getClassLoader().getResourceAsStream(path)) {
             if (stream == null) {
                 throw new FileNotFoundException();
             }
-            PropertiesConfiguration props = new PropertiesConfiguration();
-            props.read(new InputStreamReader(stream));
-            CONFIGS.append(props);
-        } catch (IOException | ConfigurationException ignored) {
+            CONFIGS.load(stream);
+        } catch (IOException ignored) {
             // Do nothing
         }
     }

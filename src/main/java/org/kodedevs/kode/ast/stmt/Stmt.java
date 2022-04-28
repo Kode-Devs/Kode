@@ -14,28 +14,13 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core.compiler;
+package org.kodedevs.kode.ast.stmt;
 
-import org.kodedevs.kode.Token;
-import org.kodedevs.kode.core.streams.TokenStream;
+public abstract class Stmt {
 
-import static org.kodedevs.kode.TokenType.EOF;
+    public interface Visitor<R> {
 
-public class Parser extends Recognizer<Token> {
-
-    private final TokenStream tokenStream;
-
-    public Parser(TokenStream tokenStream) {
-        this.tokenStream = tokenStream;
     }
 
-    @Override
-    protected boolean isAtEnd() {
-        return peek().getType() == EOF;
-    }
-
-    @Override
-    public TokenStream getStream() {
-        return tokenStream;
-    }
+    abstract <R> R accept(Visitor<R> visitor);
 }

@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.common.context;
+package org.kodedevs.kode;
 
-public class Context {
+/**
+ * Available token types.
+ *
+ * @author arpan
+ */
+public enum TokenType {
 
-    /** Is debug mode enabled ? */
-    public static final boolean DEBUG = BuildProps.getBooleanProperty("debug");
+    /**
+     * End of file
+     */
+    EOF,
 }

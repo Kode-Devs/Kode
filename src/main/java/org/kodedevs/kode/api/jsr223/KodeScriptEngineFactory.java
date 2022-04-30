@@ -16,7 +16,7 @@
 
 package org.kodedevs.kode.api.jsr223;
 
-import org.kodedevs.kode.Version;
+import org.kodedevs.kode.internal.runtime.Version;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core;
+package org.kodedevs.kode.internal.parser;
 
-import org.kodedevs.kode.runtime.Token;
-import org.kodedevs.kode.runtime.TokenType;
+import org.kodedevs.kode.internal.runtime.Token;
+import org.kodedevs.kode.internal.runtime.TokenType;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core;
+package org.kodedevs.kode.internal.parser;
 
-import org.kodedevs.kode.runtime.Token;
+import org.kodedevs.kode.internal.runtime.Token;
 
 public abstract class AbstractLexer {
 

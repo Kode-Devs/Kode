@@ -14,24 +14,16 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.runtime.ast.expr;
+package org.kodedevs.kode.internal.ast.stmt;
 
-import org.kodedevs.kode.runtime.Token;
+public abstract class Stmt {
 
-public class Binary extends Expr {
+    public interface Visitor<R> {
 
-    public final Expr left;
-    public final Token operator;
-    public final Expr right;
-
-    public Binary(Expr left, Token operator, Expr right) {
-        this.left = left;
-        this.operator = operator;
-        this.right = right;
+        default R evaluate(Stmt stmt) {
+            return stmt.accept(this);
+        }
     }
 
-    @Override
-    <R> R accept(Visitor<R> visitor) {
-        return visitor.visitBinaryExpr(this);
-    }
+    abstract <R> R accept(Visitor<R> visitor);
 }

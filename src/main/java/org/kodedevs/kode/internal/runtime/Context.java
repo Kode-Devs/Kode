@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.runtime.ast.expr;
+package org.kodedevs.kode.internal.runtime;
 
-import org.kodedevs.kode.runtime.Token;
+public class Context {
 
-public class Unary extends Expr {
+    /** Is debug mode enabled ? */
+    public static final boolean DEBUG = Options.getBooleanProperty("debug");
 
-    public final Token operator;
-    public final Expr right;
-
-    public Unary(Token operator, Expr right) {
-        this.operator = operator;
-        this.right = right;
-    }
-
-    @Override
-    <R> R accept(Visitor<R> visitor) {
-        return visitor.visitUnaryExpr(this);
+    // don't create me
+    private Context() {
     }
 }

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.console;
+package org.kodedevs.kode.tools.console;
 
 import java.nio.charset.Charset;
 
-public interface IConsole {
+public interface Console {
 
     /**
      * Complete initialization of the Console environment.

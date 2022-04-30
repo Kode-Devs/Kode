@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core;
+package org.kodedevs.kode.internal.ast.expr;
 
-public class KodeParser extends AbstractParser{
+import org.kodedevs.kode.internal.runtime.Token;
 
-    public KodeParser(KodeLexer lexer) {
-        super(lexer);
+public class Unary extends Expr {
+
+    public final Token operator;
+    public final Expr right;
+
+    public Unary(Token operator, Expr right) {
+        this.operator = operator;
+        this.right = right;
     }
 
-
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+        return visitor.visitUnaryExpr(this);
+    }
 }

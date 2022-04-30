@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.console;
+package org.kodedevs.kode.tools.console;
 
 import java.nio.charset.Charset;
 
-public class DefaultConsole implements IConsole {
+public class SystemConsole implements Console {
 
     /** Encoding to use for line input. */
     private final String encoding;
@@ -26,7 +26,7 @@ public class DefaultConsole implements IConsole {
     /** Encoding to use for line input as a <code>Charset</code>. */
     private final Charset encodingCharset;
 
-    public DefaultConsole(String encoding) {
+    public SystemConsole(String encoding) {
         this.encoding = encoding != null ? encoding : Charset.defaultCharset().name();
         this.encodingCharset = Charset.forName(this.encoding);
     }

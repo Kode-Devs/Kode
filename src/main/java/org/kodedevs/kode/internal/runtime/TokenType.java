@@ -14,36 +14,17 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode;
+package org.kodedevs.kode.internal.runtime;
 
 /**
- * Implementation to handle version information
+ * Available token types.
  *
  * @author arpan
  */
-public final class Version {
-
-    public static final String PKEY_VERSION = "version";
-
-    // don't create me
-    private Version() {
-    }
+public enum TokenType {
 
     /**
-     * The current version number as a string.
-     *
-     * @return version string
+     * End of file
      */
-    public static String version() {
-        return fullVersion().split("-")[0];
-    }
-
-    /**
-     * The current full version number as a string.
-     *
-     * @return full version string
-     */
-    public static String fullVersion() {
-        return Options.getStringProperty(PKEY_VERSION, "<unknown>");
-    }
+    EOF,
 }

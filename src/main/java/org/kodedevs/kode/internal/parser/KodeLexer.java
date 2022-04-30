@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core;
+package org.kodedevs.kode.internal.parser;
 
-import org.kodedevs.kode.runtime.Token;
-import org.kodedevs.kode.runtime.TokenType;
-import org.kodedevs.kode.utils.CharUtils;
+import org.kodedevs.kode.internal.runtime.Token;
+import org.kodedevs.kode.internal.runtime.TokenType;
 
 public class KodeLexer extends AbstractLexer {
 
@@ -68,8 +67,8 @@ public class KodeLexer extends AbstractLexer {
 
         final char c = advance();
 
-        if (CharUtils.isAlpha(c)) return identifier();
-        if (CharUtils.isDigit(c)) return number();
+        if (isAlpha(c)) return identifier();
+        if (isDigit(c)) return number();
 
         return switch (c) {
             case '\0' -> TokenType.EOF;
@@ -87,5 +86,20 @@ public class KodeLexer extends AbstractLexer {
 
     private int mark() {
         return index();
+    }
+
+
+    //// Section: Utils
+
+    public static boolean isAlpha(char c) {
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+    }
+
+    public static boolean isAlphaNumeric(char c) {
+        return isAlpha(c) || isDigit(c);
+    }
+
+    public static boolean isDigit(char c) {
+        return c >= '0' && c <= '9';
     }
 }

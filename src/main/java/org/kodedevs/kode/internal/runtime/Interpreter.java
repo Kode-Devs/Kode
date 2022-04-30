@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.runtime;
+package org.kodedevs.kode.internal.runtime;
 
-import org.kodedevs.kode.runtime.ast.expr.Binary;
-import org.kodedevs.kode.runtime.ast.expr.Expr;
-import org.kodedevs.kode.runtime.ast.expr.Unary;
-import org.kodedevs.kode.runtime.ast.stmt.Stmt;
-import org.kodedevs.kode.runtime.objects.KodeObject;
+import org.kodedevs.kode.internal.ast.expr.Binary;
+import org.kodedevs.kode.internal.ast.expr.Expr;
+import org.kodedevs.kode.internal.ast.expr.Unary;
+import org.kodedevs.kode.internal.ast.stmt.Stmt;
+import org.kodedevs.kode.internal.objects.KodeObject;
 
 public class Interpreter implements Expr.Visitor<KodeObject>, Stmt.Visitor<Void> {
 

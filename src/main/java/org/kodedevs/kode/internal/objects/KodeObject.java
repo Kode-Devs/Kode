@@ -14,18 +14,7 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.runtime.ast.expr;
+package org.kodedevs.kode.internal.objects;
 
-public abstract class Expr {
-
-    public interface Visitor<R> {
-        R visitBinaryExpr(Binary expr);
-        R visitUnaryExpr(Unary expr);
-
-        default R evaluate(Expr expr) {
-            return expr.accept(this);
-        }
-    }
-
-    abstract <R> R accept(Visitor<R> visitor);
+public class KodeObject {
 }

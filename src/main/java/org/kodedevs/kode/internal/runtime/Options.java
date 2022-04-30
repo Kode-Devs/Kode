@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode;
+package org.kodedevs.kode.internal.runtime;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

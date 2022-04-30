@@ -14,7 +14,24 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.runtime.objects;
+package org.kodedevs.kode.internal.ast.expr;
 
-public class KodeObject {
+import org.kodedevs.kode.internal.runtime.Token;
+
+public class Binary extends Expr {
+
+    public final Expr left;
+    public final Token operator;
+    public final Expr right;
+
+    public Binary(Expr left, Token operator, Expr right) {
+        this.left = left;
+        this.operator = operator;
+        this.right = right;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+        return visitor.visitBinaryExpr(this);
+    }
 }

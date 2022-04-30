@@ -16,8 +16,8 @@
 
 package org.kodedevs.kode.api.cli;
 
-import org.kodedevs.kode.Context;
-import org.kodedevs.kode.Version;
+import org.kodedevs.kode.internal.runtime.Version;
+import org.kodedevs.kode.tools.console.Consoles;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
 import picocli.CommandLine.Model.CommandSpec;
@@ -58,13 +58,13 @@ public class Root implements Runnable {
         cmd.setCommandName("kode");
 
         // Initialize Console
-        Context.getConsole().systemInstall();
+        Consoles.getConsole().systemInstall();
 
         // Perform Execution
         int exitCode = cmd.execute(args);
 
         // Close and Exit
-        Context.getConsole().systemUninstall();
+        Consoles.getConsole().systemUninstall();
         System.exit(exitCode);
     }
 }

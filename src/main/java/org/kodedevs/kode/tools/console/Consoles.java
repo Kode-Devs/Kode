@@ -14,30 +14,28 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode;
+package org.kodedevs.kode.tools.console;
 
-import org.kodedevs.kode.console.IConsole;
-import org.kodedevs.kode.console.DefaultConsole;
+public class Consoles {
 
-public class Context {
-
-    /** Is debug mode enabled ? */
-    public static final boolean DEBUG = Options.getBooleanProperty("debug");
+    // don't create me
+    private Consoles() {
+    }
 
     /**
-     * The handler for interactive consoles, set by {@link #installConsole(IConsole)} and accessed by
+     * The handler for interactive consoles, set by {@link #installConsole(Console)} and accessed by
      * {@link #getConsole()}.
      */
-    private static IConsole console;
+    private static Console console;
 
     /**
-     * Gets the Console as set by the {@link #installConsole(IConsole)} method.
+     * Gets the Console as set by the {@link #installConsole(Console)} method.
      *
      * @return The Console object
      */
-    public static IConsole getConsole() {
+    public static Console getConsole() {
         if (console == null) {
-            console = new DefaultConsole(null);
+            console = new SystemConsole(null);
         }
 
         return console;
@@ -48,15 +46,15 @@ public class Context {
      *
      * @param console The new Console object
      */
-    public static void installConsole(IConsole console) {
-        if (Context.console != null) {
+    public static void installConsole(Console console) {
+        if (Consoles.console != null) {
             // try uninstalling
-            Context.console.systemUninstall();
-            Context.console = null;
+            Consoles.console.systemUninstall();
+            Consoles.console = null;
         }
 
         // Install the new one
         console.systemInstall();
-        Context.console = console;
+        Consoles.console = console;
     }
 }

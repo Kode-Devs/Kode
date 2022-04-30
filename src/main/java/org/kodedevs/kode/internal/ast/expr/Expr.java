@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.utils;
+package org.kodedevs.kode.internal.ast.expr;
 
-public class CharUtils {
+public abstract class Expr {
 
-    private CharUtils() {
+    public interface Visitor<R> {
+        R visitBinaryExpr(Binary expr);
+        R visitUnaryExpr(Unary expr);
+
+        default R evaluate(Expr expr) {
+            return expr.accept(this);
+        }
     }
 
-    public static boolean isAlpha(char c) {
-        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
-    }
-
-    public static boolean isAlphaNumeric(char c) {
-        return isAlpha(c) || isDigit(c);
-    }
-
-    public static boolean isDigit(char c) {
-        return c >= '0' && c <= '9';
-    }
+    abstract <R> R accept(Visitor<R> visitor);
 }

@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.runtime.ast.stmt;
+package org.kodedevs.kode.internal.parser;
 
-public abstract class Stmt {
+public class KodeParser extends AbstractParser{
 
-    public interface Visitor<R> {
-
-        default R evaluate(Stmt stmt) {
-            return stmt.accept(this);
-        }
+    public KodeParser(KodeLexer lexer) {
+        super(lexer);
     }
 
-    abstract <R> R accept(Visitor<R> visitor);
+
 }

@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.ast.expr;
+package org.kodedevs.kode.core;
 
-public abstract class Expr {
+public class KodeParser extends AbstractParser{
 
-    public interface Visitor<R> {
-        R visitBinaryExpr(Binary expr);
-        R visitUnaryExpr(Unary unary);
+    public KodeParser(KodeLexer lexer) {
+        super(lexer);
     }
 
-    abstract <R> R accept(Visitor<R> visitor);
+
 }

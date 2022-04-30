@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core;
+package org.kodedevs.kode.runtime.ast.expr;
 
-public class SyntaxTreeWalker {
+public abstract class Expr {
 
-    public SyntaxTreeWalker() {
+    public interface Visitor<R> {
+        R visitBinaryExpr(Binary expr);
+        R visitUnaryExpr(Unary expr);
 
+        default R evaluate(Expr expr) {
+            return expr.accept(this);
+        }
     }
 
-
+    abstract <R> R accept(Visitor<R> visitor);
 }

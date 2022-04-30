@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core.streams;
+package org.kodedevs.kode.core;
 
-import org.kodedevs.kode.Token;
-import org.kodedevs.kode.core.compiler.Lexer;
+import org.kodedevs.kode.runtime.Token;
+import org.kodedevs.kode.runtime.TokenType;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 
-public class TokenStream implements BaseStream<Token> {
-    private final Lexer lexer;
+public abstract class AbstractParser {
+
+    private final AbstractLexer lexer;
+
+    public AbstractParser(AbstractLexer lexer) {
+        this.lexer = lexer;
+    }
+
+
+    //// Section: Token Stream
+
     private int p = 0;
     private Token last;
 
@@ -32,15 +41,10 @@ public class TokenStream implements BaseStream<Token> {
     private transient int front = -1;
     private transient int rear = -1;
     private transient int size = 0;
-    private final transient Token[] buffer;
+    private final transient Token[] buffer = new Token[MAX_BUFFER_SIZE];
 
-    public TokenStream(Lexer lexer) {
-        this.lexer = lexer;
-        buffer = new Token[MAX_BUFFER_SIZE];
-    }
-
-    @Override
-    public void consume() throws IllegalStateException {
+    // Consumes the current symbol in this stream.
+    private void consumeStream() throws IllegalStateException {
         try {
             last = poll();
             p++;
@@ -50,22 +54,33 @@ public class TokenStream implements BaseStream<Token> {
         }
     }
 
-    @Override
-    public Token lookAhead(int i) throws IndexOutOfBoundsException {
+    // Gets the value of the symbol at offset i relative to the current position, where i=-1..n.
+    // When i==-1, returns the value of the previously read symbol in the * stream.
+    // When i==0, returns the value of the current symbol in the stream, and so on.
+    private Token LA(int i) throws IndexOutOfBoundsException {
         if (i == -1) {
+            if (last == null) {
+                throw new IndexOutOfBoundsException("Token at offset " + i + " is not in current token buffer window.");
+            }
+
             return last;
         }
 
         sync(i);
         if (i < 0 || i >= currentBufferSize()) {
-            throw new IndexOutOfBoundsException("Token at offset " + i + " is not in token buffer window. Max look ahead offset: " + currentBufferSize());
+            throw new IndexOutOfBoundsException("Token at offset " + i + " is not in current token buffer window.");
         }
         return buffer[(front + i) % MAX_BUFFER_SIZE];
     }
 
-    @Override
-    public int index() {
+    // Gets the position index of the current symbol, where index=0..n-1
+    private int index() {
         return p;
+    }
+
+    // Gets the total number of symbols in the stream.
+    private int size() {
+        throw new UnsupportedOperationException("Unknown Stream Size");
     }
 
     // Sync next n elements to the buffer until full
@@ -117,5 +132,46 @@ public class TokenStream implements BaseStream<Token> {
     // Is the buffer empty
     private boolean isEmpty() {
         return currentBufferSize() == 0;
+    }
+
+
+    //// Section: Token Recognizer
+
+    protected boolean match(Token... symbols) {
+        for (Token symbol : symbols) {
+            if (check(symbol)) {
+                advance();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected boolean check(Token symbol) {
+        return peek() == symbol;
+    }
+
+    protected Token advance() {
+        if (!isAtEnd()) {
+            consumeStream();
+        }
+        return previous();
+    }
+
+    protected boolean isAtEnd() {
+        return peek().getType() == TokenType.EOF;
+    }
+
+    protected Token peek(int offset) {
+        return LA(offset);
+    }
+
+    protected Token peek() {
+        return peek(0);
+    }
+
+    protected Token previous() {
+        return peek(-1);
     }
 }

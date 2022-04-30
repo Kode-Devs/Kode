@@ -14,41 +14,22 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core.compiler;
+package org.kodedevs.kode.utils;
 
-import org.kodedevs.kode.Token;
-import org.kodedevs.kode.core.streams.CharStream;
+public class CharUtils {
 
-public class Lexer extends Recognizer<Character> {
-    private final CharStream charStream;
-
-    public Lexer(CharStream charStream) {
-        this.charStream = charStream;
+    private CharUtils() {
     }
 
-    public Token nextToken() {
-        return null;
-    }
-
-    @Override
-    protected boolean isAtEnd() {
-        return charStream.index() >= charStream.size();
-    }
-
-    @Override
-    public CharStream getStream() {
-        return charStream;
-    }
-
-    protected static boolean isAlpha(char c) {
+    public static boolean isAlpha(char c) {
         return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
     }
 
-    protected static boolean isAlphaNumeric(char c) {
+    public static boolean isAlphaNumeric(char c) {
         return isAlpha(c) || isDigit(c);
     }
 
-    protected static boolean isDigit(char c) {
+    public static boolean isDigit(char c) {
         return c >= '0' && c <= '9';
     }
 }

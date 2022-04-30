@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode;
+package org.kodedevs.kode.core;
 
 /**
  * Represents all Source Objects. Generally all the source object implementations must implement at

@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode;
+package org.kodedevs.kode.runtime;
+
+import org.kodedevs.kode.core.Source;
 
 /**
  * Represents all Source Tokens. They are the smallest elements of a program which are identified by

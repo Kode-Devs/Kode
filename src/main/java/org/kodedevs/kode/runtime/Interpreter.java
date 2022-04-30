@@ -14,28 +14,24 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core.compiler;
+package org.kodedevs.kode.runtime;
 
-import org.kodedevs.kode.Token;
-import org.kodedevs.kode.core.streams.TokenStream;
+import org.kodedevs.kode.runtime.ast.expr.Binary;
+import org.kodedevs.kode.runtime.ast.expr.Expr;
+import org.kodedevs.kode.runtime.ast.expr.Unary;
+import org.kodedevs.kode.runtime.ast.stmt.Stmt;
+import org.kodedevs.kode.runtime.objects.KodeObject;
 
-import static org.kodedevs.kode.TokenType.EOF;
+public class Interpreter implements Expr.Visitor<KodeObject>, Stmt.Visitor<Void> {
 
-public class Parser extends Recognizer<Token> {
-
-    private final TokenStream tokenStream;
-
-    public Parser(TokenStream tokenStream) {
-        this.tokenStream = tokenStream;
+    @Override
+    public KodeObject visitBinaryExpr(Binary expr) {
+        evaluate(expr.left);
+        return evaluate(expr.right);
     }
 
     @Override
-    protected boolean isAtEnd() {
-        return peek().getType() == EOF;
-    }
-
-    @Override
-    public TokenStream getStream() {
-        return tokenStream;
+    public KodeObject visitUnaryExpr(Unary expr) {
+        return evaluate(expr.right);
     }
 }

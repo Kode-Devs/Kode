@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode;
+package org.kodedevs.kode.runtime.ast.expr;
 
-/**
- * Available token types.
- *
- * @author arpan
- */
-public enum TokenType {
+import org.kodedevs.kode.runtime.Token;
 
-    /**
-     * End of file
-     */
-    EOF,
+public class Binary extends Expr {
+
+    public final Expr left;
+    public final Token operator;
+    public final Expr right;
+
+    public Binary(Expr left, Token operator, Expr right) {
+        this.left = left;
+        this.operator = operator;
+        this.right = right;
+    }
+
+    @Override
+    <R> R accept(Visitor<R> visitor) {
+        return visitor.visitBinaryExpr(this);
+    }
 }

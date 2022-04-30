@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.ast.expr;
+package org.kodedevs.kode.runtime.ast.expr;
 
-import org.kodedevs.kode.Token;
+import org.kodedevs.kode.runtime.Token;
 
 public class Unary extends Expr {
 

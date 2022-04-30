@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.ast.stmt;
+package org.kodedevs.kode.runtime;
 
-public abstract class Stmt {
+/**
+ * Available token types.
+ *
+ * @author arpan
+ */
+public enum TokenType {
 
-    public interface Visitor<R> {
-
-    }
-
-    abstract <R> R accept(Visitor<R> visitor);
+    /**
+     * End of file
+     */
+    EOF,
 }

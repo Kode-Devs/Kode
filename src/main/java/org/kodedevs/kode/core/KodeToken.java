@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core.compiler;
+package org.kodedevs.kode.core;
 
-import org.kodedevs.kode.Source;
-import org.kodedevs.kode.Token;
-import org.kodedevs.kode.TokenType;
+import org.kodedevs.kode.runtime.Token;
+import org.kodedevs.kode.runtime.TokenType;
 
-public class CommonTokenImpl implements Token {
+public class KodeToken implements Token {
 
     private final TokenType type;
     private final int startIdx, stopIdx;
     private final Source tokenSource;
 
-    public CommonTokenImpl(TokenType type, int startIdx, int stopIdx, Source tokenSource) {
+    public KodeToken(TokenType type, int startIdx, int stopIdx, Source tokenSource) {
         this.type = type;
         this.startIdx = startIdx;
         this.stopIdx = stopIdx;

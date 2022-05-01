@@ -2,6 +2,7 @@ plugins {
     id 'idea'
     id 'java'
     id 'distribution'
+    id 'com.install4j.gradle' version '9.0.6'
 }
 
 ext {
@@ -24,7 +25,7 @@ repositories {
     gradlePluginPortal()
 
     // 3rd-party libs
-    flatDir { dirs 'misc/libs' }
+    flatDir { dirs 'libs' }
 }
 
 dependencies {
@@ -63,10 +64,10 @@ jar {
                          'Created-By'            : "Gradle API ${gradle.gradleVersion}",
                          'Built-By'              : System.getProperty('user.name'),
                          'Build-Jdk'             : "${System.getProperty('java.version')} (${System.getProperty('java.vendor')} ${System.getProperty('java.vm.version')})",
-                         'Specification-Title'   : "Kode Module: ${project.name}",
+                         'Specification-Title'   : "Kode",
                          'Specification-Version' : project.version,
                          'Specification-Vendor'  : project.group,
-                         'Implementation-Title'  : "Kode Module: ${project.name}",
+                         'Implementation-Title'  : "Kode",
                          'Implementation-Version': project.version,
                          'Implementation-Vendor' : project.group,
                          'Build-Time'            : new Date().toString()])
@@ -86,6 +87,25 @@ distributions {
             from jar
             from configurations.runtimeClasspath
         }
+    }
+}
+
+install4j {
+    if (System.env['INSTALL4J_HOME'] != null) installDir = file("$System.env.INSTALL4J_HOME")
+
+    // Add License Key If Present
+    license = System.env['INSTALL4J_LICENSE']
+}
+
+task buildInstallers(type: com.install4j.gradle.Install4jTask, group: BasePlugin.BUILD_GROUP) {
+    dependsOn 'installDist'     // task that prepares the distribution for install4j
+
+    projectFile = 'misc/installer/installer.install4j'
+    release = project.version
+    quiet = true    // Set it to false during debugging
+
+    onlyIf {
+        System.env['INSTALL4J_HOME'] != null
     }
 }
 

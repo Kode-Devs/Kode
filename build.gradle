@@ -24,6 +24,11 @@ repositories {
     // https://plugins.gradle.org/
     gradlePluginPortal()
 
+    // https://www.ej-technologies.com/
+    maven {
+        url 'https://maven.ej-technologies.com/repository'
+    }
+
     // 3rd-party libs
     flatDir { dirs 'libs' }
 }
@@ -34,6 +39,9 @@ dependencies {
     // Picocli
     implementation 'info.picocli:picocli:4.6.3'
     annotationProcessor 'info.picocli:picocli-codegen:4.6.3'
+
+    // Install4j Runtime
+    compileOnly 'com.install4j:install4j-runtime:9.0.6'
 
     // JUnit5
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'

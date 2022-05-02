@@ -30,6 +30,7 @@ import picocli.CommandLine.Model.CommandSpec;
         sortOptions = false,
         subcommands = {
                 HelpCommand.class,
+                Update.class,
         })
 public class Root implements Runnable {
 

@@ -5,16 +5,8 @@ plugins {
     id 'com.install4j.gradle' version '9.0.6'
 }
 
-ext {
-    buildProperties = new Properties()
-}
-
-rootProject.file('kode.properties').withInputStream { stream ->
-    buildProperties.load(stream)
-}
-
 group = 'org.kodedevs'
-version = buildProperties.getProperty('version')
+version = rootProject.file('VERSION').text.trim()
 description = 'Kode'
 
 repositories {
@@ -76,7 +68,7 @@ jar {
 
 processResources {
     from(rootDir) {
-        include 'LICENSE*', 'NOTICE*', 'kode.properties'
+        include 'LICENSE*', 'NOTICE*', 'VERSION*'
         into 'META-INF'
     }
 }

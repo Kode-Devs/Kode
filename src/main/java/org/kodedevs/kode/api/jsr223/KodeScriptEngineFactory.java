@@ -67,7 +67,7 @@ public class KodeScriptEngineFactory implements ScriptEngineFactory {
 
     @Override
     public String getLanguageVersion() {
-        return Version.fullVersion();
+        return Version.version();
     }
 
     @Override

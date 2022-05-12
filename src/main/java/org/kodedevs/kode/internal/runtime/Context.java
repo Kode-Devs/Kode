@@ -19,7 +19,7 @@ package org.kodedevs.kode.internal.runtime;
 public class Context {
 
     /** Is debug mode enabled ? */
-    public static final boolean DEBUG = Options.getBooleanProperty("debug");
+    public static final boolean DEBUG = false;
 
     // don't create me
     private Context() {

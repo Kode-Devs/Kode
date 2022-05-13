@@ -16,5 +16,7 @@
 
 package org.kodedevs.kode.internal.objects;
 
-public class KodeObject {
+public class ScriptObject {
+
+
 }

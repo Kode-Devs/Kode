@@ -20,18 +20,18 @@ import org.kodedevs.kode.internal.ast.expr.Binary;
 import org.kodedevs.kode.internal.ast.expr.Expr;
 import org.kodedevs.kode.internal.ast.expr.Unary;
 import org.kodedevs.kode.internal.ast.stmt.Stmt;
-import org.kodedevs.kode.internal.objects.KodeObject;
+import org.kodedevs.kode.internal.objects.ScriptObject;
 
-public class Interpreter implements Expr.Visitor<KodeObject>, Stmt.Visitor<Void> {
+public class ScriptRuntime implements Expr.Visitor<ScriptObject>, Stmt.Visitor<Void> {
 
     @Override
-    public KodeObject visitBinaryExpr(Binary expr) {
+    public ScriptObject visitBinaryExpr(Binary expr) {
         evaluate(expr.left);
         return evaluate(expr.right);
     }
 
     @Override
-    public KodeObject visitUnaryExpr(Unary expr) {
+    public ScriptObject visitUnaryExpr(Unary expr) {
         return evaluate(expr.right);
     }
 }

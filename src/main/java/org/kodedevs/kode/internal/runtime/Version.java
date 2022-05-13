@@ -16,6 +16,10 @@
 
 package org.kodedevs.kode.internal.runtime;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * Implementation to handle version information
  *
@@ -23,7 +27,18 @@ package org.kodedevs.kode.internal.runtime;
  */
 public final class Version {
 
-    public static final String PKEY_VERSION = "version";
+    private static byte[] _version;
+
+    static {
+        try (InputStream stream = Version.class.getClassLoader().getResourceAsStream("META-INF/VERSION")) {
+            if (stream == null) {
+                throw new FileNotFoundException();
+            }
+            _version = stream.readAllBytes();
+        } catch (IOException ignored) {
+            // Do nothing
+        }
+    }
 
     // don't create me
     private Version() {
@@ -35,15 +50,6 @@ public final class Version {
      * @return version string
      */
     public static String version() {
-        return fullVersion().split("-")[0];
-    }
-
-    /**
-     * The current full version number as a string.
-     *
-     * @return full version string
-     */
-    public static String fullVersion() {
-        return Options.getStringProperty(PKEY_VERSION, "<unknown>");
+        return new String(_version);
     }
 }

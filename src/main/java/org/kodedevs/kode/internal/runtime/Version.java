@@ -27,6 +27,8 @@ import java.io.InputStream;
  */
 public final class Version {
 
+    public static final String VERSION_DISPLAY_MSG = "Kode version %s";
+
     private static byte[] _version;
 
     static {

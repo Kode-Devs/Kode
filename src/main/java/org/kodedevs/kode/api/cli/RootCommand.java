@@ -26,13 +26,13 @@ import picocli.CommandLine.Model.CommandSpec;
         synopsisSubcommandLabel = "COMMAND",
         mixinStandardHelpOptions = true,
         usageHelpAutoWidth = true,
-        versionProvider = Root.VersionProvider.class,
+        versionProvider = RootCommand.VersionProvider.class,
         sortOptions = false,
         subcommands = {
                 HelpCommand.class,
-                Update.class,
+                UpdateCommand.class,
         })
-public class Root implements Runnable {
+public class RootCommand implements Runnable {
 
     @Spec
     CommandSpec spec;
@@ -47,13 +47,13 @@ public class Root implements Runnable {
     protected static class VersionProvider implements IVersionProvider {
         @Override
         public String[] getVersion() {
-            return String.format("Kode version %s", Version.version()).split("\n");
+            return String.format(Version.VERSION_DISPLAY_MSG, Version.version()).split("\n");
         }
     }
 
     // Entrypoint for the CLI interface
     public static void main(String[] args) {
-        CommandLine cmd = new CommandLine(new Root());
+        CommandLine cmd = new CommandLine(new RootCommand());
 
         // Dynamically set the executable name for the root command
         cmd.setCommandName("kode");

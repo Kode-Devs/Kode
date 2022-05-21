@@ -33,7 +33,7 @@ dependencies {
     annotationProcessor 'info.picocli:picocli-codegen:4.6.3'
 
     // Install4j Runtime
-    compileOnly 'com.install4j:install4j-runtime:9.0.6'
+    implementation 'com.install4j:install4j-runtime:9.0.6'
 
     // JUnit5
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'

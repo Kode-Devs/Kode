@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.internal.objects;
+package org.kodedevs.kode.internal.tree;
 
-public class ScriptObject {
+public abstract class Stmt {
 
+    public interface Visitor<R> {
 
+        default R evaluate(Stmt stmt) {
+            return stmt.accept(this);
+        }
+    }
+
+    abstract <R> R accept(Visitor<R> visitor);
 }

@@ -137,8 +137,8 @@ public abstract class AbstractParser {
 
     //// Section: Token Recognizer
 
-    protected boolean match(Token... symbols) {
-        for (Token symbol : symbols) {
+    protected boolean match(TokenType... symbols) {
+        for (TokenType symbol : symbols) {
             if (check(symbol)) {
                 advance();
                 return true;
@@ -148,8 +148,8 @@ public abstract class AbstractParser {
         return false;
     }
 
-    protected boolean check(Token symbol) {
-        return peek() == symbol;
+    protected boolean check(TokenType symbol) {
+        return peek().getType() == symbol;
     }
 
     protected Token advance() {

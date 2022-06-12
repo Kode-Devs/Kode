@@ -14,22 +14,9 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.internal.ast.expr;
+package org.kodedevs.kode.internal.runtime;
 
-import org.kodedevs.kode.internal.runtime.Token;
+public class ScriptObject {
 
-public class Unary extends Expr {
 
-    public final Token operator;
-    public final Expr right;
-
-    public Unary(Token operator, Expr right) {
-        this.operator = operator;
-        this.right = right;
-    }
-
-    @Override
-    <R> R accept(Visitor<R> visitor) {
-        return visitor.visitUnaryExpr(this);
-    }
 }

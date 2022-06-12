@@ -16,22 +16,19 @@
 
 package org.kodedevs.kode.internal.runtime;
 
-import org.kodedevs.kode.internal.ast.expr.Binary;
-import org.kodedevs.kode.internal.ast.expr.Expr;
-import org.kodedevs.kode.internal.ast.expr.Unary;
-import org.kodedevs.kode.internal.ast.stmt.Stmt;
-import org.kodedevs.kode.internal.objects.ScriptObject;
+import org.kodedevs.kode.internal.tree.Expr;
+import org.kodedevs.kode.internal.tree.Stmt;
 
 public class ScriptRuntime implements Expr.Visitor<ScriptObject>, Stmt.Visitor<Void> {
 
     @Override
-    public ScriptObject visitBinaryExpr(Binary expr) {
+    public ScriptObject visitBinaryExpr(Expr.Binary expr) {
         evaluate(expr.left);
         return evaluate(expr.right);
     }
 
     @Override
-    public ScriptObject visitUnaryExpr(Unary expr) {
+    public ScriptObject visitUnaryExpr(Expr.Unary expr) {
         return evaluate(expr.right);
     }
 }

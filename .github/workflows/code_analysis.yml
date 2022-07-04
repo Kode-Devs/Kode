@@ -11,16 +11,8 @@ on:
 
 jobs:
   analyze:
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-          - windows-2019          # https://github.com/github/codeql-action/issues/850
-
     name: Code Analysis
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     permissions:
       actions: read
       contents: read

@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.internal.runtime;
+package org.kodedevs.kode.core.parser;
 
-public class ScriptObject {
+public class KodeParser extends AbstractParser{
+
+    public KodeParser(KodeLexer lexer) {
+        super(lexer);
+    }
 
 
 }

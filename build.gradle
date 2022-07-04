@@ -5,9 +5,9 @@ plugins {
     id 'com.install4j.gradle' version '9.0.6'
 }
 
-group = 'org.kodedevs'
-version = rootProject.file('VERSION').text.trim()
-description = 'Kode'
+group 'org.kodedevs'
+version rootProject.file('VERSION').text.trim()
+description 'Kode'
 
 repositories {
     // https://mvnrepository.com/repos/central
@@ -20,13 +20,14 @@ repositories {
     maven {
         url 'https://maven.ej-technologies.com/repository'
     }
-
-    // 3rd-party libs
-    flatDir { dirs 'libs' }
 }
 
 dependencies {
+    // Nashorn for testing
     implementation 'org.openjdk.nashorn:nashorn-core:15.4'
+
+    // 3rd-party libs
+    implementation fileTree(dir: 'libs', includes: ['*.jar'])
 
     // Picocli
     implementation 'info.picocli:picocli:4.6.3'
@@ -100,7 +101,7 @@ install4j {
 task buildInstallers(type: com.install4j.gradle.Install4jTask, group: BasePlugin.BUILD_GROUP) {
     dependsOn 'installDist'     // task that prepares the distribution for install4j
 
-    projectFile = 'misc/installer/installer.install4j'
+    projectFile = 'kode.install4j'
     release = project.version
     quiet = true    // Set it to false during debugging
 

@@ -14,14 +14,9 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.internal.runtime;
+package org.kodedevs.kode.core;
 
-public class Context {
+public class ScriptObject {
 
-    /** Is debug mode enabled ? */
-    public static final boolean DEBUG = false;
 
-    // don't create me
-    private Context() {
-    }
 }

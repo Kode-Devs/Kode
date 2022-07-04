@@ -16,7 +16,7 @@
 
 package org.kodedevs.kode.api.cli;
 
-import org.kodedevs.kode.internal.runtime.Version;
+import org.kodedevs.kode.api.jsr223.KodeScriptEngineFactory;
 import org.kodedevs.kode.tools.console.Consoles;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
@@ -47,7 +47,7 @@ public class RootCommand implements Runnable {
     protected static class VersionProvider implements IVersionProvider {
         @Override
         public String[] getVersion() {
-            return String.format(Version.VERSION_DISPLAY_MSG, Version.version()).split("\n");
+            return new String[]{new KodeScriptEngineFactory().getLanguageVersion()};
         }
     }
 

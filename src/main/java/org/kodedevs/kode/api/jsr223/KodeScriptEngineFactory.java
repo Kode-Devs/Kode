@@ -16,10 +16,11 @@
 
 package org.kodedevs.kode.api.jsr223;
 
-import org.kodedevs.kode.internal.runtime.Version;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -67,7 +68,14 @@ public class KodeScriptEngineFactory implements ScriptEngineFactory {
 
     @Override
     public String getLanguageVersion() {
-        return Version.version();
+        try (InputStream stream = this.getClass().getClassLoader().getResourceAsStream("META-INF/VERSION")) {
+            if (stream == null) {
+                throw new FileNotFoundException();
+            }
+            return new String(stream.readAllBytes()).trim();
+        } catch (IOException ignored) {
+            return null;
+        }
     }
 
     @Override

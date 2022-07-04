@@ -16,8 +16,6 @@
 
 package org.kodedevs.kode.api.repl;
 
-import org.kodedevs.kode.internal.runtime.Version;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -29,14 +27,14 @@ import java.io.InputStreamReader;
 public class Shell {
 
     public static void main(String[] args) {
-        System.out.printf("Kode version v%s%n", Version.version());
-
         Console sysConsole = System.console();
         BufferedReader bufConsole = new BufferedReader(new InputStreamReader(System.in));
         ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
         if (engine == null) {
             throw new UnsupportedOperationException("No Supported Engine Found");
         }
+
+        System.out.printf("%s version %s%n", engine.getFactory().getLanguageName(), engine.getFactory().getLanguageVersion());
 
         // Break with Ctrl+C
         while (true) {

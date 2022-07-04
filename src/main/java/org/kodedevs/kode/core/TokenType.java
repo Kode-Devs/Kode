@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.internal.runtime;
+package org.kodedevs.kode.core;
 
-import org.kodedevs.kode.internal.tree.Expr;
-import org.kodedevs.kode.internal.tree.Stmt;
+/**
+ * Available token types.
+ *
+ * @author arpan
+ */
+public enum TokenType {
 
-public class ScriptRuntime implements Expr.Visitor<ScriptObject>, Stmt.Visitor<Void> {
-
-    @Override
-    public ScriptObject visitBinaryExpr(Expr.Binary expr) {
-        evaluate(expr.left);
-        return evaluate(expr.right);
-    }
-
-    @Override
-    public ScriptObject visitUnaryExpr(Expr.Unary expr) {
-        return evaluate(expr.right);
-    }
+    /**
+     * End of file
+     */
+    EOF,
 }

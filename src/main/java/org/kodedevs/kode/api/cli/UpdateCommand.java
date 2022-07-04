@@ -16,7 +16,7 @@
 
 package org.kodedevs.kode.api.cli;
 
-import org.kodedevs.kode.internal.runtime.Version;
+import org.kodedevs.kode.api.jsr223.KodeScriptEngineFactory;
 import org.kodedevs.kode.tools.updater.AppUpdater;
 import picocli.CommandLine.Command;
 
@@ -28,7 +28,7 @@ public class UpdateCommand implements Runnable {
     @Override
     public void run() {
         // Print current version
-        System.out.printf(Version.VERSION_DISPLAY_MSG + "%n", Version.version());
+        System.out.printf("Kode version %s%n", new KodeScriptEngineFactory().getLanguageVersion());
 
         // Check for update
         String newVersion = AppUpdater.checkForAvailableUpdate();
@@ -39,7 +39,7 @@ public class UpdateCommand implements Runnable {
             // Update available
             System.out.println("Update " + newVersion + " is available");
 
-            System.out.printf("Download and install " + Version.VERSION_DISPLAY_MSG + " [N/y]? ", newVersion);
+            System.out.printf("Download and install Kode version %s [N/y]? ", newVersion);
             if (new Scanner(System.in).nextLine().equalsIgnoreCase("y")) {
                 AppUpdater.install();
             }

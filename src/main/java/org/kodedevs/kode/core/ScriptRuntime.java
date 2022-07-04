@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.internal.runtime;
+package org.kodedevs.kode.core;
 
-/**
- * Available token types.
- *
- * @author arpan
- */
-public enum TokenType {
+public class ScriptRuntime {
 
-    /**
-     * End of file
-     */
-    EOF,
 }

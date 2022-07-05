@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.api.cli;
+package org.kodedevs.kode.cli;
 
-import org.kodedevs.kode.api.jsr223.KodeScriptEngineFactory;
 import org.kodedevs.kode.tools.console.Consoles;
+import org.kodedevs.kode.utils.ReleaseInfo;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
 import picocli.CommandLine.Model.CommandSpec;
@@ -47,7 +47,7 @@ public class RootCommand implements Runnable {
     protected static class VersionProvider implements IVersionProvider {
         @Override
         public String[] getVersion() {
-            return new String[]{new KodeScriptEngineFactory().getLanguageVersion()};
+            return new String[]{ReleaseInfo.getVersion()};
         }
     }
 

@@ -23,11 +23,14 @@ repositories {
 }
 
 dependencies {
-    // Nashorn for testing
+    // JavaScript Engine for testing
     implementation 'org.openjdk.nashorn:nashorn-core:15.4'
 
     // 3rd-party libs
     implementation fileTree(dir: 'libs', includes: ['*.jar'])
+
+    // SLF4J Logging Interface
+    implementation 'org.slf4j:slf4j-api:1.7.36'
 
     // Picocli
     implementation 'info.picocli:picocli:4.6.3'

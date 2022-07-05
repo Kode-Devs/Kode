@@ -9,8 +9,8 @@ module org.kodedevs.kode {
 
     requires transitive java.scripting;
 
-    opens org.kodedevs.kode.api.cli to info.picocli;
+    opens org.kodedevs.kode.cli to info.picocli;
 
     provides javax.script.ScriptEngineFactory with
-            org.kodedevs.kode.api.jsr223.KodeScriptEngineFactory;
+            org.kodedevs.kode.jsr223.KodeScriptEngineFactory;
 }

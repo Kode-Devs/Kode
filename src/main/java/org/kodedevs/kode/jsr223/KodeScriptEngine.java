@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.api.jsr223;
+package org.kodedevs.kode.jsr223;
 
 import javax.script.*;
 import java.io.Reader;

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.api.cli;
+package org.kodedevs.kode.cli;
 
-import org.kodedevs.kode.api.jsr223.KodeScriptEngineFactory;
 import org.kodedevs.kode.tools.updater.AppUpdater;
+import org.kodedevs.kode.utils.ReleaseInfo;
 import picocli.CommandLine.Command;
 
 import java.util.Scanner;
@@ -28,7 +28,7 @@ public class UpdateCommand implements Runnable {
     @Override
     public void run() {
         // Print current version
-        System.out.printf("Kode version %s%n", new KodeScriptEngineFactory().getLanguageVersion());
+        System.out.printf("Kode version %s%n", ReleaseInfo.getVersion());
 
         // Check for update
         String newVersion = AppUpdater.checkForAvailableUpdate();

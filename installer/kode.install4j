@@ -22,7 +22,7 @@
   <launchers>
     <launcher name="kode" id="27">
       <executable name="kode" iconSet="true" iconFile="./assets/logo.ico" executableDir="bin" redirectStderr="false" executableMode="console" changeWorkingDirectory="false" />
-      <java mainClass="org.kodedevs.kode.api.cli.RootCommand">
+      <java mainClass="org.kodedevs.kode.cli.RootCommand">
         <classPath>
           <scanDirectory location="libs" failOnError="false" />
         </classPath>

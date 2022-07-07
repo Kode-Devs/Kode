@@ -16,20 +16,27 @@
 
 package org.kodedevs.kode.utils;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
 public class ReleaseInfo {
+    private static final Properties RELEASE_INFO = new Properties();
+    private static final String RELEASE_INFO_FILE = "META-INF/kode-release-info.properties";
+    private static final String VERSION_KEY = "Version";
+
+    static {
+        ClassLoader classLoader = ReleaseInfo.class.getClassLoader();
+        try (final InputStream is = classLoader.getResourceAsStream(RELEASE_INFO_FILE)) {
+            if (is != null) {
+                RELEASE_INFO.load(is);
+            }
+        } catch (IOException e) {
+            // Do nothing
+        }
+    }
 
     public static String getVersion() {
-        try (InputStream stream = ReleaseInfo.class.getClassLoader().getResourceAsStream("META-INF/VERSION")) {
-            if (stream == null) {
-                throw new FileNotFoundException();
-            }
-            return new String(stream.readAllBytes()).trim();
-        } catch (IOException ignored) {
-            return "";
-        }
+        return RELEASE_INFO.getProperty(VERSION_KEY, "");
     }
 }

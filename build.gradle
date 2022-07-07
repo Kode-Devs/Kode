@@ -7,7 +7,7 @@ plugins {
 
 group 'org.kodedevs'
 version rootProject.file('VERSION').text.trim()
-description 'Kode'
+description 'Kode is an open source programming language which aims for better readability and functionality.'
 
 repositories {
     // https://mvnrepository.com/repos/central
@@ -62,6 +62,13 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+task generateReleaseInfo(type: WriteProperties, group: BasePlugin.BUILD_GROUP) {
+    outputFile "$buildDir/release-info/kode-release-info.properties"
+    encoding 'UTF-8'
+    comment project.description
+    property 'Version', project.version
+}
+
 jar {
     // Build a custom manifest
     manifest.attributes(['Manifest-Version'      : '1.0',
@@ -74,15 +81,15 @@ jar {
                          'Implementation-Title'  : "Kode",
                          'Implementation-Version': project.version,
                          'Implementation-Vendor' : project.group,
-                         'Build-Time'            : new Date().toString()])
-    exclude 'META-INF/*.SF', 'META-INF/*.RSA', 'META-INF/*.DSA', 'META-INF/*.MF'
-}
+                         'Build-Time'            : new Date()])
 
-processResources {
-    from(rootDir) {
-        include 'LICENSE*', 'NOTICE*', 'VERSION*'
-        into 'META-INF'
+    metaInf {
+        from (rootDir) {
+            include 'LICENSE*', 'NOTICE*'
+        }
+        from generateReleaseInfo
     }
+    exclude 'META-INF/*.SF', 'META-INF/*.RSA', 'META-INF/*.DSA', 'META-INF/*.MF'
 }
 
 distributions {

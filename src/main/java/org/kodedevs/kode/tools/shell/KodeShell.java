@@ -16,7 +16,9 @@
 
 package org.kodedevs.kode.tools.shell;
 
-import org.kodedevs.kode.jsr223.KodeScriptEngineFactory;
+import org.kodedevs.kode.utils.ReleaseInfo;
+
+import java.io.IOException;
 
 public class KodeShell {
 
@@ -25,7 +27,7 @@ public class KodeShell {
     }
 
     public void run(String... args) {
-        System.out.println(new KodeScriptEngineFactory().getLanguageVersion());
+        System.out.println(ReleaseInfo.getVersion());
     }
 
     public static void main(String[] args) {

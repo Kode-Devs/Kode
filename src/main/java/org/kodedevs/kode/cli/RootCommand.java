@@ -16,7 +16,6 @@
 
 package org.kodedevs.kode.cli;
 
-import org.kodedevs.kode.tools.console.Consoles;
 import org.kodedevs.kode.utils.ReleaseInfo;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
@@ -58,14 +57,10 @@ public class RootCommand implements Runnable {
         // Dynamically set the executable name for the root command
         cmd.setCommandName("kode");
 
-        // Initialize Console
-        Consoles.getConsole().systemInstall();
-
         // Perform Execution
         int exitCode = cmd.execute(args);
 
         // Close and Exit
-        Consoles.getConsole().systemUninstall();
         System.exit(exitCode);
     }
 }

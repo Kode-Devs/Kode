@@ -113,7 +113,7 @@ task buildInstallers(type: com.install4j.gradle.Install4jTask, group: BasePlugin
 
     projectFile = 'kode.install4j'
     release = project.version
-    quiet = true    // Set it to false during debugging
+    quiet = false
 
     onlyIf {
         System.env['INSTALL4J_HOME'] != null

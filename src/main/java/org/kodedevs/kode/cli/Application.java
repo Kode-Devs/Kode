@@ -16,51 +16,62 @@
 
 package org.kodedevs.kode.cli;
 
+import org.fusesource.jansi.AnsiConsole;
+import org.kodedevs.kode.tools.shell.Shell;
 import org.kodedevs.kode.utils.ReleaseInfo;
 import picocli.CommandLine;
-import picocli.CommandLine.*;
-import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.HelpCommand;
+import picocli.CommandLine.IVersionProvider;
 
 @Command(
         synopsisSubcommandLabel = "COMMAND",
         mixinStandardHelpOptions = true,
         usageHelpAutoWidth = true,
-        versionProvider = RootCommand.VersionProvider.class,
+        versionProvider = Application.VersionProvider.class,
         sortOptions = false,
         subcommands = {
                 HelpCommand.class,
-                UpdateCommand.class,
+                Update.class,
         })
-public class RootCommand implements Runnable {
-
-    @Spec
-    CommandSpec spec;
-
-    @Override
-    public void run() {
-        // Required [sub]command to be present
-        throw new ParameterException(spec.commandLine(), "Missing required [sub]command");
-    }
-
-    // IVersionProvider implementation that returns version information
-    protected static class VersionProvider implements IVersionProvider {
-        @Override
-        public String[] getVersion() {
-            return new String[]{ReleaseInfo.getVersion()};
-        }
-    }
+public class Application implements Runnable {
 
     // Entrypoint for the CLI interface
     public static void main(String[] args) {
-        CommandLine cmd = new CommandLine(new RootCommand());
+        CommandLine cmd = new CommandLine(new Application());
 
         // Dynamically set the executable name for the root command
         cmd.setCommandName("kode");
+
+        // Enable ANSI Support
+        AnsiConsole.systemInstall();
 
         // Perform Execution
         int exitCode = cmd.execute(args);
 
         // Close and Exit
+        AnsiConsole.systemUninstall();
         System.exit(exitCode);
+    }
+
+    // Default to shell if no subcommand is mentioned
+    @Override
+    public void run() {
+        // Start REPL Shell
+        Shell shell = new Shell();
+        shell.startShell();
+    }
+
+    // IVersionProvider implementation that returns version information
+    static final class VersionProvider implements IVersionProvider {
+        @Override
+        public String[] getVersion() {
+            String version = ReleaseInfo.getVersion();
+            String buildTime = ReleaseInfo.getBuildTime();
+            return new String[]{
+                    "Kode version " + version,
+                    "Built: " + buildTime,
+            };
+        }
     }
 }

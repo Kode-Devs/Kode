@@ -23,7 +23,7 @@ import picocli.CommandLine.Command;
 import java.util.Scanner;
 
 @Command(name = "update")
-public class UpdateCommand implements Runnable {
+public class Update implements Runnable {
 
     @Override
     public void run() {

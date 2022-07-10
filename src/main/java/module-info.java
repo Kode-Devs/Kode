@@ -5,6 +5,7 @@
  */
 module org.kodedevs.kode {
     requires info.picocli;
+    requires org.fusesource.jansi;
     requires com.install4j.runtime;
 
     requires transitive java.scripting;

@@ -16,22 +16,9 @@
 
 package org.kodedevs.kode.tools.shell;
 
-import org.kodedevs.kode.utils.ReleaseInfo;
+public class Shell {
 
-import java.io.IOException;
-
-public class KodeShell {
-
-    public KodeShell() {
-
-    }
-
-    public void run(String... args) {
-        System.out.println(ReleaseInfo.getVersion());
-    }
-
-    public static void main(String[] args) {
-        KodeShell shell = new KodeShell();
-        shell.run(args);
+    public void startShell() {
+        // Shell Starts form here
     }
 }

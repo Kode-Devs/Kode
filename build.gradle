@@ -5,9 +5,13 @@ plugins {
     id 'com.install4j.gradle' version '9.0.6'
 }
 
-group 'org.kodedevs'
-version rootProject.file('VERSION').text.trim()
-description 'Kode is an open source programming language which aims for better readability and functionality.'
+group = 'org.kodedevs'
+version = rootProject.file('VERSION').text.trim()
+description = 'Kode is an open source programming language which aims for better readability and functionality.'
+
+ext {
+    buildTime = new Date()
+}
 
 repositories {
     // https://mvnrepository.com/repos/central
@@ -23,9 +27,6 @@ repositories {
 }
 
 dependencies {
-    // JavaScript Engine for testing
-    implementation 'org.openjdk.nashorn:nashorn-core:15.4'
-
     // 3rd-party libs
     implementation fileTree(dir: 'libs', includes: ['*.jar'])
 
@@ -35,6 +36,9 @@ dependencies {
     // Picocli
     implementation 'info.picocli:picocli:4.6.3'
     annotationProcessor 'info.picocli:picocli-codegen:4.6.3'
+
+    // Jansi
+    implementation 'org.fusesource.jansi:jansi:2.4.0'
 
     // Install4j Runtime
     implementation 'com.install4j:install4j-runtime:9.0.6'
@@ -66,7 +70,8 @@ task generateReleaseInfo(type: WriteProperties, group: BasePlugin.BUILD_GROUP) {
     outputFile "$buildDir/release-info/kode-release-info.properties"
     encoding 'UTF-8'
     comment project.description
-    property 'Version', project.version
+    property 'Implementation-Version', project.version
+    property 'Build-Time', buildTime
 }
 
 jar {
@@ -81,10 +86,10 @@ jar {
                          'Implementation-Title'  : "Kode",
                          'Implementation-Version': project.version,
                          'Implementation-Vendor' : project.group,
-                         'Build-Time'            : new Date()])
+                         'Build-Time'            : buildTime])
 
     metaInf {
-        from (rootDir) {
+        from(rootDir) {
             include 'LICENSE*', 'NOTICE*'
         }
         from generateReleaseInfo
@@ -111,7 +116,7 @@ install4j {
 task buildInstallers(type: com.install4j.gradle.Install4jTask, group: BasePlugin.BUILD_GROUP) {
     dependsOn 'installDist'     // task that prepares the distribution for install4j
 
-    projectFile = 'kode.install4j'
+    projectFile = rootProject.file('kode.install4j')
     release = project.version
     quiet = false
 

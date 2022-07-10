@@ -23,7 +23,9 @@ import java.util.Properties;
 public class ReleaseInfo {
     private static final Properties RELEASE_INFO = new Properties();
     private static final String RELEASE_INFO_FILE = "META-INF/kode-release-info.properties";
-    private static final String VERSION_KEY = "Version";
+
+    private static final String KEY_VERSION = "Implementation-Version";
+    private static final String KEY_BUILD_TIME = "Build-Time";
 
     static {
         ClassLoader classLoader = ReleaseInfo.class.getClassLoader();
@@ -31,12 +33,16 @@ public class ReleaseInfo {
             if (is != null) {
                 RELEASE_INFO.load(is);
             }
-        } catch (IOException e) {
+        } catch (IOException ignored) {
             // Do nothing
         }
     }
 
     public static String getVersion() {
-        return RELEASE_INFO.getProperty(VERSION_KEY, "");
+        return RELEASE_INFO.getProperty(KEY_VERSION, "");
+    }
+
+    public static String getBuildTime() {
+        return RELEASE_INFO.getProperty(KEY_BUILD_TIME, "");
     }
 }

@@ -116,7 +116,7 @@ install4j {
 task buildInstallers(type: com.install4j.gradle.Install4jTask, group: BasePlugin.BUILD_GROUP) {
     dependsOn 'installDist'     // task that prepares the distribution for install4j
 
-    projectFile = rootProject.file('kode.install4j')
+    projectFile = rootProject.file('installer/kode.install4j')
     release = project.version
     quiet = false
 

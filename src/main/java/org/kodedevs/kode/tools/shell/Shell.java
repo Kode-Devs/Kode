@@ -16,9 +16,34 @@
 
 package org.kodedevs.kode.tools.shell;
 
+import java.util.Scanner;
+
 public class Shell {
 
+    private static final String DEFAULT_PROMPT = "kode> ";
+    private static final String CMD_EXIT = "exit";
+
     public void startShell() {
-        // Shell Starts form here
+        // Scanner For User Input
+        final Scanner sc = new Scanner(System.in);
+
+        String input;
+
+        while (true) {
+            // Print Prompt
+            System.out.print(DEFAULT_PROMPT);
+
+            // Read User Input
+            input = sc.nextLine();
+
+            // If Blank
+            if (input.isBlank()) continue;
+
+            // If EXIT
+            if (input.equals(CMD_EXIT)) return;
+
+            // Otherwise
+            System.out.println(input);
+        }
     }
 }

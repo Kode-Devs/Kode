@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<install4j version="9.0.6" transformSequenceNumber="9">
-  <directoryPresets config="./assets" />
-  <application name="Kode" applicationId="5324-9166-1772-4313" mediaDir="../../build/distributions" compression="9" lzmaCompression="true" pack200Compression="true" shortName="kode" publisher="Kode Devs" publisherWeb="https://github.com/Kode-Devs/Kode" version="0.0.0-DEBUG" allPathsRelative="true" autoSave="true" macVolumeId="e8c1be0f81f5bbde" javaMinVersion="17">
+<install4j version="9.0.7" transformSequenceNumber="9">
+  <directoryPresets config="." />
+  <application name="Kode" applicationId="5324-9166-1772-4313" mediaDir="../build/distributions" compression="9" lzmaCompression="true" pack200Compression="true" shortName="kode" publisher="Kode Devs" publisherWeb="https://github.com/Kode-Devs/Kode" version="0.0.0-DEBUG" allPathsRelative="true" autoSave="true" macVolumeId="e8c1be0f81f5bbde" javaMinVersion="17">
     <jreBundles jdkProviderId="Zulu" release="17/17.0.3">
       <modules>
         <defaultModules set="minimum" />
@@ -11,36 +11,38 @@
   <files>
     <mountPoints>
       <mountPoint id="25" location="bin" />
-      <mountPoint id="26" location="libs" />
       <mountPoint id="52" />
     </mountPoints>
     <entries>
-      <dirEntry mountPoint="26" file="../../build/install/kode" subDirectory="kode" />
-      <fileEntry mountPoint="52" file="../../LICENSE" />
+      <dirEntry mountPoint="52" file="../build/install/kode" entryMode="subdir" subDirectory="libs" />
+      <fileEntry mountPoint="52" file="../LICENSE" />
     </entries>
   </files>
   <launchers>
-    <launcher name="kode" id="27">
-      <executable name="kode" iconSet="true" iconFile="./assets/logo.ico" executableDir="bin" redirectStderr="false" executableMode="console" changeWorkingDirectory="false" />
-      <java mainClass="org.kodedevs.kode.cli.RootCommand">
+    <launcher name="kode" id="27" menuName="${compiler:sys.fullName}">
+      <executable name="kode" iconSet="true" iconFile="./icon.ico" executableDir="bin" redirectStderr="false" executableMode="console" changeWorkingDirectory="false" />
+      <java mainClass="org.kodedevs.kode.cli.Application">
         <classPath>
           <scanDirectory location="libs" failOnError="false" />
         </classPath>
+        <modulePath>
+          <directory location="libs" failOnError="false" />
+        </modulePath>
       </java>
       <vmOptionsFile mode="none" />
       <iconImageFiles>
-        <file path="./assets/logo.png" />
+        <file path="./icon.png" />
       </iconImageFiles>
     </launcher>
   </launchers>
   <installerGui autoUpdateDescriptorUrl="file:///D:/PROJECT/Kode/build/distributions/updates.xml">
     <applications>
-      <application id="installer" beanClass="com.install4j.runtime.beans.applications.InstallerApplication" customIcoFile="./assets/logo.ico">
+      <application id="installer" beanClass="com.install4j.runtime.beans.applications.InstallerApplication" customIcoFile="./icon.ico">
         <serializedBean>
           <property name="customIconImageFiles">
             <add>
               <object class="com.install4j.api.beans.ExternalFile">
-                <string>./assets/logo.png</string>
+                <string>./icon.png</string>
               </object>
             </add>
           </property>
@@ -171,7 +173,7 @@ return console.askOkCancel(message, true);
                   <property name="revertOnlyIfNotModified" type="boolean" value="true" />
                   <property name="type" type="enum" class="com.install4j.runtime.beans.actions.misc.ModifyStringType" value="APPEND" />
                   <property name="userSpecific" type="boolean" value="false" />
-                  <property name="value" type="string">${installer:sys.installationDir}</property>
+                  <property name="value" type="string">${installer:sys.installationDir}/bin</property>
                   <property name="variableName" type="string">PATH</property>
                 </serializedBean>
               </action>

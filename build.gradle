@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'org.kodedevs'
-version = rootProject.file('VERSION').text.trim()
+version = kodeVersion
 description = 'Kode is an open source programming language which aims for better readability and functionality.'
 
 ext {

@@ -36,8 +36,8 @@ That's how you can easily become a member of the [Kode Devs](https://github.com/
 
 This is the official list of authors for copyright purposes.
 
-- [Arpan Mahanty](https://github.com/Edumate696) <arpan.mahanty.007@gmail.com>
-- [Apratim Sarkar](https://github.com/axen46) <apratimsarkar13031999@gmail.com>
+- [Arpan Mahanty](https://github.com/Edumate696) &lt;arpan.mahanty.007@gmail.com&gt;
+- [Apratim Sarkar](https://github.com/axen46) &lt;apratimsarkar13031999@gmail.com&gt;
 
 For a full list of contributors, visit our [GitHub Contributors](https://github.com/Kode-Devs/Kode/contributors) page.
 

@@ -1,0 +1,4 @@
+// A Simple Hello World Problem
+
+let message = "Hello World";
+console.log(message);   // Prints Hello World

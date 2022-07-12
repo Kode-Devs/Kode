@@ -29,12 +29,30 @@ Issues are used to track tasks that contributors can help with.
 If you've found something that should be updated, search open issues to see if someone else has reported the same thing.
 If it's something new, open an issue. We'll use the issue to have a conversation about the problem you want to fix.
 
+Also, you can scan through our existing issues to find one that interests you. If you find an issue to work on, you are
+welcome to open a PR with a fix.
+
 ### 🛠 Pull Requests
 
 A pull request is a way to suggest changes in our repository.
 
-When we merge those changes, they should be deployed in our next release. To learn more about opening a pull request in
-this repo, see Opening a pull request below.
+When we merge those changes, they should be deployed in our next release.
 
-# Opening a Pull Request
+Points to remember:
+
+- Fill the PR description with suitable information, so that reviewers can understand your changes as well as the
+  purpose of your pull request.
+- Don't forget to link PR to issue if you are solving one.
+- Optionally, enable the checkbox to allow maintainer edits so the branch can be updated for a merge. Once you submit
+  your PR, we will review your proposal. We may ask questions or request for additional information.
+- We may ask for changes to be made before a PR can be merged, either using suggested changes or pull request comments.
+- As you update your PR and apply changes, mark each conversation as resolved.
+
+### Your PR is merged!
+
+Congratulations 🎉🎉 Our team thanks you ✨.
+
+Now that you are officially a part of our community.
+
+
 

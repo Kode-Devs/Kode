@@ -16,100 +16,69 @@
 
 package org.kodedevs.kode.core;
 
-import org.kodedevs.kode.core.parser.Source;
+// Represents all Source Tokens
+public final class Token {
 
-/**
- * Represents all Source Tokens. They are the smallest elements of a program which are identified by
- * the compiler. Generally, Tokens include identifiers, keywords, literals, operators and
- * separators.
- *
- * @author arpan
- */
-public interface Token {
+    private final TokenType tokenType;
+    private final int startIdx;
+    private final int stopIdx;
+    private final CodeSource codeSource;
 
-    /**
-     * Gets the lexeme as represented by this token.
-     * <p>
-     * This is effectively same as that of calling {@code getTokenSource().getString(getStartIndex(),
-     * getLength())}.
-     *
-     * @return the lexeme as string
-     * @see Token#getTokenSource()
-     * @see Token#getStartIndex()
-     * @see Token#getLength()
-     * @see Source#getString(int, int)
-     */
-    default String getText() {
-        return getTokenSource().getString(getStartIndex(), getLength());
+    // Default Constructor
+    public Token(TokenType tokenType, int startIdx, int stopIdx, CodeSource codeSource) {
+        this.tokenType = tokenType;
+        this.startIdx = startIdx;
+        this.stopIdx = stopIdx;
+        this.codeSource = codeSource;
     }
 
-    /**
-     * Gets the token type of this token.
-     *
-     * @return the token type
-     */
-    TokenType getType();
-
-    /**
-     * Get the starting character index of this token.
-     *
-     * @return the starting character index
-     */
-    int getStartIndex();
-
-    /**
-     * Get the last/ending character index of this token.
-     *
-     * @return the last/ending character index
-     */
-    int getStopIndex();
-
-    /**
-     * Get the length of this token.
-     * <p>
-     * This is effectively same as that of {@code getStopIndex() - getStartIndex() + 1}.
-     *
-     * @return the length of this token, where length=1..n
-     * @see Token#getStartIndex()
-     * @see Token#getStopIndex()
-     */
-    default int getLength() {
-        return getStopIndex() - getStartIndex() + 1;
+    // Gets the token type of this token
+    public TokenType getTokenType() {
+        return tokenType;
     }
 
-    /**
-     * Get the line number at which the 1st character of this token was matched.
-     * <p>
-     * This is effectively same as that of calling {@code getTokenSource().getLineAt(getStartIndex())}.
-     *
-     * @return the line number, where line=1..n
-     * @see Token#getTokenSource()
-     * @see Token#getStartIndex()
-     * @see Source#getLineAt(int)
-     */
-    default int getLine() {
-        return getTokenSource().getLineAt(getStartIndex());
+    // Gets the starting character index of this token
+    public int getStartIdx() {
+        return startIdx;
     }
 
-    /**
-     * Get the index of the first character of this token relative to the beginning of the line at
-     * which it occurs.
-     * <p>
-     * This is effectively same as that of calling {@code getTokenSource().getColumnAt(getStartIndex())}.
-     *
-     * @return the index of the first character, where index=0..n-1
-     * @see Token#getTokenSource()
-     * @see Token#getStartIndex()
-     * @see Source#getColumnAt(int)
-     */
-    default int getCharPositionInLine() {
-        return getTokenSource().getColumnAt(getStartIndex());
+    // Gets the ending character index of this token
+    public int getStopIdx() {
+        return stopIdx;
     }
 
-    /**
-     * Gets the source object which created this token.
-     *
-     * @return the associated source object
-     */
-    Source getTokenSource();
+    // Gets the length of this token
+    public int getLength() {
+        return stopIdx - startIdx + 1;
+    }
+
+    // Gets the lexeme as represented by this token
+    public String getLexeme() {
+        return new String(codeSource.getChars(), startIdx, stopIdx - startIdx + 1);
+    }
+
+    // Gets the literal as represented by this token
+    public String getLiteral() {
+        return null;
+    }
+
+    // Get the line number at which the 1st character of this token was matched
+    public int getLineNo() {
+        return codeSource.getLineNoAt(startIdx);
+    }
+
+    // Get the index of the first character of this token relative to the beginning of the line
+    public int getColumnNo() {
+        return codeSource.getColumnNoAt(startIdx);
+    }
+
+    // Gets the source object associated with this token
+    public CodeSource getSource() {
+        return codeSource;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Token(type: %s)", tokenType);
+    }
 }

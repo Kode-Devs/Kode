@@ -16,7 +16,7 @@
 
 package org.kodedevs.kode;
 
-public class KodeException extends Exception {
+public class KodeException extends RuntimeException {
 
     public KodeException() {
         super();

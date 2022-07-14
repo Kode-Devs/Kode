@@ -16,15 +16,7 @@
 
 package org.kodedevs.kode.core;
 
-/**
- * Available token types.
- *
- * @author arpan
- */
+// Available token types
 public enum TokenType {
-
-    /**
-     * End of file
-     */
-    EOF,
+    EOF
 }

@@ -17,13 +17,20 @@
 package org.kodedevs.kode.core;
 
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Collections;
 
 public final class CodeSource {
 
-    public CodeSource() {
+    private final char[] content;
+    private final boolean eval;
 
+    private CodeSource(final char[] content, final boolean eval) {
+        this.content = content;
+        this.eval = eval;
+    }
+
+    // From Raw Source
+    public static CodeSource fromRawString(final String src, final boolean isEval) {
+        return new CodeSource(src.toCharArray(), isEval);
     }
 
     // This denotes the path the file containing the source
@@ -33,12 +40,12 @@ public final class CodeSource {
 
     // Is this source submitted via 'eval' call?
     public boolean isEvalCode() {
-        return false;
+        return eval;
     }
 
     // Gets the content of the source file
     public char[] getChars() {
-        return new char[0];
+        return content;
     }
 
     // Gets the line number denoted by the character position

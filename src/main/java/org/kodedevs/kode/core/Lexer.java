@@ -16,6 +16,8 @@
 
 package org.kodedevs.kode.core;
 
+import org.kodedevs.kode.KodeException;
+
 public final class Lexer {
 
     private final char[] content;
@@ -31,69 +33,48 @@ public final class Lexer {
     //// Section: Lexer Impl
 
     public Token scanNextToken() {
-        // Skip any whitespace
-        skipAnyWhiteSpaces();
-        final int startIdx = currIdx;
-
-        // Scan the next token
-        final TokenType type = scanToken();
-
-        // Build Token from collected info
-        return new Token(type, startIdx, currIdx, source);
-    }
-
-    private TokenType scanToken() {
-        if (isAtEnd()) return TokenType.EOF;
-
-        final char c = advance();
-
-        if (_isAlpha(c)) return identifier();
-        if (_isDigit(c)) return number();
-
-        return switch (c) {
-            case '\0' -> TokenType.EOF;
-            default -> throw new RuntimeException("Unexpected character '" + c + "'.");
-        };
-    }
-
-    private void skipAnyWhiteSpaces() {
+        // Skip any unnecessary whitespaces
+        loop:
         while (true) {
             switch (peek()) {
                 case ' ', '\n', '\r', '\t':
-                    advance(); // Skip
+                    advance();      // Skip
                     break;
                 case '/':
                     if (peek(1) == '/') {
-                        // A comment goes until the end of the line.
+                        // A single line comment goes until the end of the line
                         while (peek() != '\n' && !isAtEnd()) advance();
                     } else {
-                        return;
+                        break loop;     // It is not a whitespace character
                     }
                     break;
                 default:
-                    return;
+                    break loop;     // Otherwise
             }
         }
-    }
 
-    private TokenType identifier() {
-        return TokenType.EOF;
-    }
+        // Mark Start Pointer
+        final int startIdx = currIdx;
 
-    private TokenType number() {
-        return TokenType.EOF;
-    }
+        // Scan the next token
+        TokenType type = TokenType.EOF;
+        if (!isAtEnd()) {
+            final char ch = advance();
 
-    public static boolean _isAlpha(char c) {
-        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
-    }
+            if (Character.isLetter(ch)) {
+                // Scan for Keyword or Identifier
+            } else if (Character.isDigit(ch)) {
+                // Scan for Numbers
+            } else {
+                type = switch (ch) {        // Note: You can use yield keyword to return in switch expression
+                    case '\0' -> TokenType.EOF;     // End-of-file
+                    default -> throw new KodeException("Unexpected character: " + ch);
+                };
+            }
+        }
 
-    public static boolean _isAlphaNumeric(char c) {
-        return _isAlpha(c) || _isDigit(c);
-    }
-
-    public static boolean _isDigit(char c) {
-        return c >= '0' && c <= '9';
+        // Build Token from collected info
+        return new Token(type, startIdx, currIdx, source);
     }
 
     //// Section: Character Recognizer

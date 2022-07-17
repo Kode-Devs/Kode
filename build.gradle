@@ -126,6 +126,6 @@ task buildInstallers(type: com.install4j.gradle.Install4jTask, group: BasePlugin
 }
 
 wrapper {
-    gradleVersion = '7.4.2'
-    distributionType = Wrapper.DistributionType.BIN
+    gradleVersion = '7.5'
+    distributionType = Wrapper.DistributionType.ALL
 }

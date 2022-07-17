@@ -37,24 +37,24 @@ public final class Token {
         return tokenType;
     }
 
-    // Gets the starting character index of this token
+    // Gets the beginning character index (inclusive) of this token i.e., index of the first character
     public int getStartIdx() {
         return startIdx;
     }
 
-    // Gets the ending character index of this token
+    // Gets the ending character index (exclusive) of this token i.e., index of character just after the last character
     public int getStopIdx() {
         return stopIdx;
     }
 
     // Gets the length of this token
     public int getLength() {
-        return stopIdx - startIdx + 1;
+        return stopIdx - startIdx;
     }
 
     // Gets the lexeme as represented by this token
     public String getLexeme() {
-        return new String(codeSource.getChars(), startIdx, stopIdx - startIdx + 1);
+        return new String(codeSource.getChars(), startIdx, stopIdx - startIdx);
     }
 
     // Gets the literal as represented by this token
@@ -79,6 +79,6 @@ public final class Token {
 
     @Override
     public String toString() {
-        return String.format("Token(type: %s)", tokenType);
+        return String.format("Token(type: %s, lexeme: '%s')", tokenType, getLexeme());
     }
 }

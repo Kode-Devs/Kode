@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.tools.updater;
+package org.kodedevs.kode.tools;
 
 import com.install4j.api.context.UserCanceledException;
 import com.install4j.api.launcher.ApplicationLauncher;

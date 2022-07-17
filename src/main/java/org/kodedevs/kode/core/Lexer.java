@@ -16,7 +16,8 @@
 
 package org.kodedevs.kode.core;
 
-import org.kodedevs.kode.KodeException;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class Lexer {
 
@@ -24,6 +25,14 @@ public final class Lexer {
     private int currIdx = 0;
 
     private final CodeSource source;
+
+    // Keywords
+    private static final Map<String, TokenType> KEYWORD_MAP = new HashMap<>();
+
+    static {
+        KEYWORD_MAP.put("true", TokenType.TRUE);
+        KEYWORD_MAP.put("false", TokenType.FALSE);
+    }
 
     public Lexer(CodeSource source) {
         this.source = source;
@@ -57,24 +66,47 @@ public final class Lexer {
         final int startIdx = currIdx;
 
         // Scan the next token
-        TokenType type = TokenType.EOF;
+        TokenType tokenType = TokenType.EOF;
         if (!isAtEnd()) {
             final char ch = advance();
 
             if (Character.isLetter(ch)) {
                 // Scan for Keyword or Identifier
+                while (Character.isLetterOrDigit(peek())) {
+                    advance();      // Go until the end of the identifier
+                }
+
+                // Extract Identifier Name
+                final String identifierName = new String(content, startIdx, currIdx - startIdx);
+
+                // If identifierName is present in KEYWORD_MAP, then it is a Keyword, else Identifier
+                tokenType = KEYWORD_MAP.getOrDefault(identifierName, TokenType.IDENTIFIER);
+
             } else if (Character.isDigit(ch)) {
                 // Scan for Numbers
+                while (Character.isLetterOrDigit(peek())) {
+                    advance();      // Go until the end of the number
+                }
+
+                // All numbers belong to numeric token
+                tokenType = TokenType.NUMERIC;
+
             } else {
-                type = switch (ch) {        // Note: You can use yield keyword to return in switch expression
+                // Note: You can use yield keyword to return in switch expression
+                tokenType = switch (ch) {
                     case '\0' -> TokenType.EOF;     // End-of-file
-                    default -> throw new KodeException("Unexpected character: " + ch);
+                    case '+' -> TokenType.PLUS;
+                    case '-' -> TokenType.MINUS;
+                    case '*' -> TokenType.STAR;
+                    case '/' -> TokenType.SLASH;
+                    default -> throw new SyntaxError("Unexpected character: " + ch);
                 };
+
             }
         }
 
         // Build Token from collected info
-        return new Token(type, startIdx, currIdx, source);
+        return new Token(tokenType, startIdx, currIdx, source);
     }
 
     //// Section: Character Recognizer

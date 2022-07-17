@@ -17,7 +17,7 @@
 package org.kodedevs.kode.cli;
 
 import org.fusesource.jansi.AnsiConsole;
-import org.kodedevs.kode.tools.shell.Shell;
+import org.kodedevs.kode.tools.Shell;
 import org.kodedevs.kode.utils.ReleaseInfo;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -32,7 +32,7 @@ import picocli.CommandLine.IVersionProvider;
         sortOptions = false,
         subcommands = {
                 HelpCommand.class,
-                Update.class,
+                UpdateCmd.class,
         })
 public class Application implements Runnable {
 

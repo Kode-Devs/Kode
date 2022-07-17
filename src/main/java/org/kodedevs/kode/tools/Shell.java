@@ -14,27 +14,31 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.tools.shell;
+package org.kodedevs.kode.tools;
+
+import org.kodedevs.kode.KodeException;
+import org.kodedevs.kode.core.CodeSource;
+import org.kodedevs.kode.core.Lexer;
+import org.kodedevs.kode.core.Token;
+import org.kodedevs.kode.core.TokenType;
 
 import java.util.Scanner;
 
 public class Shell {
 
     private static final String DEFAULT_PROMPT = "kode> ";
-    private static final String CMD_EXIT = "exit";
+    private static final String CMD_EXIT = "\\q";
 
     public void startShell() {
         // Scanner For User Input
         final Scanner sc = new Scanner(System.in);
-
-        String input;
 
         while (true) {
             // Print Prompt
             System.out.print(DEFAULT_PROMPT);
 
             // Read User Input
-            input = sc.nextLine();
+            final String input = sc.nextLine();
 
             // If Blank
             if (input.isBlank()) continue;
@@ -43,7 +47,18 @@ public class Shell {
             if (input.equals(CMD_EXIT)) return;
 
             // Otherwise
-            System.out.println(input);
+            try {
+                final CodeSource cs = CodeSource.fromRawString(input, true);
+                final Lexer lexer = new Lexer(cs);
+
+                for (; ; ) {
+                    final Token token = lexer.scanNextToken();
+                    System.out.println(token);
+                    if (token.getTokenType() == TokenType.EOF) break;
+                }
+            } catch (KodeException k) {
+                System.err.println(k.getLocalizedMessage());
+            }
         }
     }
 }

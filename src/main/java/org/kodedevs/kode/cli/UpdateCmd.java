@@ -16,14 +16,14 @@
 
 package org.kodedevs.kode.cli;
 
-import org.kodedevs.kode.tools.updater.AppUpdater;
+import org.kodedevs.kode.tools.AppUpdater;
 import org.kodedevs.kode.utils.ReleaseInfo;
 import picocli.CommandLine.Command;
 
 import java.util.Scanner;
 
 @Command(name = "update")
-public class Update implements Runnable {
+public class UpdateCmd implements Runnable {
 
     @Override
     public void run() {

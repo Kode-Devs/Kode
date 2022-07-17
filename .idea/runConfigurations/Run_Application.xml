@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Application" type="Application" factoryName="Application">
+  <configuration default="false" name="Run Application" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="org.kodedevs.kode.cli.Application" />
     <module name="kode.main" />
     <extension name="coverage">

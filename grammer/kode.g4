@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// TODO: This grammar file is only a placeholder for the actual grammar file
+// Note: This grammar file is only a placeholder for the actual grammar file
 
 grammar kode;
 

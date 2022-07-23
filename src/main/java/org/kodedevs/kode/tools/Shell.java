@@ -18,10 +18,7 @@ package org.kodedevs.kode.tools;
 
 import org.fusesource.jansi.AnsiConsole;
 import org.kodedevs.kode.KodeException;
-import org.kodedevs.kode.core.CodeSource;
-import org.kodedevs.kode.core.Lexer;
-import org.kodedevs.kode.core.Token;
-import org.kodedevs.kode.core.TokenType;
+import org.kodedevs.kode.core.*;
 
 import java.util.Scanner;
 
@@ -51,12 +48,9 @@ public class Shell {
             try {
                 final CodeSource cs = CodeSource.fromRawString(input, true);
                 final Lexer lexer = new Lexer(cs);
+                final Parser parser = new Parser(lexer);
 
-                for (; ; ) {
-                    final Token token = lexer.scanNextToken();
-                    System.out.println(token);
-                    if (token.getTokenType() == TokenType.EOF) break;
-                }
+                System.out.println(parser.parse());
             } catch (KodeException k) {
                 System.err.println(k.getLocalizedMessage());
             }

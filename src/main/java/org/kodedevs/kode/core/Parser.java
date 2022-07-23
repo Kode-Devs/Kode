@@ -18,6 +18,7 @@ package org.kodedevs.kode.core;
 
 import org.kodedevs.kode.KodeBug;
 import org.kodedevs.kode.core.ast.InfixExpr;
+import org.kodedevs.kode.core.ast.LiteralExpr;
 import org.kodedevs.kode.core.ast.PostfixExpr;
 import org.kodedevs.kode.core.ast.PrefixExpr;
 
@@ -49,65 +50,37 @@ public class Parser {
 
     // -* expressions *-
 
-    // Note: For expression parsing we will be using Pratt Parser
     private Expression parseExpression() {
         return parseExpressionUsingPrattParser_(0);
     }
 
-    static {
-        // Register the simple operator parse-lets
-        prefix_(TokenType.PLUS, Precedence_.PREFIX);
-        prefix_(TokenType.MINUS, Precedence_.PREFIX);
-
-        infixLeft_(TokenType.PLUS, Precedence_.TERM);
-        infixLeft_(TokenType.MINUS, Precedence_.TERM);
-        infixLeft_(TokenType.ASTERISK, Precedence_.FACTOR);
-        infixLeft_(TokenType.SLASH, Precedence_.FACTOR);
-    }
-
-    // From low to high
-    private enum Precedence_ {
-        NONE,           //
-        ASSIGNMENT,     // =
-        LOGICAL_OR,     // or
-        LOGICAL_AND,    // and
-        LOGICAL_NOT,    // not
-        COMPARISON,     // == != < > <= >=
-        BITWISE_OR,     // |
-        BITWISE_XOR,    // ^
-        BITWISE_AND,    // &
-        SHIFT,          // << >>
-        TERM,           // + -
-        FACTOR,         // * / \ %
-        PREFIX,         // - + ~
-        POSTFIX,        //
-        EXPONENT,       // **
-    }
-
+    // Parse Expressions using Pratt Parser
     private Expression parseExpressionUsingPrattParser_(int precedence) {
-        Token token = advance();
-        final ParseLet_ prefix = prefixMap_.get(token.getTokenType());
-        if (prefix == null) {
-            // Go out of Pratt Parser Scope
-            return parseAtomic();
-        }
 
-        Expression left = new PrefixExpr(token, parseExpressionUsingPrattParser_(prefix.precedence));
+        Expression left;
+        final ParseLet_ prefix = prefixMap_.get(peek().getTokenType());
+        if (prefix != null) {
+            final Token token = advance();
+            left = new PrefixExpr(token, parseExpressionUsingPrattParser_(prefix.precedence));
+        } else {
+            // Go out of Pratt Parser Scope
+            left = parseAtomic();
+        }
 
         while (suffixMap_.containsKey(peek().getTokenType())
                 && precedence < suffixMap_.get(peek().getTokenType()).precedence) {
 
-            token = advance();
-            final ParseLet_ suffix = suffixMap_.get(token.getTokenType());
+            final Token operator = advance();
+            final ParseLet_ suffix = suffixMap_.get(operator.getTokenType());
             if (suffix.isInfix) {
                 // To handle right-associative operators, we allow a slightly lower precedence when parsing
                 // the right-hand side. This will let a parse-let with the same precedence appear on
                 // the right, which will then take this parse-let's result as its left-hand argument.
-                left = new InfixExpr(left, token, parseExpressionUsingPrattParser_(
+                left = new InfixExpr(left, operator, parseExpressionUsingPrattParser_(
                         suffix.precedence - (suffix.isRightAssociative ? 1 : 0)
                 ));
             } else {
-                return new PostfixExpr(left, token);
+                return new PostfixExpr(left, operator);
             }
         }
 
@@ -140,10 +113,47 @@ public class Parser {
     private record ParseLet_(boolean isInfix, boolean isRightAssociative, int precedence) {
     }
 
+    // From low to high
+    private enum Precedence_ {
+        NONE,           //
+        ASSIGNMENT,     // =
+        LOGICAL_OR,     // or
+        LOGICAL_AND,    // and
+        LOGICAL_NOT,    // not
+        COMPARISON,     // == != < > <= >=
+        BITWISE_OR,     // |
+        BITWISE_XOR,    // ^
+        BITWISE_AND,    // &
+        SHIFT,          // << >>
+        TERM,           // + -
+        FACTOR,         // * / \ %
+        PREFIX,         // - + ~
+        POSTFIX,        //
+        EXPONENT,       // **
+    }
+
+    static {
+        // Register the simple operator parse-lets
+        prefix_(TokenType.PLUS, Precedence_.PREFIX);
+        prefix_(TokenType.MINUS, Precedence_.PREFIX);
+
+        infixLeft_(TokenType.PLUS, Precedence_.TERM);
+        infixLeft_(TokenType.MINUS, Precedence_.TERM);
+        infixLeft_(TokenType.ASTERISK, Precedence_.FACTOR);
+        infixLeft_(TokenType.SLASH, Precedence_.FACTOR);
+    }
+
     // -* atoms *-
 
     private Expression parseAtomic() {
-        return null;
+
+        // Literal
+        if (match(TokenType.TRUE, TokenType.FALSE, TokenType.NUMERIC, TokenType.STRING)) {
+            return new LiteralExpr(previous());
+        }
+
+        // Otherwise
+        throw new SyntaxError("Expect expression.", peek());
     }
 
     //// Section: Token Recognizer
@@ -186,6 +196,11 @@ public class Parser {
     private Token peek(int offset) {
         if (offset == -1) {
             return lastToken;
+        }
+
+        // Prime the buffer
+        if (buffer.isEmpty()) {
+            buffer.offer(lexer.scanNextToken());
         }
 
         // Sync n next tokens

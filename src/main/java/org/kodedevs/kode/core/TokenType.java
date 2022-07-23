@@ -29,5 +29,5 @@ public enum TokenType {
     NUMERIC, STRING,
 
     // Operators
-    PLUS, MINUS, STAR, SLASH,
+    PLUS, MINUS, ASTERISK, SLASH,
 }

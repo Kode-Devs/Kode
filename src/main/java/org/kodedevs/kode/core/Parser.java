@@ -16,11 +16,15 @@
 
 package org.kodedevs.kode.core;
 
-import org.kodedevs.kode.KodeException;
+import org.kodedevs.kode.KodeBug;
+import org.kodedevs.kode.core.ast.InfixExpr;
+import org.kodedevs.kode.core.ast.PostfixExpr;
+import org.kodedevs.kode.core.ast.PrefixExpr;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 public class Parser {
@@ -47,7 +51,93 @@ public class Parser {
 
     // Note: For expression parsing we will be using Pratt Parser
     private Expression parseExpression() {
-        return null;
+        return parseExpressionUsingPrattParser_(0);
+    }
+
+    static {
+        // Register the simple operator parse-lets
+        prefix_(TokenType.PLUS, Precedence_.PREFIX);
+        prefix_(TokenType.MINUS, Precedence_.PREFIX);
+
+        infixLeft_(TokenType.PLUS, Precedence_.TERM);
+        infixLeft_(TokenType.MINUS, Precedence_.TERM);
+        infixLeft_(TokenType.ASTERISK, Precedence_.FACTOR);
+        infixLeft_(TokenType.SLASH, Precedence_.FACTOR);
+    }
+
+    // From low to high
+    private enum Precedence_ {
+        NONE,           //
+        ASSIGNMENT,     // =
+        LOGICAL_OR,     // or
+        LOGICAL_AND,    // and
+        LOGICAL_NOT,    // not
+        COMPARISON,     // == != < > <= >=
+        BITWISE_OR,     // |
+        BITWISE_XOR,    // ^
+        BITWISE_AND,    // &
+        SHIFT,          // << >>
+        TERM,           // + -
+        FACTOR,         // * / \ %
+        PREFIX,         // - + ~
+        POSTFIX,        //
+        EXPONENT,       // **
+    }
+
+    private Expression parseExpressionUsingPrattParser_(int precedence) {
+        Token token = advance();
+        final ParseLet_ prefix = prefixMap_.get(token.getTokenType());
+        if (prefix == null) {
+            // Go out of Pratt Parser Scope
+            return parseAtomic();
+        }
+
+        Expression left = new PrefixExpr(token, parseExpressionUsingPrattParser_(prefix.precedence));
+
+        while (suffixMap_.containsKey(peek().getTokenType())
+                && precedence < suffixMap_.get(peek().getTokenType()).precedence) {
+
+            token = advance();
+            final ParseLet_ suffix = suffixMap_.get(token.getTokenType());
+            if (suffix.isInfix) {
+                // To handle right-associative operators, we allow a slightly lower precedence when parsing
+                // the right-hand side. This will let a parse-let with the same precedence appear on
+                // the right, which will then take this parse-let's result as its left-hand argument.
+                left = new InfixExpr(left, token, parseExpressionUsingPrattParser_(
+                        suffix.precedence - (suffix.isRightAssociative ? 1 : 0)
+                ));
+            } else {
+                return new PostfixExpr(left, token);
+            }
+        }
+
+        return left;
+    }
+
+    // Registers a prefix unary operator parse-let for the given token and precedence
+    private static void prefix_(TokenType type, Precedence_ precedence) {
+        prefixMap_.put(type, new ParseLet_(false, false, precedence.ordinal()));
+    }
+
+    // Registers a postfix unary operator parse-let for the given token and precedence
+    private static void postfix_(TokenType type, Precedence_ precedence) {
+        suffixMap_.put(type, new ParseLet_(false, false, precedence.ordinal()));
+    }
+
+    // Registers a left-associative binary operator parse=let for the given token and precedence
+    private static void infixLeft_(TokenType type, Precedence_ precedence) {
+        suffixMap_.put(type, new ParseLet_(true, false, precedence.ordinal()));
+    }
+
+    // Registers a right-associative binary operator parse-let for the given token and precedence
+    private static void infixRight_(TokenType type, Precedence_ precedence) {
+        suffixMap_.put(type, new ParseLet_(true, true, precedence.ordinal()));
+    }
+
+    private static final Map<TokenType, ParseLet_> prefixMap_ = new HashMap<>();
+    private static final Map<TokenType, ParseLet_> suffixMap_ = new HashMap<>();
+
+    private record ParseLet_(boolean isInfix, boolean isRightAssociative, int precedence) {
     }
 
     // -* atoms *-
@@ -83,7 +173,7 @@ public class Parser {
                     buffer.offer(lexer.scanNextToken());
                 }
             } catch (NoSuchElementException e) {
-                throw new KodeException("No tokens available to consume");
+                throw new KodeBug("No tokens available to consume");
             }
         }
         return previous();
@@ -106,7 +196,7 @@ public class Parser {
         try {
             return buffer.get(offset);
         } catch (NoSuchElementException e) {
-            throw new KodeException("Token at offset " + offset + " is not in current token buffer window");
+            throw new KodeBug("Token at offset " + offset + " is not in current token buffer window");
         }
     }
 

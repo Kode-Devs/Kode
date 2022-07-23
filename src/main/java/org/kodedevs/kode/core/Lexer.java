@@ -97,7 +97,7 @@ public final class Lexer {
                     case '\0' -> TokenType.EOF;     // End-of-file
                     case '+' -> TokenType.PLUS;
                     case '-' -> TokenType.MINUS;
-                    case '*' -> TokenType.STAR;
+                    case '*' -> TokenType.ASTERISK;
                     case '/' -> TokenType.SLASH;
                     default -> throw new SyntaxError("Unexpected character: " + ch);
                 };

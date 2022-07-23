@@ -80,6 +80,7 @@ jar {
                          'Created-By'            : "Gradle API ${gradle.gradleVersion}",
                          'Built-By'              : System.getProperty('user.name'),
                          'Build-Jdk'             : "${System.getProperty('java.version')} (${System.getProperty('java.vendor')} ${System.getProperty('java.vm.version')})",
+                         'Automatic-Module-Name' : "org.kodedevs.kode",
                          'Specification-Title'   : "Kode",
                          'Specification-Version' : project.version,
                          'Specification-Vendor'  : project.group,

@@ -58,8 +58,7 @@ public class Application implements Runnable {
     @Override
     public void run() {
         // Start REPL Shell
-        Shell shell = new Shell();
-        shell.startShell();
+        Shell.start();
     }
 
     // IVersionProvider implementation that returns version information

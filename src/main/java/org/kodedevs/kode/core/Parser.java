@@ -20,6 +20,7 @@ import org.kodedevs.kode.KodeException;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Parser {
@@ -35,6 +36,25 @@ public class Parser {
     }
 
     //// Section: Parser Impl
+
+    public Expression parse() {
+        return parseExpression();
+    }
+
+    // -* statements *-
+
+    // -* expressions *-
+
+    // Note: For expression parsing we will be using Pratt Parser
+    private Expression parseExpression() {
+        return null;
+    }
+
+    // -* atoms *-
+
+    private Expression parseAtomic() {
+        return null;
+    }
 
     //// Section: Token Recognizer
 

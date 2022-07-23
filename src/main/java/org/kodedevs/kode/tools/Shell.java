@@ -16,6 +16,7 @@
 
 package org.kodedevs.kode.tools;
 
+import org.fusesource.jansi.AnsiConsole;
 import org.kodedevs.kode.KodeException;
 import org.kodedevs.kode.core.CodeSource;
 import org.kodedevs.kode.core.Lexer;
@@ -26,16 +27,16 @@ import java.util.Scanner;
 
 public class Shell {
 
-    private static final String DEFAULT_PROMPT = "kode> ";
-    private static final String CMD_EXIT = "\\q";
+    public static void start() {
+        // Enable ANSI
+        AnsiConsole.systemInstall();
 
-    public void startShell() {
         // Scanner For User Input
         final Scanner sc = new Scanner(System.in);
 
         while (true) {
             // Print Prompt
-            System.out.print(DEFAULT_PROMPT);
+            System.out.print("$> ");
 
             // Read User Input
             final String input = sc.nextLine();
@@ -44,7 +45,7 @@ public class Shell {
             if (input.isBlank()) continue;
 
             // If EXIT
-            if (input.equals(CMD_EXIT)) return;
+            if (input.equals("\\q")) break;
 
             // Otherwise
             try {
@@ -60,5 +61,8 @@ public class Shell {
                 System.err.println(k.getLocalizedMessage());
             }
         }
+
+        // Disable ANSI
+        AnsiConsole.systemUninstall();
     }
 }

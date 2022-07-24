@@ -17,10 +17,7 @@
 package org.kodedevs.kode.core;
 
 import org.kodedevs.kode.KodeBug;
-import org.kodedevs.kode.core.ast.InfixExpr;
-import org.kodedevs.kode.core.ast.LiteralExpr;
-import org.kodedevs.kode.core.ast.PostfixExpr;
-import org.kodedevs.kode.core.ast.PrefixExpr;
+import org.kodedevs.kode.core.ast.*;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
@@ -152,6 +149,13 @@ public class Parser {
             return new LiteralExpr(previous());
         }
 
+        // Parentheses
+        if (match(TokenType.LEFT_PAREN)) {
+            final Expression expression = parseExpression();
+            consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
+            return new GroupExpr(expression);
+        }
+
         // Otherwise
         throw new SyntaxError("Expect expression.", peek());
     }
@@ -170,6 +174,11 @@ public class Parser {
 
     private boolean check(TokenType symbol) {
         return peek().getTokenType() == symbol;
+    }
+
+    private Token consume(TokenType symbol, String errMsg) {
+        if (peek().getTokenType() == symbol) return advance();
+        else throw new SyntaxError(errMsg, peek());
     }
 
     private Token advance() {

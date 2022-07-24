@@ -149,6 +149,11 @@ public class Parser {
             return new LiteralExpr(previous());
         }
 
+        // Fetch Variable
+        if (match(TokenType.IDENTIFIER)) {
+            return new FetchExpr(previous());
+        }
+
         // Parentheses
         if (match(TokenType.LEFT_PAREN)) {
             final Expression expression = parseExpression();

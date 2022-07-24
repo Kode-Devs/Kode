@@ -20,4 +20,9 @@ import org.kodedevs.kode.core.Expression;
 import org.kodedevs.kode.core.Token;
 
 public record InfixExpr(Expression left, Token operator, Expression right) implements Expression {
+
+    @Override
+    public String toString() {
+        return "( " + left + " " + operator.getLexeme() + " " + right + " )";
+    }
 }

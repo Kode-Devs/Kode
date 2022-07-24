@@ -20,4 +20,9 @@ import org.kodedevs.kode.core.Expression;
 import org.kodedevs.kode.core.Token;
 
 public record LiteralExpr(Token literal) implements Expression {
+
+    @Override
+    public String toString() {
+        return literal.getLexeme();
+    }
 }

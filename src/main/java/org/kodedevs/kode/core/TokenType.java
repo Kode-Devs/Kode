@@ -23,11 +23,15 @@ public enum TokenType {
     EOF, IDENTIFIER,
 
     // Keywords
-    TRUE, FALSE,
+    TRUE, FALSE, AND, OR, NOT,
 
     // Literals
     NUMERIC, STRING,
 
+    // Brackets
+    LEFT_PAREN, RIGHT_PAREN,
+
     // Operators
-    PLUS, MINUS, ASTERISK, SLASH,
+    PLUS, MINUS, ASTERISK, SLASH, BACK_SLASH,
+    CARET, AMPERSAND, PIPE,
 }

@@ -19,4 +19,9 @@ package org.kodedevs.kode.core.ast;
 import org.kodedevs.kode.core.Expression;
 
 public record GroupExpr(Expression expression) implements Expression {
+
+    @Override
+    public String toString() {
+        return "(group " + expression + " )";
+    }
 }

@@ -30,8 +30,14 @@ public final class Lexer {
     private static final Map<String, TokenType> KEYWORD_MAP = new HashMap<>();
 
     static {
+        // Boolean
         KEYWORD_MAP.put("true", TokenType.TRUE);
         KEYWORD_MAP.put("false", TokenType.FALSE);
+
+        // Logical
+        KEYWORD_MAP.put("and", TokenType.AND);
+        KEYWORD_MAP.put("or", TokenType.OR);
+        KEYWORD_MAP.put("not", TokenType.NOT);
     }
 
     public Lexer(CodeSource source) {
@@ -84,8 +90,17 @@ public final class Lexer {
 
             } else if (Character.isDigit(ch)) {
                 // Scan for Numbers
-                while (Character.isLetterOrDigit(peek())) {
+                while (Character.isDigit(peek())) {
                     advance();      // Go until the end of the number
+                }
+
+                // Look for a fractional part
+                if (peek() == '.' && Character.isDigit(peek(1))) {
+                    advance();      // Consume the '.'
+
+                    while (Character.isDigit(peek())) {
+                        advance();      // Go until the end of the fractional part
+                    }
                 }
 
                 // All numbers belong to numeric token
@@ -94,11 +109,35 @@ public final class Lexer {
             } else {
                 // Note: You can use yield keyword to return in switch expression
                 tokenType = switch (ch) {
-                    case '\0' -> TokenType.EOF;     // End-of-file
-                    case '+' -> TokenType.PLUS;
-                    case '-' -> TokenType.MINUS;
-                    case '*' -> TokenType.ASTERISK;
-                    case '/' -> TokenType.SLASH;
+                    // Single Char Lexemes
+                    case '\0' -> TokenType.EOF;             // End-of-file
+                    case '(' -> TokenType.LEFT_PAREN;       // Left Parentheses
+                    case ')' -> TokenType.RIGHT_PAREN;      // Right Parentheses
+                    case '+' -> TokenType.PLUS;             // Addition or Unary plus
+                    case '-' -> TokenType.MINUS;            // Subtraction or Unary minus
+                    case '*' -> TokenType.ASTERISK;         // Multiplication
+                    case '/' -> TokenType.SLASH;            // Division
+                    case '\\' -> TokenType.BACK_SLASH;      // Floor division
+                    case '&' -> TokenType.AMPERSAND;        // Bitwise AND
+                    case '^' -> TokenType.CARET;            // Bitwise XOR
+                    case '|' -> TokenType.PIPE;             // Bitwise OR
+
+                    // Double Character Lexemes
+
+                    // Longer Lexemes
+                    case '\'', '\"' -> {                    // Strings
+                        while (!isAtEnd()) {
+                            if (peek() == ch || peek() == '\n') break;
+                            else advance();
+                        }
+
+                        // Unterminated string
+                        if(!match(ch)) throw new SyntaxError("Unterminated string.");
+
+                        yield TokenType.STRING;
+                    }
+
+                    // Default
                     default -> throw new SyntaxError("Unexpected character: " + ch);
                 };
 
@@ -130,6 +169,7 @@ public final class Lexer {
         return previous();
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean isAtEnd() {
         return currIdx >= content.length;
     }

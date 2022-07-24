@@ -69,7 +69,23 @@ public class Parser {
 
             final Token operator = advance();
             final ParseLet_ suffix = suffixMap_.get(operator.getTokenType());
-            if (suffix.isInfix) {
+            if (suffix.isSpecial) {
+                left = switch (operator.getTokenType()) {
+                    case ASSIGN -> {
+                        final Expression right = parseExpressionUsingPrattParser_(suffix.precedence - 1);
+
+                        if (left instanceof FetchExpr fetch) {          // identifier = new_value
+                            yield new StoreExpr(fetch.name(), right);
+                        }
+                        if (left instanceof GetterExpr getter) {        // obj.field = new_value
+                            yield new SetterExpr(getter.object(), getter.name(), right);
+                        }
+
+                        throw new SyntaxError("Invalid assignment target.", peek());
+                    }
+                    default -> throw new KodeBug("Missing special parse-let handle");
+                };
+            } else if (suffix.isInfix) {
                 // To handle right-associative operators, we allow a slightly lower precedence when parsing
                 // the right-hand side. This will let a parse-let with the same precedence appear on
                 // the right, which will then take this parse-let's result as its left-hand argument.
@@ -86,28 +102,34 @@ public class Parser {
 
     // Registers a prefix unary operator parse-let for the given token and precedence
     private static void prefix_(TokenType type, Precedence_ precedence) {
-        prefixMap_.put(type, new ParseLet_(false, false, precedence.ordinal()));
+        prefixMap_.put(type, new ParseLet_(false, false, false, precedence.ordinal()));
     }
 
     // Registers a postfix unary operator parse-let for the given token and precedence
     private static void postfix_(TokenType type, Precedence_ precedence) {
-        suffixMap_.put(type, new ParseLet_(false, false, precedence.ordinal()));
+        suffixMap_.put(type, new ParseLet_(false, false, false, precedence.ordinal()));
+    }
+
+    // Registers a postfix unary operator parse-let for the given token and precedence
+    private static void special_(TokenType type, Precedence_ precedence) {
+        suffixMap_.put(type, new ParseLet_(false, false, true, precedence.ordinal()));
     }
 
     // Registers a left-associative binary operator parse=let for the given token and precedence
     private static void infixLeft_(TokenType type, Precedence_ precedence) {
-        suffixMap_.put(type, new ParseLet_(true, false, precedence.ordinal()));
+        suffixMap_.put(type, new ParseLet_(true, false, false, precedence.ordinal()));
     }
 
     // Registers a right-associative binary operator parse-let for the given token and precedence
     private static void infixRight_(TokenType type, Precedence_ precedence) {
-        suffixMap_.put(type, new ParseLet_(true, true, precedence.ordinal()));
+        suffixMap_.put(type, new ParseLet_(true, true, false, precedence.ordinal()));
     }
 
     private static final Map<TokenType, ParseLet_> prefixMap_ = new HashMap<>();
     private static final Map<TokenType, ParseLet_> suffixMap_ = new HashMap<>();
 
-    private record ParseLet_(boolean isInfix, boolean isRightAssociative, int precedence) {
+    private record ParseLet_(boolean isInfix, boolean isRightAssociative, boolean isSpecial,
+                             int precedence) {
     }
 
     // From low to high
@@ -130,6 +152,9 @@ public class Parser {
     }
 
     static {
+        // Register the ones that need special parse-lets
+        special_(TokenType.ASSIGN, Precedence_.ASSIGNMENT);
+
         // Register the simple operator parse-lets
         prefix_(TokenType.PLUS, Precedence_.PREFIX);
         prefix_(TokenType.MINUS, Precedence_.PREFIX);

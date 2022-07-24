@@ -33,5 +33,5 @@ public enum TokenType {
 
     // Operators
     PLUS, MINUS, ASTERISK, SLASH, BACK_SLASH,
-    CARET, AMPERSAND, PIPE,
+    CARET, AMPERSAND, PIPE, ASSIGN,
 }

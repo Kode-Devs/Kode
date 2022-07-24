@@ -123,6 +123,7 @@ public final class Lexer {
                     case '|' -> TokenType.PIPE;             // Bitwise OR
 
                     // Double Character Lexemes
+                    case '=' -> TokenType.ASSIGN;           // Equals or Assignment
 
                     // Longer Lexemes
                     case '\'', '\"' -> {                    // Strings

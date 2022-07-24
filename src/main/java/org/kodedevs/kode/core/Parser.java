@@ -71,7 +71,7 @@ public class Parser {
             final ParseLet_ suffix = suffixMap_.get(operator.getTokenType());
             if (suffix.isSpecial) {
                 left = switch (operator.getTokenType()) {
-                    case ASSIGN -> {
+                    case ASSIGN -> {                                    // Assignment
                         final Expression right = parseExpressionUsingPrattParser_(suffix.precedence - 1);
 
                         if (left instanceof FetchExpr fetch) {          // identifier = new_value

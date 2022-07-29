@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core;
+package org.kodedevs.kode.sdk.ast;
 
-public interface Statement {
+import org.kodedevs.kode.sdk.Expression;
+import org.kodedevs.kode.sdk.Token;
+
+public record FetchExpr(Token name) implements Expression {
+
+    @Override
+    public String toString() {
+        return name.getLexeme();
+    }
 }

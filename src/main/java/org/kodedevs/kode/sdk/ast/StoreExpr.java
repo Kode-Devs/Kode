@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core.ast;
+package org.kodedevs.kode.sdk.ast;
 
-import org.kodedevs.kode.core.Expression;
-import org.kodedevs.kode.core.Token;
+import org.kodedevs.kode.sdk.Expression;
+import org.kodedevs.kode.sdk.Token;
 
-public record PrefixExpr(Token operator, Expression right) implements Expression {
+public record StoreExpr(Token name, Expression value) implements Expression {
 
     @Override
     public String toString() {
-        return "( " + operator.getLexeme() + " " + right + " )";
+        return name.getLexeme() + " <- " + value;
     }
 }

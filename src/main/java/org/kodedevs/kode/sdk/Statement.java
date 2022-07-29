@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core;
+package org.kodedevs.kode.sdk;
 
-public interface Expression {
+public interface Statement {
 }

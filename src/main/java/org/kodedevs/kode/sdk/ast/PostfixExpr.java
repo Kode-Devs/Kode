@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core.ast;
+package org.kodedevs.kode.sdk.ast;
 
-import org.kodedevs.kode.core.Expression;
+import org.kodedevs.kode.sdk.Expression;
+import org.kodedevs.kode.sdk.Token;
 
-public record GroupExpr(Expression expression) implements Expression {
+public record PostfixExpr(Expression left, Token operator) implements Expression {
 
     @Override
     public String toString() {
-        return "(group " + expression + " )";
+        return "( " + left + " " + operator.getLexeme() + " )";
     }
 }

@@ -18,7 +18,7 @@ package org.kodedevs.kode.tools;
 
 import org.fusesource.jansi.AnsiConsole;
 import org.kodedevs.kode.KodeException;
-import org.kodedevs.kode.core.*;
+import org.kodedevs.kode.sdk.*;
 
 import java.util.Scanner;
 

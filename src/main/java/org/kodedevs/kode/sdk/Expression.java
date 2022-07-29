@@ -14,15 +14,7 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core.ast;
+package org.kodedevs.kode.sdk;
 
-import org.kodedevs.kode.core.Expression;
-import org.kodedevs.kode.core.Token;
-
-public record PostfixExpr(Expression left, Token operator) implements Expression {
-
-    @Override
-    public String toString() {
-        return "( " + left + " " + operator.getLexeme() + " )";
-    }
+public interface Expression {
 }

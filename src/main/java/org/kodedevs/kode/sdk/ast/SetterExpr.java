@@ -14,24 +14,10 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core;
+package org.kodedevs.kode.sdk.ast;
 
-// Available token types
-public enum TokenType {
+import org.kodedevs.kode.sdk.Expression;
+import org.kodedevs.kode.sdk.Token;
 
-    // Specials
-    EOF, IDENTIFIER,
-
-    // Keywords
-    TRUE, FALSE, AND, OR, NOT,
-
-    // Literals
-    NUMERIC, STRING,
-
-    // Brackets
-    LEFT_PAREN, RIGHT_PAREN,
-
-    // Operators
-    PLUS, MINUS, ASTERISK, SLASH, BACK_SLASH,
-    CARET, AMPERSAND, PIPE, ASSIGN,
+public record SetterExpr(Expression object, Token name, Expression value) implements Expression {
 }

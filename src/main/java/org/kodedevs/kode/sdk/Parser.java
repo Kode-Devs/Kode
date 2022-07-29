@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.core;
+package org.kodedevs.kode.sdk;
 
 import org.kodedevs.kode.KodeBug;
-import org.kodedevs.kode.core.ast.*;
+import org.kodedevs.kode.sdk.ast.*;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;

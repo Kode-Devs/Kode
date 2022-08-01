@@ -42,7 +42,7 @@ public final class RuntimeState {
         if (locals.isEmpty()) {
             globals.put(name, value);
         } else {
-            locals.getFirst().put(name, value);
+            locals.peek().put(name, value);
         }
     }
 

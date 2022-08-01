@@ -16,17 +16,5 @@
 
 package org.kodedevs.kode.sdk;
 
-public interface Statement {
-
-    default void execute(RuntimeState runtimeState) {
-        // Todo your handling code here
-    }
-
-    //// Section: Visitor Pattern
-
-    interface Visitor<R> {
-
-    }
-
-    <R> R accept(Visitor<R> visitor);
+public class RuntimeState {
 }

@@ -20,6 +20,13 @@ import org.kodedevs.kode.sdk.ast.*;
 
 public interface Expression {
 
+    default ScriptInstance evaluate(RuntimeState runtimeState) {
+        // Todo your handling code here
+        return null;
+    }
+
+    //// Section: Visitor Pattern
+
     interface Visitor<R> {
 
         R visit(GroupExpr groupExpr);

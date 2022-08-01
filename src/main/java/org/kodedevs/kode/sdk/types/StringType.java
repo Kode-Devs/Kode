@@ -14,13 +14,7 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.sdk;
+package org.kodedevs.kode.sdk.types;
 
-public interface ScriptInstance {
-
-    // Retrieves a property from the underlying object, by using its name
-    ScriptInstance lookup(final String name);
-
-    // Assigns a property to the underlying object, by using its name
-    void assign(final String name, final ScriptInstance value);
+public class StringType {
 }

@@ -22,6 +22,11 @@ import org.kodedevs.kode.sdk.Token;
 public record PrefixExpr(Token operator, Expression right) implements Expression {
 
     @Override
+    public <R> R accept(Visitor<R> visitor) {
+        return visitor.visit(this);
+    }
+
+    @Override
     public String toString() {
         return "( " + operator.getLexeme() + " " + right + " )";
     }

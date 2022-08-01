@@ -21,6 +21,11 @@ import org.kodedevs.kode.sdk.Expression;
 public record GroupExpr(Expression expression) implements Expression {
 
     @Override
+    public <R> R accept(Visitor<R> visitor) {
+        return visitor.visit(this);
+    }
+
+    @Override
     public String toString() {
         return "(group " + expression + " )";
     }

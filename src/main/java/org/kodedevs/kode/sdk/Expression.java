@@ -16,5 +16,30 @@
 
 package org.kodedevs.kode.sdk;
 
+import org.kodedevs.kode.sdk.ast.*;
+
 public interface Expression {
+
+    interface Visitor<R> {
+
+        R visit(GroupExpr groupExpr);
+
+        R visit(LiteralExpr literalExpr);
+
+        R visit(FetchExpr fetchExpr);
+
+        R visit(StoreExpr storeExpr);
+
+        R visit(GetterExpr getterExpr);
+
+        R visit(SetterExpr setterExpr);
+
+        R visit(PrefixExpr prefixExpr);
+
+        R visit(PostfixExpr postfixExpr);
+
+        R visit(InfixExpr infixExpr);
+    }
+
+    <R> R accept(Visitor<R> visitor);
 }

@@ -20,4 +20,14 @@ import org.kodedevs.kode.sdk.Expression;
 import org.kodedevs.kode.sdk.Token;
 
 public record SetterExpr(Expression object, Token name, Expression value) implements Expression {
+
+    @Override
+    public <R> R accept(Visitor<R> visitor) {
+        return visitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        return object + "." + name.getLexeme() + " <- " + value;
+    }
 }

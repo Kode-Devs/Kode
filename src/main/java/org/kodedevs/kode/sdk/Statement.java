@@ -17,4 +17,10 @@
 package org.kodedevs.kode.sdk;
 
 public interface Statement {
+
+    interface Visitor<R> {
+
+    }
+
+    <R> R accept(Visitor<R> visitor);
 }

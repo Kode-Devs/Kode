@@ -22,9 +22,9 @@ import org.kodedevs.kode.sdk.*;
 
 import java.util.Scanner;
 
-public class Shell {
+public class CLIToolKit {
 
-    public static void start() {
+    public static void runInteractiveCLI() {
         // Enable ANSI
         AnsiConsole.systemInstall();
 

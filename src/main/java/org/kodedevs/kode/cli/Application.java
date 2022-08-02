@@ -17,7 +17,7 @@
 package org.kodedevs.kode.cli;
 
 import org.fusesource.jansi.AnsiConsole;
-import org.kodedevs.kode.tools.Shell;
+import org.kodedevs.kode.tools.CLIToolKit;
 import org.kodedevs.kode.utils.ReleaseInfo;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -58,7 +58,7 @@ public class Application implements Runnable {
     @Override
     public void run() {
         // Start REPL Shell
-        Shell.start();
+        CLIToolKit.runInteractiveCLI();
     }
 
     // IVersionProvider implementation that returns version information

@@ -1,49 +1,68 @@
 # This workflow action performs code analysis over the repo to ensure safety from build failures
 # as well as security faults
+# Refer to https://github.com/github/codeql-action
 
 name: Code Analysis
 
 on:
-  push:
-    branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
+#   push:
+#     branches: [ develop ]
+#   pull_request:
+#     branches: [ develop ]
+  schedule:
+    #        ┌───────────── minute (0 - 59)
+    #        │  ┌───────────── hour (0 - 23)
+    #        │  │ ┌───────────── day of the month (1 - 31)
+    #        │  │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+    #        │  │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+    #        │  │ │ │ │
+    #        │  │ │ │ │
+    #        │  │ │ │ │
+    #        *  * * * *
+    - cron: '0 0 * * 0'
 
 jobs:
-  analyze:
-    name: Code Analysis
+  CodeQL-Build:
+    # CodeQL runs on ubuntu-latest, windows-latest, and macos-latest
     runs-on: ubuntu-latest
+    
     permissions:
+      # required for all workflows
+      security-events: write
+      
+      # only required for workflows in private repositories
       actions: read
       contents: read
-      security-events: write
 
     steps:
-      # Setup Build Environment
+      # Checkout Repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      # Initializes the CodeQL tools for scanning
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
           languages: java
 
-      - name: Set up JDK 17
+      # Setup Java 17 (Refer to https://github.com/actions/setup-java)
+      - name: Setup Java 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: 'zulu'  # See 'Supported distributions' for available options
           java-version: '17'
 
-      - name: Gradle Wrapper Validation
+      # Validate Gradle Wrapper
+      - name: Validate Gradle Wrapper 
         uses: gradle/wrapper-validation-action@v1.0.4
 
-      # Build Java Project
+      # Build Java Project with Gradle
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2.2.1
         with:
           arguments: build
           cache-disabled: true
 
-      # Analyze Source Code
+      # Perform CodeQL Analysis
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2

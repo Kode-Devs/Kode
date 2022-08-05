@@ -44,7 +44,7 @@ dependencies {
     implementation 'com.install4j:install4j-runtime:9.0.6'
 
     // JUnit5
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
 }
 
 test {
@@ -55,10 +55,8 @@ java {
     withJavadocJar()
     withSourcesJar()
 
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-        vendor = JvmVendorSpec.AZUL
-    }
+    // Minimum Java Version Compatibility
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
 tasks.withType(JavaCompile) {

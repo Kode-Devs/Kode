@@ -6,8 +6,8 @@ If you just want to build Kode from source, here are the instructions for a simp
 
 Kode is written on Java SE platform and is packaged using Install4j Multi-Platform Java Installer Builder.
 
-- [Java JDK 17.x](https://www.azul.com/downloads/?version=java-17-lts&package=jdk) (Azul Zulu Builds)
-- [Install4j 9.x](https://www.ej-technologies.com/download/install4j/files) (Optional)
+- [Java JDK 17+](https://www.azul.com/downloads/?version=java-17-lts&package=jdk) (Preferably Azul Zulu Builds)
+- [Install4j 9+](https://www.ej-technologies.com/download/install4j/files) (Optional)
 - [Git](https://git-scm.com/downloads) (Optional)
 
 Preferentially use [IntelliJ IDEA](https://www.jetbrains.com/idea/download) as your integrated development environment.

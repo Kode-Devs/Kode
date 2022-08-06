@@ -16,11 +16,10 @@
 
 package org.kodedevs.kode.sdk;
 
-public interface ScriptInstance {
+public interface Type extends Instance {
 
-    // Retrieves a property from the underlying object, by using its name
-    ScriptInstance lookup(final String name);
-
-    // Assigns a property to the underlying object, by using its name
-    void assign(final String name, final ScriptInstance value);
+    // Checking whether the given object is an instance of 'this' object.
+    default boolean isInstance(final Instance instance) {
+        return instance.isInstanceOf(this);
+    }
 }

@@ -20,7 +20,7 @@ import org.kodedevs.kode.sdk.ast.*;
 
 public interface Expression {
 
-    default ScriptInstance evaluate(RuntimeState runtimeState) {
+    default Instance evaluate(RuntimeState runtimeState) {
         // Todo your handling code here
         return null;
     }

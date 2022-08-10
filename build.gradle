@@ -56,7 +56,7 @@ java {
     withSourcesJar()
 
     // Minimum Java Version Compatibility
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    toolchain.setLanguageVersion(JavaLanguageVersion.of(17))
 }
 
 tasks.withType(JavaCompile) {

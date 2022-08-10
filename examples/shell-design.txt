@@ -1,0 +1,11 @@
+root@kode-devs:~$ kode
+Welcome to Kode 1.7.0 (OpenJDK 64-Bit Server VM, Java 17.0.4).
+Type in expression for evaluation. Or try :help
+
+kode> let x = 5
+x: Int = 5
+
+kode> x + 5
+res: Int = 10
+
+kode>

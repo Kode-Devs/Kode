@@ -21,9 +21,7 @@ import org.kodedevs.kode.sdk.ast.*;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class Parser {
 
@@ -47,93 +45,8 @@ public class Parser {
 
     // -* expressions *-
 
-    private Expression parseExpression() {
-        return parseExpressionUsingPrattParser_(0);
-    }
-
-    // Parse Expressions using Pratt Parser
-    private Expression parseExpressionUsingPrattParser_(int precedence) {
-
-        Expression left;
-        final ParseLet_ prefix = prefixMap_.get(peek().getTokenType());
-        if (prefix != null) {
-            final Token token = advance();
-            left = new PrefixExpr(token, parseExpressionUsingPrattParser_(prefix.precedence));
-        } else {
-            // Go out of Pratt Parser Scope
-            left = parseAtomic();
-        }
-
-        while (suffixMap_.containsKey(peek().getTokenType())
-                && precedence < suffixMap_.get(peek().getTokenType()).precedence) {
-
-            final Token operator = advance();
-            final ParseLet_ suffix = suffixMap_.get(operator.getTokenType());
-            if (suffix.isSpecial) {
-                left = switch (operator.getTokenType()) {
-                    case ASSIGN -> {                                    // Assignment
-                        final Expression right = parseExpressionUsingPrattParser_(suffix.precedence - 1);
-
-                        if (left instanceof FetchExpr fetch) {          // identifier = new_value
-                            yield new StoreExpr(fetch.name(), right);
-                        }
-                        if (left instanceof GetterExpr getter) {        // obj.field = new_value
-                            yield new SetterExpr(getter.object(), getter.name(), right);
-                        }
-
-                        throw new SyntaxError("Invalid assignment target.", peek());
-                    }
-                    default -> throw new KodeBug("Missing special parse-let handle");
-                };
-            } else if (suffix.isInfix) {
-                // To handle right-associative operators, we allow a slightly lower precedence when parsing
-                // the right-hand side. This will let a parse-let with the same precedence appear on
-                // the right, which will then take this parse-let's result as its left-hand argument.
-                left = new InfixExpr(left, operator, parseExpressionUsingPrattParser_(
-                        suffix.precedence - (suffix.isRightAssociative ? 1 : 0)
-                ));
-            } else {
-                return new PostfixExpr(left, operator);
-            }
-        }
-
-        return left;
-    }
-
-    // Registers a prefix unary operator parse-let for the given token and precedence
-    private static void prefix_(TokenType type, Precedence_ precedence) {
-        prefixMap_.put(type, new ParseLet_(false, false, false, precedence.ordinal()));
-    }
-
-    // Registers a postfix unary operator parse-let for the given token and precedence
-    private static void postfix_(TokenType type, Precedence_ precedence) {
-        suffixMap_.put(type, new ParseLet_(false, false, false, precedence.ordinal()));
-    }
-
-    // Registers a postfix unary operator parse-let for the given token and precedence
-    private static void special_(TokenType type, Precedence_ precedence) {
-        suffixMap_.put(type, new ParseLet_(false, false, true, precedence.ordinal()));
-    }
-
-    // Registers a left-associative binary operator parse=let for the given token and precedence
-    private static void infixLeft_(TokenType type, Precedence_ precedence) {
-        suffixMap_.put(type, new ParseLet_(true, false, false, precedence.ordinal()));
-    }
-
-    // Registers a right-associative binary operator parse-let for the given token and precedence
-    private static void infixRight_(TokenType type, Precedence_ precedence) {
-        suffixMap_.put(type, new ParseLet_(true, true, false, precedence.ordinal()));
-    }
-
-    private static final Map<TokenType, ParseLet_> prefixMap_ = new HashMap<>();
-    private static final Map<TokenType, ParseLet_> suffixMap_ = new HashMap<>();
-
-    private record ParseLet_(boolean isInfix, boolean isRightAssociative, boolean isSpecial,
-                             int precedence) {
-    }
-
     // From low to high
-    private enum Precedence_ {
+    private enum Precedence {
         NONE,           //
         ASSIGNMENT,     // =
         LOGICAL_OR,     // or
@@ -151,18 +64,111 @@ public class Parser {
         EXPONENT,       // **
     }
 
+    private enum Flags {
+        FLAG_AS_PREFIX,             // prefix unary operator
+        FLAG_AS_POSTFIX,            // postfix unary operator
+        FLAG_AS_INFIX,              // binary operator
+        FLAG_AS_RIGHT_ASSOCIATIVE,  // right-associative (binary operator)
+    }
+
+    private static final Map<TokenType, ParseLet> prefixMap_ = new HashMap<>();
+    private static final Map<TokenType, ParseLet> suffixMap_ = new HashMap<>();
+
+    private record ParseLet(int precedence, EnumSet<Flags> flags) {
+
+        public ParseLet {
+            Objects.requireNonNull(flags);
+        }
+
+        public ParseLet(int precedence, Flags... flags) {
+            this(precedence, EnumSet.noneOf(Flags.class));
+            Collections.addAll(this.flags, flags);
+        }
+
+        public boolean is(Flags flag) {
+            return this.flags.contains(flag);
+        }
+    }
+
+    // Registers a parse-let for the given token and precedence
+    private static void register(TokenType type, Precedence precedence, Flags... flags) {
+        final ParseLet parseLet = new ParseLet(precedence.ordinal(), flags);
+
+        if (parseLet.is(Flags.FLAG_AS_PREFIX)) {
+            prefixMap_.put(type, parseLet);
+        } else {
+            suffixMap_.put(type, parseLet);
+        }
+    }
+
     static {
         // Register the ones that need special parse-lets
-        special_(TokenType.ASSIGN, Precedence_.ASSIGNMENT);
+        register(TokenType.ASSIGN, Precedence.ASSIGNMENT);
 
         // Register the simple operator parse-lets
-        prefix_(TokenType.PLUS, Precedence_.PREFIX);
-        prefix_(TokenType.MINUS, Precedence_.PREFIX);
+        register(TokenType.PLUS, Precedence.PREFIX, Flags.FLAG_AS_PREFIX);
+        register(TokenType.MINUS, Precedence.PREFIX, Flags.FLAG_AS_PREFIX);
 
-        infixLeft_(TokenType.PLUS, Precedence_.TERM);
-        infixLeft_(TokenType.MINUS, Precedence_.TERM);
-        infixLeft_(TokenType.ASTERISK, Precedence_.FACTOR);
-        infixLeft_(TokenType.SLASH, Precedence_.FACTOR);
+        register(TokenType.PLUS, Precedence.TERM, Flags.FLAG_AS_INFIX);
+        register(TokenType.MINUS, Precedence.TERM, Flags.FLAG_AS_INFIX);
+        register(TokenType.ASTERISK, Precedence.FACTOR, Flags.FLAG_AS_INFIX);
+        register(TokenType.SLASH, Precedence.FACTOR, Flags.FLAG_AS_INFIX);
+    }
+
+    private Expression parseExpression() {
+        return parseExpressionUsingPrattParser_(0);
+    }
+
+    // Parse Expressions using Pratt Parser
+    private Expression parseExpressionUsingPrattParser_(int precedence) {
+
+        Expression left;
+        final ParseLet prefix = prefixMap_.get(peek().getTokenType());
+        if (prefix != null) {
+            final Token token = advance();
+            left = new PrefixExpr(token, parseExpressionUsingPrattParser_(prefix.precedence));
+        } else {
+            // Go out of Pratt Parser Scope
+            left = parseAtomic();
+        }
+
+        while (suffixMap_.containsKey(peek().getTokenType())
+                && precedence < suffixMap_.get(peek().getTokenType()).precedence) {
+
+            final Token operator = advance();
+            final ParseLet suffix = suffixMap_.get(operator.getTokenType());
+
+            if (suffix.is(Flags.FLAG_AS_POSTFIX)) {
+                left = new PostfixExpr(left, operator);
+
+            } else if (suffix.is(Flags.FLAG_AS_INFIX)) {
+                // To handle right-associative operators, we allow a slightly lower precedence when parsing
+                // the right-hand side. This will let a parse-let with the same precedence appear on
+                // the right, which will then take this parse-let's result as its left-hand argument.
+                left = new InfixExpr(left, operator, parseExpressionUsingPrattParser_(
+                        suffix.precedence - (suffix.is(Flags.FLAG_AS_RIGHT_ASSOCIATIVE) ? 1 : 0)
+                ));
+
+            } else {
+                left = switch (operator.getTokenType()) {
+                    case ASSIGN -> {                                    // Assignment
+                        final Expression right = parseExpressionUsingPrattParser_(suffix.precedence - 1);
+
+                        if (left instanceof FetchExpr fetch) {          // identifier = new_value
+                            yield new StoreExpr(fetch.name(), right);
+                        }
+                        if (left instanceof GetterExpr getter) {        // obj.field = new_value
+                            yield new SetterExpr(getter.object(), getter.name(), right);
+                        }
+
+                        throw new SyntaxError("Invalid assignment target.", peek());
+                    }
+                    default -> throw new KodeBug("Missing special parse-let handle");
+                };
+            }
+        }
+
+        return left;
     }
 
     // -* atoms *-

@@ -1,20 +1,18 @@
 ---
-name: Feature Request
+name: "\U0001F680 Feature Request"
 about: Suggest an idea for this project
-title: Feature / New Feature Summary
+title: "Feature / Your feature name goes here... \U0001F680"
 labels: enhancement
 assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+Have an idea 🚀... Want to share with us ... We are here for you ...
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+Must Remember to Include :
+- A clear and concise description of what the problem is. Eg. I'm always frustrated when [...]
+- A clear and concise description of what you want to happen.
+- A clear and concise description of any alternative solutions or features you've considered.
+- Include any other context or screenshots related to your feature request.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
-
-**Additional context**
-Add any other context or screenshots about the feature request here.
+Now you can clear this text and add your request here ...

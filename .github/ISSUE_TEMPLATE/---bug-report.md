@@ -1,7 +1,7 @@
 ---
-name: Bug Report
+name: "\U0001F41B Bug Report"
 about: Create a report to help us improve
-title: Bug / Your bug name goes here...
+title: "Bug / Your bug name goes here...\U0001F41B"
 labels: bug
 assignees: ''
 
@@ -16,6 +16,6 @@ Must Remember to Include :
 - If applicable, add screenshots to help explain your problem.
 - OS Information (e.g. Windows 11, Ubuntu 22.04, etc.)
 - Software Version (e.g. Kode 1.7.0)
-- Any other context about your problem
+- Include any other context related to your problem.
 
-Now you can clear this text and add your details here ...
+Now you can clear this text and add your report here ...

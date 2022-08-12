@@ -16,47 +16,68 @@
 
 package org.kodedevs.kode.tools;
 
-import org.fusesource.jansi.AnsiConsole;
-import org.kodedevs.kode.KodeException;
-import org.kodedevs.kode.sdk.*;
+import org.kodedevs.kode.sdk.CodeSource;
+import org.kodedevs.kode.sdk.Lexer;
+import org.kodedevs.kode.sdk.Parser;
+import org.kodedevs.kode.utils.ReleaseInfo;
 
 import java.util.Scanner;
 
 public class CLIToolKit {
 
+    private static final String APP_VERSION = ReleaseInfo.getVersion();
+    private static final String JAVA_VM_NAME = System.getProperty("java.vm.name");      // OpenJDK 64-Bit Server VM
+    private static final String JAVA_VENDOR = System.getProperty("java.vendor");        // Azul Systems, Inc.
+    private static final String JAVA_VERSION = System.getProperty("java.version");      // 17.0.4
+
+    private static final String DEFAULT_INTRO =
+            "Welcome to Kode " + APP_VERSION + " (" + JAVA_VM_NAME + ", Java " + JAVA_VERSION + ")."
+                    + "\nType in expression for evaluation. Or try :help";
+
+    public static final String DEFAULT_END_NOTE =
+            "Thank you for using our product ...";
+
+    private static final String DEFAULT_PROMPT = "kode> ";
+
+    private static final String DEFAULT_HELP = "No available help";
+
+
     public static void runInteractiveCLI() {
-        // Enable ANSI
-        AnsiConsole.systemInstall();
+        // Print Intro Message
+        System.out.println(DEFAULT_INTRO);
 
-        // Scanner For User Input
-        final Scanner sc = new Scanner(System.in);
+        String input;
+        try (final Scanner sc = new Scanner(System.in)) {
+            loop:
+            for (; ; ) {
+                System.out.println();
+                System.out.print(DEFAULT_PROMPT);         // Print Prompt
 
-        while (true) {
-            // Print Prompt
-            System.out.print("$> ");
+                input = sc.nextLine();                      // Read Line
 
-            // Read User Input
-            final String input = sc.nextLine();
-
-            // If Blank
-            if (input.isBlank()) continue;
-
-            // If EXIT
-            if (input.equals("\\q")) break;
-
-            // Otherwise
-            try {
-                final CodeSource cs = CodeSource.fromRawString(input, true);
-                final Lexer lexer = new Lexer(cs);
-                final Parser parser = new Parser(lexer);
-
-                System.out.println(parser.parse());
-            } catch (KodeException k) {
-                System.err.println(k.getLocalizedMessage());
+                switch (input.trim()) {
+                    case ":quit", ":q":
+                        break loop;                         // Exit the loop
+                    case ":help", ":h":
+                        System.out.println(DEFAULT_HELP);   // Print Help
+                        break;
+                    default:                                // Evaluate
+                        try {
+                            System.out.println("res: " + evaluateInputString(input));
+                        } catch (Exception e) {
+                            System.out.println("err: " + e.getLocalizedMessage());
+                        }
+                }
             }
+        } finally {
+            System.out.println();
+            System.out.println(DEFAULT_END_NOTE);
         }
+    }
 
-        // Disable ANSI
-        AnsiConsole.systemUninstall();
+    private static Object evaluateInputString(final String inputStr) throws Exception {
+        return new Parser(new Lexer(
+                CodeSource.fromRawString(inputStr, true)))
+                .parse();
     }
 }

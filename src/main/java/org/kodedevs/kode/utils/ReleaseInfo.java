@@ -39,10 +39,10 @@ public class ReleaseInfo {
     }
 
     public static String getVersion() {
-        return RELEASE_INFO.getProperty(KEY_VERSION, "");
+        return RELEASE_INFO.getProperty(KEY_VERSION, "<version>");
     }
 
     public static String getBuildTime() {
-        return RELEASE_INFO.getProperty(KEY_BUILD_TIME, "");
+        return RELEASE_INFO.getProperty(KEY_BUILD_TIME, "<build_time>");
     }
 }

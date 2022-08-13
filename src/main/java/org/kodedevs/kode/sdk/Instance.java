@@ -19,11 +19,11 @@ package org.kodedevs.kode.sdk;
 public interface Instance {
 
     // Retrieves the type whose instance is this object.
-    Type getType();
+    InstanceType getType();
 
     // Checking whether this object is an instance of the given 'type' object.
-    default boolean isInstanceOf(final Type type) {
-        return this.getType() == type;
+    default boolean isInstanceOf(final InstanceType instanceType) {
+        return this.getType() == instanceType;
     }
 
     // Retrieves a named member of this object.

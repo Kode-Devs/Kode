@@ -16,5 +16,8 @@
 
 package org.kodedevs.kode.sdk;
 
-public abstract class SimpleType implements Type {
+public class WrapperInstanceType extends WrapperInstance
+        implements InstanceType {
+
+
 }

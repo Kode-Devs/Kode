@@ -16,5 +16,39 @@
 
 package org.kodedevs.kode.sdk;
 
-public abstract class WrapperInstance implements Instance {
+public class WrapperInstance implements Instance {
+    @Override
+    public InstanceType getType() {
+        return null;
+    }
+
+    @Override
+    public Instance getMember(String name) {
+        return null;
+    }
+
+    @Override
+    public Instance getSlot(int index) {
+        return null;
+    }
+
+    @Override
+    public boolean hasMember(String name) {
+        return false;
+    }
+
+    @Override
+    public boolean hasSlot(int index) {
+        return false;
+    }
+
+    @Override
+    public void setMember(String name, Instance value) {
+
+    }
+
+    @Override
+    public void setSlot(int index, Instance value) {
+
+    }
 }

@@ -16,10 +16,8 @@
 
 package org.kodedevs.kode.sdk;
 
-public interface Type extends Instance {
+public class SimpleInstanceType extends SimpleInstance
+        implements InstanceType {
 
-    // Checking whether the given object is an instance of 'this' object.
-    default boolean isInstance(final Instance instance) {
-        return instance.isInstanceOf(this);
-    }
+
 }

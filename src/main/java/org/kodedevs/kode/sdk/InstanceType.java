@@ -16,5 +16,10 @@
 
 package org.kodedevs.kode.sdk;
 
-public abstract class WrapperType implements Type {
+public interface InstanceType extends Instance {
+
+    // Checking whether the given object is an instance of 'this' object.
+    default boolean isInstance(final Instance instance) {
+        return instance.isInstanceOf(this);
+    }
 }

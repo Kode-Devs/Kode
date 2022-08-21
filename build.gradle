@@ -105,6 +105,18 @@ distributions {
     }
 }
 
+task runApplication(type: JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
+
+    mainClass = 'org.kodedevs.kode.cli.Application'
+
+    // arguments to pass to the application
+    // args 'appArg1'
+
+    // The standard input stream for the process executing the command
+    standardInput System.in
+}
+
 install4j {
     if (System.env['INSTALL4J_HOME'] != null) installDir = file("$System.env.INSTALL4J_HOME")
 

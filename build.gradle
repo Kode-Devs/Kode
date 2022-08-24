@@ -30,8 +30,8 @@ dependencies {
     // 3rd-party libs
     implementation fileTree(dir: 'libs', includes: ['*.jar'])
 
-    // SLF4J Logging Interface
-    implementation 'org.slf4j:slf4j-api:1.7.36'
+    // Apache Commons BeanUtils
+    implementation 'commons-beanutils:commons-beanutils:1.9.4'
 
     // Picocli
     implementation 'info.picocli:picocli:4.6.3'
@@ -42,6 +42,9 @@ dependencies {
 
     // Install4j Runtime
     implementation 'com.install4j:install4j-runtime:9.0.6'
+
+    // SLF4J Logging Interface
+    implementation 'org.slf4j:slf4j-api:1.7.36'
 
     // JUnit5
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'

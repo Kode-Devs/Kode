@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-package org.kodedevs.kode.sdk;
+package org.kodedevs.kode.sdk.runtime;
 
-public class SimpleInstanceType extends SimpleInstance
-        implements InstanceType {
+public abstract class KodeType extends KodeInstance {
 
+    public KodeType() {
+        super(null);    // TODO: Add Class of class
+    }
 
+    /** Checking whether the given object is an instance of 'this' object. */
+    public final boolean isInstance(final KodeInstance instance) {
+        return instance.isInstanceOf(this);
+    }
 }

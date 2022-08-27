@@ -17,7 +17,7 @@
 package org.kodedevs.kode.sdk;
 
 import org.kodedevs.kode.KodeException;
-import org.kodedevs.kode.sdk.runtime.KodeInstance;
+import org.kodedevs.kode.sdk.runtime.Instance;
 
 import java.util.*;
 
@@ -25,8 +25,8 @@ public final class RuntimeState {
 
     //// Section: Symbol Table
 
-    private final Map<String, KodeInstance> globals = new HashMap<>();
-    private final LinkedList<Map<String, KodeInstance>> locals = new LinkedList<>();
+    private final Map<String, Instance> globals = new HashMap<>();
+    private final LinkedList<Map<String, Instance>> locals = new LinkedList<>();
 
     // Enter a new scope
     public void beginScope() {
@@ -39,7 +39,7 @@ public final class RuntimeState {
     }
 
     // Stores a new variable in the symbol table, with an initial value
-    public void defineSymbol(final String name, final KodeInstance value) {
+    public void defineSymbol(final String name, final Instance value) {
         if (locals.isEmpty()) {
             globals.put(name, value);
         } else {
@@ -48,7 +48,7 @@ public final class RuntimeState {
     }
 
     // Assigns a new value to a variable iff the variable is present in the symbol table
-    public void assignSymbol(final String name, final KodeInstance value) {
+    public void assignSymbol(final String name, final Instance value) {
         for (final var local : locals) {
             if (local.containsKey(name)) {
                 local.put(name, value);
@@ -66,7 +66,7 @@ public final class RuntimeState {
     }
 
     // Assigns a new value to a variable iff the variable is present in the symbol table at a specific distance
-    public void assignSymbolAt(final int distance, final String name, final KodeInstance value) {
+    public void assignSymbolAt(final int distance, final String name, final Instance value) {
         if (distance >= 0 && distance < locals.size()) {
             final var local = locals.get(distance);
             if (local.containsKey(name)) {
@@ -85,7 +85,7 @@ public final class RuntimeState {
     }
 
     // Retrieves the value of a variable from the symbol table, by using its name
-    public KodeInstance retrieveSymbol(final String name) {
+    public Instance retrieveSymbol(final String name) {
         for (final var local : locals) {
             if (local.containsKey(name)) {
                 return local.get(name);
@@ -101,7 +101,7 @@ public final class RuntimeState {
     }
 
     // Retrieves the value of a variable from the symbol table from a specific distance, by using its name
-    public KodeInstance retrieveSymbolAt(final int distance, final String name) {
+    public Instance retrieveSymbolAt(final int distance, final String name) {
         if (distance >= 0 && distance < locals.size()) {
             final var local = locals.get(distance);
             if (local.containsKey(name)) {

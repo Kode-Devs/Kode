@@ -16,12 +16,12 @@
 
 package org.kodedevs.kode.sdk;
 
-import org.kodedevs.kode.sdk.runtime.KodeInstance;
+import org.kodedevs.kode.sdk.runtime.Instance;
 import org.kodedevs.kode.sdk.ast.*;
 
 public interface Expression {
 
-    default KodeInstance evaluate(RuntimeState runtimeState) {
+    default Instance evaluate(RuntimeState runtimeState) {
         // Todo your handling code here
         return null;
     }

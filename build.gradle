@@ -109,7 +109,7 @@ distributions {
 }
 
 task runApplication(type: JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath
+    classpath = sourceSets.main.runtimeClasspath + files(tasks.jar)
 
     mainClass = 'org.kodedevs.kode.cli.Application'
 

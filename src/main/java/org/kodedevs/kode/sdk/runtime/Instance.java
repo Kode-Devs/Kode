@@ -17,61 +17,37 @@
 package org.kodedevs.kode.sdk.runtime;
 
 
-import org.apache.commons.beanutils.PropertyUtils;
+// Base class for all instances including classes, methods, etc.
+public class Instance<K> {
 
-import java.util.NoSuchElementException;
+    // The value of the Instance
+    private final K value;
 
-public final class Instance {
-
-    private final Object javaObj;
-
-    //// Section: Constructors
-
-    private Instance(Object javaObj) {
-        this.javaObj = javaObj;
+    // value -> the value to be represented by the Instance object
+    public Instance(K value) {
+        this.value = value;
     }
 
-    public static <T> Instance of(T javaObj) {
-        return new Instance(javaObj);
+    // Returns the value of this Instance object
+    public K getValue() {
+        return value;
     }
 
-    //// Section: Property Query Operations
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
 
-    public Instance get(String name) {
-        // Find in wrapped Java Object
-        if (javaObj != null) {
-            try {
-                return Instance.of(PropertyUtils.getProperty(javaObj, name));
-            } catch (Exception ignored) {
-                // Do nothing
-            }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Instance<?> instance) {
+            return value == instance.getValue();
         }
-
-        // Otherwise
-        throw new NoSuchElementException(name);
+        return false;
     }
 
-    public void set(String name, Instance value) {
-        // Update in wrapped Java Object
-        if (javaObj != null) {
-            try {
-                PropertyUtils.setProperty(javaObj, name, value.safeToJava());
-            } catch (Exception ignored) {
-                // Do nothing
-            }
-        }
-
-        // Otherwise
-        throw new NoSuchElementException(name);
-    }
-
-    //// Section: Convert to Java Object
-
-    public Object safeToJava() {
-        return safeToJava(Object.class);
-    }
-
-    public <T> T safeToJava(Class<T> cls) {
-        throw new UnsupportedOperationException();
+    @Override
+    public String toString() {
+        return value.toString();
     }
 }

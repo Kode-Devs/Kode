@@ -14,40 +14,31 @@ ext {
 }
 
 repositories {
-    // https://mvnrepository.com/repos/central
+    // Maven Central Repository -> https://mvnrepository.com/repos/central
     mavenCentral()
 
-    // https://plugins.gradle.org/
+    // Gradle Plugin Portal -> https://plugins.gradle.org/
     gradlePluginPortal()
 
-    // https://www.ej-technologies.com/
+    // ej-technologies Repository -> https://www.ej-technologies.com/
     maven {
         url 'https://maven.ej-technologies.com/repository'
+    }
+
+    // 3rd-party libs
+    flatDir {
+        dirs 'libs/3_p'
     }
 }
 
 dependencies {
-    // 3rd-party libs
-    implementation fileTree(dir: 'libs', includes: ['*.jar'])
+    implementation 'org.slf4j:slf4j-api:2.0.0'                      // SLF4J API Module
+    implementation 'info.picocli:picocli:4.6.3'                     // Picocli
+    annotationProcessor 'info.picocli:picocli-codegen:4.6.3'        // Picocli Codegen
 
-    // Apache Commons BeanUtils
-    implementation 'commons-beanutils:commons-beanutils:1.9.4'
-
-    // Picocli
-    implementation 'info.picocli:picocli:4.6.3'
-    annotationProcessor 'info.picocli:picocli-codegen:4.6.3'
-
-    // Jansi
-    implementation 'org.fusesource.jansi:jansi:2.4.0'
-
-    // Install4j Runtime
-    implementation 'com.install4j:install4j-runtime:9.0.6'
-
-    // SLF4J Logging Interface
-    implementation 'org.slf4j:slf4j-api:1.7.36'
-
-    // JUnit5
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+    // For Testing
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'  // JUnit Jupiter API
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'  // JUnit Jupiter Engine
 }
 
 test {
@@ -109,12 +100,14 @@ distributions {
 }
 
 task runApplication(type: JavaExec) {
-    classpath = sourceSets.main.runtimeClasspath + files(tasks.jar)
-
+    // Main class name
     mainClass = 'org.kodedevs.kode.cli.Application'
 
-    // arguments to pass to the application
+    // Arguments to pass to the application
     // args 'appArg1'
+
+    // Runtime Classpath
+    classpath = sourceSets.main.runtimeClasspath + files(tasks.jar)
 
     // The standard input stream for the process executing the command
     standardInput System.in

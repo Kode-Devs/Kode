@@ -16,60 +16,95 @@
 
 package org.kodedevs.kode.cli;
 
-import org.fusesource.jansi.AnsiConsole;
-import org.kodedevs.kode.tools.CLIToolKit;
+import org.kodedevs.kode.sdk.CodeSource;
+import org.kodedevs.kode.sdk.Lexer;
+import org.kodedevs.kode.sdk.Parser;
 import org.kodedevs.kode.utils.ReleaseInfo;
 import picocli.CommandLine;
-import picocli.CommandLine.Command;
-import picocli.CommandLine.HelpCommand;
-import picocli.CommandLine.IVersionProvider;
+import picocli.CommandLine.*;
 
-@Command(
-        synopsisSubcommandLabel = "COMMAND",
+import java.util.Scanner;
+import java.util.concurrent.Callable;
+
+@Command(name = "kode",
+        description = "A simple picocli demo",
+        versionProvider = Application.ManifestVersionProvider.class,
         mixinStandardHelpOptions = true,
-        usageHelpAutoWidth = true,
-        versionProvider = Application.VersionProvider.class,
-        sortOptions = false,
         subcommands = {
-                HelpCommand.class,
-                UpdateCmd.class,
+                CommandLine.HelpCommand.class,
         })
-public class Application implements Runnable {
+public class Application implements Callable<Integer> {
+
+    private static final String APP_VERSION = ReleaseInfo.getVersion();
+    private static final String JAVA_VM_NAME = System.getProperty("java.vm.name");      // OpenJDK 64-Bit Server VM
+    private static final String JAVA_VENDOR = System.getProperty("java.vendor");        // Azul Systems, Inc.
+    private static final String JAVA_VERSION = System.getProperty("java.version");      // 17.0.4
+
+    private static final String DEFAULT_INTRO =
+            "Welcome to Kode " + APP_VERSION + " (" + JAVA_VM_NAME + ", Java " + JAVA_VERSION + ")."
+                    + "\nType in expression for evaluation. Or try :help";
+
+    public static final String DEFAULT_END_NOTE =
+            "Thank you for using our product ...";
+
+    private static final String DEFAULT_PROMPT = "kode> ";
+
+    private static final String DEFAULT_HELP = "No available help";
+
+    @Override
+    public Integer call() {     // Run interactive shell
+        // Print Intro Message
+        System.out.println(DEFAULT_INTRO);
+
+        String input;
+        try (final Scanner sc = new Scanner(System.in)) {
+            loop:
+            for (; ; ) {
+                System.out.println();
+                System.out.print(DEFAULT_PROMPT);         // Print Prompt
+
+                input = sc.nextLine();                      // Read Line
+
+                switch (input.trim()) {
+                    case ":quit", ":q":
+                        break loop;                         // Exit the loop
+                    case ":help", ":h":
+                        System.out.println(DEFAULT_HELP);   // Print Help
+                        break;
+                    default:                                // Evaluate
+                        try {
+                            final CodeSource source = CodeSource.fromRawString(input, true);
+                            final Lexer lexer = new Lexer(source);
+                            final Parser parser = new Parser(lexer);
+                            System.out.println("res: " + parser.parse());
+                        } catch (Exception e) {
+                            System.out.println("err: " + e.getLocalizedMessage());
+                        }
+                }
+            }
+        } finally {
+            System.out.println();
+            System.out.println(DEFAULT_END_NOTE);
+        }
+        return 0;
+    }
 
     // Entrypoint for the CLI interface
     public static void main(String[] args) {
+        // bootstrap the application
         CommandLine cmd = new CommandLine(new Application());
-
-        // Dynamically set the executable name for the root command
-        cmd.setCommandName("kode");
-
-        // Enable ANSI Support
-        AnsiConsole.systemInstall();
-
-        // Perform Execution
         int exitCode = cmd.execute(args);
-
-        // Close and Exit
-        AnsiConsole.systemUninstall();
         System.exit(exitCode);
     }
 
-    // Default to shell if no subcommand is mentioned
-    @Override
-    public void run() {
-        // Start REPL Shell
-        CLIToolKit.runInteractiveCLI();
-    }
+    static class ManifestVersionProvider implements IVersionProvider {
 
-    // IVersionProvider implementation that returns version information
-    static final class VersionProvider implements IVersionProvider {
         @Override
-        public String[] getVersion() {
-            String version = ReleaseInfo.getVersion();
-            String buildTime = ReleaseInfo.getBuildTime();
+        public String[] getVersion() throws Exception {
             return new String[]{
-                    "Kode version " + version,
-                    "Built: " + buildTime,
+                    "Kode " + ReleaseInfo.getVersion(),
+                    "JVM: ${java.version} (${java.vendor} ${java.vm.name} ${java.vm.version})",
+                    "OS: ${os.name} ${os.version} ${os.arch}"
             };
         }
     }

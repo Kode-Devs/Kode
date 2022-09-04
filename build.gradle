@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'idea'
     id 'java'
@@ -68,19 +70,27 @@ task generateReleaseInfo(type: WriteProperties, group: BasePlugin.BUILD_GROUP) {
 
 jar {
     // Build a custom manifest
-    manifest.attributes(['Manifest-Version'      : '1.0',
-                         'Created-By'            : "Gradle API ${gradle.gradleVersion}",
-                         'Built-By'              : System.getProperty('user.name'),
-                         'Build-Jdk'             : "${System.getProperty('java.version')} (${System.getProperty('java.vendor')} ${System.getProperty('java.vm.version')})",
-                         'Automatic-Module-Name' : "org.kodedevs.kode",
-                         'Specification-Title'   : "Kode",
-                         'Specification-Version' : project.version,
-                         'Specification-Vendor'  : project.group,
-                         'Implementation-Title'  : "Kode",
-                         'Implementation-Version': project.version,
-                         'Implementation-Vendor' : project.group,
-                         'Build-Time'            : buildTime])
+    manifest.attributes([
+            'Manifest-Version'         : '1.0',
+            'Created-By'               : "Gradle API ${gradle.gradleVersion}",
+            'Built-By'                 : System.properties['user.name'],
+            'Build-Jdk'                : "${System.properties['java.version']} (${System.properties['java.vendor']} " +
+                    "${System.properties['java.vm.version']})",
+            'Build-OS'                 : "${System.properties['os.name']} ${System.properties['os.arch']} " +
+                    "${System.properties['os.version']}",
+            'Automatic-Module-Name'    : "org.kodedevs.kode",
 
+            // describes version of the specification the JAR meets
+            'Specification-Title'      : "Kode",
+            'Specification-Version'    : project.version,
+            'Specification-Vendor'     : project.group,
+
+            // describes version of the application contained by the JAR
+            'Implementation-Title'     : "Kode",
+            'Implementation-Version'   : project.version,
+            'Implementation-Vendor'    : project.group,
+            'Implementation-Build-Date': new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+    ])
     metaInf {
         from(rootDir) {
             include 'LICENSE*', 'NOTICE*'

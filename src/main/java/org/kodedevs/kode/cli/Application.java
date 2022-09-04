@@ -28,7 +28,7 @@ import java.util.concurrent.Callable;
 
 @Command(name = "kode",
         description = "A simple picocli demo",
-        versionProvider = Application.ManifestVersionProvider.class,
+        versionProvider = Application.DefaultVersionProvider.class,
         mixinStandardHelpOptions = true,
         subcommands = {
                 CommandLine.HelpCommand.class,
@@ -39,38 +39,28 @@ public class Application implements Callable<Integer> {
     private static final String JAVA_VENDOR = System.getProperty("java.vendor");        // Azul Systems, Inc.
     private static final String JAVA_VERSION = System.getProperty("java.version");      // 17.0.4
 
-    private static final String DEFAULT_INTRO =
-            "Welcome to Kode " + ReleaseInfo.VERSION + " (" + JAVA_VM_NAME + ", Java " + JAVA_VERSION + ")."
-                    + "\nType in expression for evaluation. Or try :help";
-
-    public static final String DEFAULT_END_NOTE =
-            "Thank you for using our product ...";
-
-    private static final String DEFAULT_PROMPT = "kode> ";
-
-    private static final String DEFAULT_HELP = "No available help";
-
     @Override
     public Integer call() {     // Run interactive shell
         // Print Intro Message
-        System.out.println(DEFAULT_INTRO);
+        System.out.println("Welcome to Kode " + ReleaseInfo.VERSION + " (" + JAVA_VM_NAME + ", Java " + JAVA_VERSION + ").");
+        System.out.println("Type in expression for evaluation. Or try :help");
 
         String input;
         try (final Scanner sc = new Scanner(System.in)) {
             loop:
             for (; ; ) {
                 System.out.println();
-                System.out.print(DEFAULT_PROMPT);         // Print Prompt
+                System.out.print("kode> ");                         // Print Prompt
 
-                input = sc.nextLine();                      // Read Line
+                input = sc.nextLine();                              // Read Line
 
                 switch (input.trim()) {
                     case ":quit", ":q":
-                        break loop;                         // Exit the loop
+                        break loop;                                 // Exit the loop
                     case ":help", ":h":
-                        System.out.println(DEFAULT_HELP);   // Print Help
+                        System.out.println("No available help");    // Print Help
                         break;
-                    default:                                // Evaluate
+                    default:                                        // Evaluate
                         try {
                             final CodeSource source = CodeSource.fromRawString(input, true);
                             final Lexer lexer = new Lexer(source);
@@ -83,7 +73,7 @@ public class Application implements Callable<Integer> {
             }
         } finally {
             System.out.println();
-            System.out.println(DEFAULT_END_NOTE);
+            System.out.println("Thank you for using our product ...");
         }
         return 0;
     }
@@ -96,7 +86,7 @@ public class Application implements Callable<Integer> {
         System.exit(exitCode);
     }
 
-    static class ManifestVersionProvider implements IVersionProvider {
+    static class DefaultVersionProvider implements IVersionProvider {
 
         @Override
         public String[] getVersion() throws Exception {

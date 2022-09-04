@@ -18,31 +18,51 @@ package org.kodedevs.kode.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 public class ReleaseInfo {
-    private static final Properties RELEASE_INFO = new Properties();
-    private static final String RELEASE_INFO_FILE = "META-INF/kode-release-info.properties";
 
-    private static final String KEY_VERSION = "Implementation-Version";
-    private static final String KEY_BUILD_TIME = "Build-Time";
+    // Load All Information
+    private static final Properties release_info = new Properties();
 
     static {
-        ClassLoader classLoader = ReleaseInfo.class.getClassLoader();
-        try (final InputStream is = classLoader.getResourceAsStream(RELEASE_INFO_FILE)) {
-            if (is != null) {
-                RELEASE_INFO.load(is);
+        try {
+            URL url = ReleaseInfo.class.getResource("/kode-release-info.txt");
+            assert url != null;
+            try (final InputStream is = url.openStream()) {
+                if (is != null) {
+                    release_info.load(is);
+                }
             }
         } catch (IOException ignored) {
             // Do nothing
         }
     }
 
-    public static String getVersion() {
-        return RELEASE_INFO.getProperty(KEY_VERSION, "<version>");
-    }
+    // Full Display Name
+    public static final String FULL_NAME = release_info.getProperty("Application-full-name");
 
-    public static String getBuildTime() {
-        return RELEASE_INFO.getProperty(KEY_BUILD_TIME, "<build_time>");
+    // Short Name
+    public static final String NAME = release_info.getProperty("Application-name");
+
+    // Version Number
+    public static final String VERSION = release_info.getProperty("Version");
+
+    // Build Date
+    public static final Date BUILD_DATE;
+
+    static {
+        Date tempBuildDate = new Date();
+        try {
+            tempBuildDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+                    .parse(release_info.getProperty("Build-date"));
+        } catch (ParseException ignored) {
+            // Do nothing
+        }
+        BUILD_DATE = tempBuildDate;
     }
 }

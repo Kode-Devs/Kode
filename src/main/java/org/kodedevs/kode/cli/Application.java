@@ -35,13 +35,12 @@ import java.util.concurrent.Callable;
         })
 public class Application implements Callable<Integer> {
 
-    private static final String APP_VERSION = ReleaseInfo.getVersion();
     private static final String JAVA_VM_NAME = System.getProperty("java.vm.name");      // OpenJDK 64-Bit Server VM
     private static final String JAVA_VENDOR = System.getProperty("java.vendor");        // Azul Systems, Inc.
     private static final String JAVA_VERSION = System.getProperty("java.version");      // 17.0.4
 
     private static final String DEFAULT_INTRO =
-            "Welcome to Kode " + APP_VERSION + " (" + JAVA_VM_NAME + ", Java " + JAVA_VERSION + ")."
+            "Welcome to Kode " + ReleaseInfo.VERSION + " (" + JAVA_VM_NAME + ", Java " + JAVA_VERSION + ")."
                     + "\nType in expression for evaluation. Or try :help";
 
     public static final String DEFAULT_END_NOTE =
@@ -102,9 +101,9 @@ public class Application implements Callable<Integer> {
         @Override
         public String[] getVersion() throws Exception {
             return new String[]{
-                    "Kode " + ReleaseInfo.getVersion(),
+                    ReleaseInfo.FULL_NAME + " version " + ReleaseInfo.VERSION,
                     "JVM: ${java.version} (${java.vendor} ${java.vm.name} ${java.vm.version})",
-                    "OS: ${os.name} ${os.version} ${os.arch}"
+                    "OS : ${os.name} ${os.version} ${os.arch}"
             };
         }
     }

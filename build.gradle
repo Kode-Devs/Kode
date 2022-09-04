@@ -12,7 +12,7 @@ version = kodeVersion
 description = 'Kode is an open source programming language which aims for better readability and functionality.'
 
 ext {
-    buildTime = new Date()
+    buildDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date())
 }
 
 repositories {
@@ -60,12 +60,12 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-task generateReleaseInfo(type: WriteProperties, group: BasePlugin.BUILD_GROUP) {
-    outputFile "$buildDir/release-info/kode-release-info.properties"
-    encoding 'UTF-8'
-    comment project.description
-    property 'Implementation-Version', project.version
-    property 'Build-Time', buildTime
+processResources {
+    filesMatching('**/kode-release-info.txt') {
+        expand(
+                'project': project
+        )
+    }
 }
 
 jar {
@@ -89,13 +89,12 @@ jar {
             'Implementation-Title'     : "Kode",
             'Implementation-Version'   : project.version,
             'Implementation-Vendor'    : project.group,
-            'Implementation-Build-Date': new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date()),
+            'Implementation-Build-Date': project.ext.buildDate,
     ])
     metaInf {
         from(rootDir) {
             include 'LICENSE*', 'NOTICE*'
         }
-        from generateReleaseInfo
     }
     exclude 'META-INF/*.SF', 'META-INF/*.RSA', 'META-INF/*.DSA', 'META-INF/*.MF'
 }
